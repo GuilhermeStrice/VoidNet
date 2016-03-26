@@ -1,6 +1,11 @@
 #pragma once
 
-struct TCPConnection
-{
+#include "Socket.h"
 
-};
+namespace VoidNet
+{
+	struct TCPConnection
+	{
+
+	};
+}
