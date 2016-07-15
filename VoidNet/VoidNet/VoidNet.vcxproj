@@ -112,21 +112,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="TCPConnection.h" />
-    <ClInclude Include="Socket.h" />
-    <ClInclude Include="Enums.h" />
-    <ClInclude Include="TCPServer.h" />
-    <ClInclude Include="UDPClient.h" />
-    <ClInclude Include="UDPServer.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="TCPConnection.cpp" />
-    <ClCompile Include="Socket.cpp" />
-    <ClCompile Include="TCPServer.cpp" />
-    <ClCompile Include="UDPClient.cpp" />
-    <ClCompile Include="UDPServer.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
