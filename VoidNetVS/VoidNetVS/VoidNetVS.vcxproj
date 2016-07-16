@@ -18,14 +18,34 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\Config.hpp" />
+    <ClInclude Include="..\..\include\Defs.hpp" />
+    <ClInclude Include="..\..\include\Init.hpp" />
+    <ClInclude Include="..\..\include\NetworkMessage.hpp" />
+    <ClInclude Include="..\..\include\TcpClient.hpp" />
+    <ClInclude Include="..\..\include\Utility.hpp" />
+    <ClInclude Include="..\..\include\VoidNet.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\Config.cpp" />
+    <ClCompile Include="..\..\src\Init.cpp" />
+    <ClCompile Include="..\..\src\InitWindows.cpp" />
+    <ClCompile Include="..\..\src\TcpClient.cpp" />
+    <ClCompile Include="..\..\src\TcpClientWindows.cpp" />
+    <ClCompile Include="..\..\src\Utility.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\TODO" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{DC4D9247-92B6-4C52-B47C-41C34CF5D611}</ProjectGuid>
-    <RootNamespace>VoidNet</RootNamespace>
+    <ProjectGuid>{5172321E-CCB0-4A77-9F3D-FAAF0084F434}</ProjectGuid>
+    <RootNamespace>VoidNetVS</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -74,6 +94,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>F:\VoidNet\include</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -90,14 +111,16 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>F:\VoidNet\include;F:\VoidNet\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
     </Link>
-    <Lib>
-      <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
