@@ -15,9 +15,6 @@
     <ClInclude Include="..\..\include\Defs.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\VoidNet.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\TcpClient.hpp">
       <Filter>include</Filter>
     </ClInclude>
@@ -28,6 +25,21 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\NetworkMessage.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\VoidNetClient.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\VoidNetServer.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\NetworkBuffer.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Serializer.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Callbacks.hpp">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
@@ -48,6 +60,15 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Config.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\NetworkBuffer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Serializer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\NetworkMessage.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

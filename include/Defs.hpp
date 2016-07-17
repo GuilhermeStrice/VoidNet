@@ -2,10 +2,7 @@
 #define DEFS_HPP
 
 #ifdef _MSC_VER
-	#pragma once
-#endif
-
-#ifdef _MSC_VER
+#pragma once
 #define WIN32_LEAN_AND_MEAN
 #define _WINSOCKAPI_
 #include <windows.h>
@@ -184,5 +181,15 @@ enum VoidCode
 	VOID_INVALID_PORT,
 	VOID_COULDNT_CONNECT,
 };
+
+enum DistributionType
+{
+	All,
+	Server,
+	Others,
+	ID,
+	Reply,
+	Custom,
+}
 
 #endif // DEFS_HPP

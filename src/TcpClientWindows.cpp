@@ -1,6 +1,7 @@
 #include "TcpClient.hpp"
 #include "Utility.hpp"
 #include "Config.hpp"
+#include "NetworkBuffer.hpp"
 
 #include <iostream>
 
@@ -57,19 +58,19 @@ TcpClient::~TcpClient()
 	Utility::Delete(ptr);
 }
 
-const std::string & TcpClient::GetIP()
+const std::string &TcpClient::GetIP()
 {
 	return ip;
-}
-
-void TcpClient::SetIP(const std::string & ip)
-{
-	this->ip = ip;
 }
 
 uint16 TcpClient::GetPort()
 {
 	return port;
+}
+
+void TcpClient::SetIP(const std::string & ip)
+{
+	this->ip = ip;
 }
 
 void TcpClient::SetPort(uint16 port)
@@ -96,19 +97,20 @@ VoidCode TcpClient::Connect()
 
 char *TcpClient::ReceiveDataArray()
 {
-	char *header = new char[4]();
-	
-	int remote_buffer_size;
-	do
-	{
-		remote_buffer_size = recv(socket, header, 4, 0);
+	NetworkBuffer buffer;
 
-		if (WSAGetLastError() != 0)
-		{
-			// there was a problem receiving
-		}
-	} 
-	while (remote_buffer_size > 0);
+	if (recv(socket, reinterpret_cast<char*>(buffer.body_size), 4, 0) != 4 || WSAGetLastError() != 0)
+	{
+		// there was a problem receiving the body size of the message
+		return nullptr;
+	}
+
+	buffer.body = new byte[buffer.body_size]();
+	if (recv(socket, reinterpret_cast<char*>(buffer.body), buffer.body_size, 0) != buffer.body_size || WSAGetLastError() != 0)
+	{
+		//there was a problem receiving the body of the message
+		return nullptr;
+	}
 }
 
 const NetworkMessage &TcpClient::ReceiveData()

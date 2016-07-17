@@ -23,7 +23,7 @@ public:
 	uint16 GetPort();
 	void SetPort(uint16 port);
 
-	VoidCode Connect(); // this function is used if Initialize was not called
+	VoidCode Connect();
 
 	char *ReceiveDataArray();
 	const NetworkMessage &ReceiveData();
