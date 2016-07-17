@@ -11,6 +11,7 @@
 struct NetworkMessage
 {
 	NetworkMessage();
+	NetworkMessage(const NetworkBuffer &buffer);
 	NetworkMessage(uint16 sender, byte distribution_mode, uint16 destination_id, byte tag, uint16 subject, NetworkBuffer buffer);
 	~NetworkMessage();
 
@@ -25,9 +26,9 @@ struct NetworkMessage
 	byte distribution_mode;
 	uint16 tag;
 	uint16 subject;
-
 	void *data;
 
+private:
 	NetworkBuffer buffer;
 };
 

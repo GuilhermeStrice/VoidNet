@@ -12,7 +12,7 @@ struct NetworkBuffer
 	NetworkBuffer();
 	~NetworkBuffer();
 
-	int body_size;
+	uint32 body_size;
 	byte *body = nullptr;
 };
 

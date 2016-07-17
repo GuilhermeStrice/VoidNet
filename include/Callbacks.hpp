@@ -8,10 +8,10 @@
 #include "Defs.hpp"
 #include "Serializer.hpp"
 
-void OnMessage(byte sender, byte tag, uint16 subject, byte *data);
+void OnMessage(uint16 sender, uint16 tag, uint16 subject, void *data);
 
-void OnDisconnect(byte id);
+void OnDisconnect(uint16 id);
 
-void OnConnect(byte id);
+void OnConnect(uint16 id);
 
 #endif

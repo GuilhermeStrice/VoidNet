@@ -7,12 +7,10 @@
 
 #include "Defs.hpp"
 
-#include <array>
-
-class Serializer
+struct Serializer
 {
-	template<typename T> std::array<byte, sizeof(T)> to_bytes(const T& object);
-	template<typename T> T& from_bytes(const std::array<byte, sizeof(T)> &bytes, T& object);
+	template<typename T> static const std::vector<byte> &to_bytes(const T &object);
+	template<typename T> static const T &from_bytes(byte *bytes, T &object);
 };
 
 #endif

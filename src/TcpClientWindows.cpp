@@ -2,6 +2,8 @@
 #include "Utility.hpp"
 #include "Config.hpp"
 #include "NetworkBuffer.hpp"
+#include "Callbacks.hpp"
+#include "Tags.hpp"
 
 #include <iostream>
 
@@ -95,27 +97,37 @@ VoidCode TcpClient::Connect()
 		return VOID_COULDNT_CONNECT;
 }
 
-char *TcpClient::ReceiveDataArray()
+NetworkBuffer TcpClient::ReceiveDataArray()
 {
 	NetworkBuffer buffer;
 
 	if (recv(socket, reinterpret_cast<char*>(buffer.body_size), 4, 0) != 4 || WSAGetLastError() != 0)
 	{
 		// there was a problem receiving the body size of the message
-		return nullptr;
+		return NetworkBuffer();
 	}
 
 	buffer.body = new byte[buffer.body_size]();
 	if (recv(socket, reinterpret_cast<char*>(buffer.body), buffer.body_size, 0) != buffer.body_size || WSAGetLastError() != 0)
 	{
 		//there was a problem receiving the body of the message
-		return nullptr;
+		return NetworkBuffer();
 	}
+
+	return buffer;
 }
 
 const NetworkMessage &TcpClient::ReceiveData()
 {
-	
+	NetworkBuffer received_data = ReceiveDataArray();
+	NetworkMessage message = NetworkMessage(received_data);
+	if (message.tag == CONNECT)
+		OnConnect(message.sender);
+	else if (message.tag == DISCONNECT)
+		OnDisconnect(message.sender);
+	else
+		OnMessage(message.sender, message.tag, message.subject, message.data);
+	return message;
 }
 
 bool TcpClient::SendData(const NetworkMessage &message)

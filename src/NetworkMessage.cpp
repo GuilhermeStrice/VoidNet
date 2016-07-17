@@ -1,6 +1,7 @@
 #include "NetworkMessage.hpp"
 #include "Utility.hpp"
 #include "Serializer.hpp"
+#include <vector>
 
 NetworkMessage::NetworkMessage()
 {
@@ -20,7 +21,7 @@ const NetworkMessage &NetworkMessage::EncodeMessage()
 	return NetworkMessage();
 }
 
-const NetworkMessage & NetworkMessage::DecodeMessage(const NetworkBuffer &buffer)
+const NetworkMessage &NetworkMessage::DecodeMessage(const NetworkBuffer &buffer)
 {
 	NetworkMessage message = DecodeMessageHeader(buffer);
 	message.data = DecodeMessageData(buffer);
@@ -36,12 +37,13 @@ void *NetworkMessage::DecodeMessageData(const NetworkBuffer &buffer)
 	{
 	case 0:
 	{
-		break;
+		void *object;
+		return Serializer::from_bytes(buffer.body, object);
 	}
 	default:
 	{
 		//version nor supported
-		return nullptr;// WORKING HERE!!!!!!!!!!!
+		throw std::runtime_error("NetworkMessage - Decoding version not supported");
 	}
 	}
 }

@@ -25,7 +25,7 @@ public:
 
 	VoidCode Connect();
 
-	char *ReceiveDataArray();
+	NetworkBuffer ReceiveDataArray();
 	const NetworkMessage &ReceiveData();
 	bool SendData(const NetworkMessage &message);
 

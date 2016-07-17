@@ -1,8 +1,10 @@
 #include "Serializer.hpp"
 
-template<typename T> std::array<byte, sizeof(T)> Serializer::to_bytes(const T& object)
+#include <vector>
+
+template<typename T> const std::vector<byte> &Serializer::to_bytes(const T& object)
 {
-	std::array<byte, sizeof(T)> bytes;
+	std::vector<byte> bytes;
 
 	const byte *begin = reinterpret_cast<const byte*>(std::addressof(object));
 	const byte *end = begin + sizeof(T);
@@ -11,12 +13,13 @@ template<typename T> std::array<byte, sizeof(T)> Serializer::to_bytes(const T& o
 	return bytes;
 }
 
-template<typename T> T& Serializer::from_bytes(const std::array<byte, sizeof(T)> &bytes, T& object)
+template<typename T> T& Serializer::from_bytes(byte *bytes, T& object)
 {
 	static_assert(std::is_trivially_copyable<T>::value, "not a TriviallyCopyable type");
 
 	byte *begin_object = reinterpret_cast<byte*>(std::addressof(object));
-	std::copy(std::begin(bytes), std::end(bytes), begin_object);
+	std::vector<byte> bytes_vector(&bytes);
+	std::copy(bytes_vector.begin(), bytes_vector.end(), begin_object);
 
 	return object;
 }
