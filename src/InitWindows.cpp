@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-VoidCode initialize()
+VoidCode Initialization::initialize()
 {
 	uint16 code = WSAStartup(MAKEWORD(2, 2), &wsa_data);
 	if (code != 0)

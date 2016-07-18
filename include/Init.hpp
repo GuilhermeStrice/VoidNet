@@ -7,6 +7,11 @@
 
 #include "Defs.hpp"
 
-VoidCode initialize();
+
+struct Initialization
+{
+	static VoidCode initialize();
+	static WSADATA wsa_data;
+};
 
 #endif

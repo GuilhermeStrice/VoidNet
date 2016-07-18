@@ -2,3 +2,6 @@ initialization code for other operating systems - currently VoidNet only support
 initialization code for tcp client for other operating systems - "
 handle SendNetworkMessage errors for windows
 handle ReceiveDataArray errors for windows
+
+revamped BitConverter class
+new StringConverter class
