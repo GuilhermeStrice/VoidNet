@@ -2,7 +2,6 @@
 #include "Utility.hpp"
 #include "Config.hpp"
 #include "NetworkBuffer.hpp"
-#include "Callbacks.hpp"
 #include "Tags.hpp"
 
 #include <iostream>
@@ -99,9 +98,11 @@ VoidCode TcpClient::Connect()
 	uint16 connect_code = ::connect(tcp_socket, ptr->ai_addr, ptr->ai_addrlen);
 	if (connect_code == SOCKET_ERROR)
 		return VOID_COULDNT_CONNECT;
+	receive = true;
+	return VOID_SUCCESS;
 }
 
-NetworkBuffer TcpClient::ReceiveDataArray()
+const NetworkBuffer &TcpClient::ReceiveDataArray()
 {
 	NetworkBuffer buffer;
 
@@ -110,7 +111,6 @@ NetworkBuffer TcpClient::ReceiveDataArray()
 	if (header_received != 4 || WSAGetLastError() != 0) // this header is completely unrelated to the network message header - this header is the body size of the network message
 	{
 		// there was a problem receiving the body size of the message or theres no header to receive
-		return NetworkBuffer();
 	}
 
 	buffer.body = new byte[buffer.body_size]();
@@ -118,22 +118,31 @@ NetworkBuffer TcpClient::ReceiveDataArray()
 	if (body_received == SOCKET_ERROR || body_received != buffer.body_size || WSAGetLastError() != 0)
 	{
 		//there was a problem receiving the body of the message or theres no body to receive
-		return NetworkBuffer();
 	}
 
 	return buffer;
 }
 
-const NetworkMessage &TcpClient::ReceiveData()
+void TcpClient::ReceiveData(TcpClient *client)
 {
-	NetworkMessage message(ReceiveDataArray());
-	if (message.tag == CONNECT)
-		OnConnect(message.sender);
-	else if (message.tag == DISCONNECT)
-		OnDisconnect(message.sender);
-	else
-		OnMessage(message.sender, message.tag, message.subject, message.data);
-	return message;
+	while (client->receive)
+	{
+		NetworkMessage message(client->ReceiveDataArray());
+		if (message.valid)
+		{
+			if (message.tag == CONNECT) // some user has connected
+				client->OnConnect(message.sender);
+			else if (message.tag == DISCONNECT) // some user has disconnected
+				client->OnDisconnect(message.sender);
+			else
+				client->OnMessage(message.sender, message.tag, message.subject, message.data); // we received data
+		}
+	}
+}
+
+void TcpClient::ReceiveMessages()
+{
+	std::async(std::launch::async, &ReceiveData, this);
 }
 
 void TcpClient::SendNetworkMessage(const NetworkMessage &message, TcpClient *client)

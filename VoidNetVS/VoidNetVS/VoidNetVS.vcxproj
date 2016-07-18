@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\Callbacks.hpp" />
     <ClInclude Include="..\..\include\Config.hpp" />
     <ClInclude Include="..\..\include\Defs.hpp" />
     <ClInclude Include="..\..\include\Init.hpp" />

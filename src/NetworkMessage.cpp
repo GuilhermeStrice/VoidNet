@@ -86,6 +86,6 @@ const NetworkMessage &NetworkMessage::DecodeMessageHeader(const NetworkBuffer &b
 	tag = buffer.body[6];
 	subject = Utility::BitConverter::ToUint16(buffer.body, 7);
 	this->buffer = buffer;
-	valid = sender != -2 && tag != CONNECT && tag != DISCONNECT;
+	valid = sender != -2 && tag != CONNECT && tag != DISCONNECT && distribution_mode > 0;
 	return *this;
 }

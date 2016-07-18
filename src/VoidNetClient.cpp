@@ -56,19 +56,7 @@ void VoidNetClientAPI::Receive()
 
 void VoidNetClientAPI::ProcessAllData()
 {
-	while (receive)
-	{
-		NetworkMessage message = client->ReceiveDataArray();
-		if (message.valid)
-		{
-			if (message.tag == CONNECT)
-				OnConnect(message.sender);
-			else if (message.tag == DISCONNECT)
-				OnDisconnect(message.sender);
-			else
-				OnMessage(message.sender, message.tag, message.subject, message.data);
-		}
-	}
+	client->ReceiveMessages();
 }
 
 void VoidNetClientAPI::Disconnect()

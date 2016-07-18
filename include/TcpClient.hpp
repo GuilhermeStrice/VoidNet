@@ -6,6 +6,7 @@
 
 #include <string>
 #include <vector>
+#include <functional>
 
 #ifdef _MSC_VER
 #pragma once
@@ -28,17 +29,23 @@ public:
 
 	VoidCode Connect();
 
-	NetworkBuffer ReceiveDataArray();
-	const NetworkMessage &ReceiveData();
+	void ReceiveMessages();
 	void SendMessage(const NetworkMessage &message);
 
+	std::function<void(uint16)> OnDisconnect;
+	std::function<void(uint16)> OnConnect;
+	std::function<void(uint16, uint16, uint16, void*)> OnMessage;
+
 private:
+	const NetworkBuffer &ReceiveDataArray();
+	static void ReceiveData(TcpClient *client);
 	static void SendNetworkMessage(const NetworkMessage &message, TcpClient *client);
 	VoidCode Initialize(const std::string &ip, uint16 port = default_port);
-	
+
 	std::string ip;
 	uint16 port = 0;
 	bool initialized = false;
+	bool receive = false;
 
 #ifdef _MSC_VER
 	SOCKET tcp_socket = INVALID_SOCKET;

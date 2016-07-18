@@ -39,9 +39,6 @@
     <ClInclude Include="..\..\include\Serializer.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\Callbacks.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Tags.hpp">
       <Filter>include</Filter>
     </ClInclude>
