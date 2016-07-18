@@ -6,6 +6,7 @@
 #include "Tags.hpp"
 
 #include <iostream>
+#include <thread>
 
 #undef SendMessage
 
@@ -45,12 +46,12 @@ VoidCode TcpClient::Initialize(const std::string &ip, uint16 port)
 	return VOID_SUCCESS;
 }
 
-TcpClient::TcpClient() : port(default_port), thread_pool(50)
+TcpClient::TcpClient() : port(default_port)
 {
 }
 
 TcpClient::TcpClient(const std::string &ip, uint16 port) :
-	ip(ip), port(port), thread_pool(50)
+	ip(ip), port(port)
 {
 }
 
@@ -134,16 +135,26 @@ const NetworkMessage &TcpClient::ReceiveData()
 	return message;
 }
 
-VoidCode TcpClient::SendNetworkMessage(const NetworkMessage &message, TcpClient *client)
+void TcpClient::SendNetworkMessage(const NetworkMessage &message)
+{
+	network_message_queue.emplace_back(message);
+}
+
+void TcpClient::SendNetworkMessageNow(const NetworkMessage &message)
 {
 	NetworkBuffer buffer = message.EncodeMessage(message);
-	int32 sent_bytes = send(client->tcp_socket, reinterpret_cast<char*>(buffer.body), buffer.body_size, 0);
+	int32 sent_bytes = send(tcp_socket, reinterpret_cast<char*>(buffer.body), buffer.body_size, 0);
+	if (sent_bytes != buffer.body_size)
+	{
+
+	}
 }
 
 VoidCode TcpClient::SendMessage(const NetworkMessage &message)
 {
-	thread_pool.Enqueue([]()
-	{
-		//SendNetworkMessage(message, this);
-	});
+}
+
+void TcpClient::StartSender()
+{
+	//std::thread thread = std::thread(&SendNetworkMessageNow, message);
 }

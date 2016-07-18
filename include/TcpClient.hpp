@@ -3,9 +3,9 @@
 
 #include "Defs.hpp"
 #include "NetworkMessage.hpp"
-#include "ThreadPool.hpp"
 
 #include <string>
+#include <vector>
 
 #ifdef _MSC_VER
 #pragma once
@@ -30,17 +30,20 @@ public:
 
 	NetworkBuffer ReceiveDataArray();
 	const NetworkMessage &ReceiveData();
+	void StartSender();
 	VoidCode SendMessage(const NetworkMessage &message);
 
 private:
-	static VoidCode SendNetworkMessage(const NetworkMessage &message, TcpClient *client);
+	void SendNetworkMessage(const NetworkMessage &message);
+	void SendNetworkMessageNow(const NetworkMessage &message);
 	VoidCode Initialize(const std::string &ip, uint16 port = default_port);
 	
 	std::string ip;
 	uint16 port = 0;
-	bool initialized;
+	bool initialized = false;
+	bool run_sender = false;
 
-	ThreadPool thread_pool;
+	std::vector<NetworkMessage> network_message_queue;
 
 #ifdef _MSC_VER
 	SOCKET tcp_socket = INVALID_SOCKET;
