@@ -30,20 +30,15 @@ public:
 
 	NetworkBuffer ReceiveDataArray();
 	const NetworkMessage &ReceiveData();
-	void StartSender();
-	VoidCode SendMessage(const NetworkMessage &message);
+	void SendMessage(const NetworkMessage &message);
 
 private:
-	void SendNetworkMessage(const NetworkMessage &message);
-	void SendNetworkMessageNow(const NetworkMessage &message);
+	static void SendNetworkMessage(const NetworkMessage &message, TcpClient *client);
 	VoidCode Initialize(const std::string &ip, uint16 port = default_port);
 	
 	std::string ip;
 	uint16 port = 0;
 	bool initialized = false;
-	bool run_sender = false;
-
-	std::vector<NetworkMessage> network_message_queue;
 
 #ifdef _MSC_VER
 	SOCKET tcp_socket = INVALID_SOCKET;

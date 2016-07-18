@@ -22,13 +22,13 @@ struct VoidNetClientAPI
 	static bool Connect(const std::string &ip, uint16 port = default_port);
 	static void Disconnect();
 
-	static bool SendMessageToServer(byte tag, byte subject, void *data);
-	static bool SendMessageToID(uint16 id, byte tag, byte subject, void *data);
-	static bool SendMessageToOthers(byte tag, byte subject, void *data);
-	static bool SendMessageToAll(byte tag, byte subject, void *data);
-	static bool SendMessageToAllAndMe(byte tag, byte subject, void *data);
+	static void SendMessageToServer(byte tag, byte subject, void *data);
+	static void SendMessageToID(uint16 id, byte tag, byte subject, void *data);
+	static void SendMessageToOthers(byte tag, byte subject, void *data);
+	static void SendMessageToAll(byte tag, byte subject, void *data);
+	static void SendMessageToAllAndMe(byte tag, byte subject, void *data);
 
-	static bool SendMessage(byte distribution_mode, uint16 destination_id, byte tag, byte subject, void *data);
+	static void SendMessage(byte distribution_mode, uint16 destination_id, byte tag, byte subject, void *data);
 
 	static void Receive();
 

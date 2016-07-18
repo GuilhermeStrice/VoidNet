@@ -53,9 +53,6 @@
     <ClCompile Include="..\..\src\InitWindows.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\TcpClient.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\TcpClientWindows.cpp">
       <Filter>src</Filter>
     </ClCompile>

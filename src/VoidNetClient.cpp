@@ -11,32 +11,32 @@ bool VoidNetClientAPI::Connect(const std::string &ip, uint16 port)
 	return client->Connect() == VOID_SUCCESS;
 }
 
-bool VoidNetClientAPI::SendMessageToServer(byte tag, byte subject, void *data)
+void VoidNetClientAPI::SendMessageToServer(byte tag, byte subject, void *data)
 {
-	return SendMessage(Server, 0, tag, subject, data);
+	SendMessage(Server, 0, tag, subject, data);
 }
 
-bool VoidNetClientAPI::SendMessageToID(uint16 destination_id, byte tag, byte subject, void *data)
+void VoidNetClientAPI::SendMessageToID(uint16 destination_id, byte tag, byte subject, void *data)
 {
-	return SendMessage(ID, destination_id, tag, subject, data);
+	SendMessage(ID, destination_id, tag, subject, data);
 }
 
-bool VoidNetClientAPI::SendMessageToOthers(byte tag, byte subject, void *data)
+void VoidNetClientAPI::SendMessageToOthers(byte tag, byte subject, void *data)
 {
-	return SendMessage(Others, 0, tag, subject, data);
+	SendMessage(Others, 0, tag, subject, data);
 }
 
-bool VoidNetClientAPI::SendMessageToAll(byte tag, byte subject, void *data)
+void VoidNetClientAPI::SendMessageToAll(byte tag, byte subject, void *data)
 {
-	return SendMessage(All, 0, tag, subject, data);
+	SendMessage(All, 0, tag, subject, data);
 }
 
-bool VoidNetClientAPI::SendMessageToAllAndMe(byte tag, byte subject, void *data)
+void VoidNetClientAPI::SendMessageToAllAndMe(byte tag, byte subject, void *data)
 {
-	return SendMessage(AllAndMe, 0, tag, subject, data);
+	SendMessage(AllAndMe, 0, tag, subject, data);
 }
 
-bool VoidNetClientAPI::SendMessage(byte distribution_mode, uint16 destination_id, byte tag, byte subject, void *data)
+void VoidNetClientAPI::SendMessage(byte distribution_mode, uint16 destination_id, byte tag, byte subject, void *data)
 {
 	NetworkMessage message;
 	message.tag = tag;
@@ -45,7 +45,7 @@ bool VoidNetClientAPI::SendMessage(byte distribution_mode, uint16 destination_id
 	message.distribution_mode = distribution_mode;
 	message.sender = id;
 	message.destination_id = destination_id;
-	return client->SendMessage(message) == VOID_SUCCESS;
+	client->SendMessage(message);
 }
 
 void VoidNetClientAPI::Receive()

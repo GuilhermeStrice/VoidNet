@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <thread>
+#include <future>
 
 #undef SendMessage
 
@@ -114,7 +115,7 @@ NetworkBuffer TcpClient::ReceiveDataArray()
 
 	buffer.body = new byte[buffer.body_size]();
 	int32 body_received = recv(tcp_socket, reinterpret_cast<char*>(buffer.body), buffer.body_size, 0);
-	if (body_received != buffer.body_size || WSAGetLastError() != 0)
+	if (body_received == SOCKET_ERROR || body_received != buffer.body_size || WSAGetLastError() != 0)
 	{
 		//there was a problem receiving the body of the message or theres no body to receive
 		return NetworkBuffer();
@@ -135,26 +136,17 @@ const NetworkMessage &TcpClient::ReceiveData()
 	return message;
 }
 
-void TcpClient::SendNetworkMessage(const NetworkMessage &message)
-{
-	network_message_queue.emplace_back(message);
-}
-
-void TcpClient::SendNetworkMessageNow(const NetworkMessage &message)
+void TcpClient::SendNetworkMessage(const NetworkMessage &message, TcpClient *client)
 {
 	NetworkBuffer buffer = message.EncodeMessage(message);
-	int32 sent_bytes = send(tcp_socket, reinterpret_cast<char*>(buffer.body), buffer.body_size, 0);
-	if (sent_bytes != buffer.body_size)
+	int32 bytes_sent = send(client->tcp_socket, reinterpret_cast<char*>(buffer.body), buffer.body_size, 0);
+	if (bytes_sent == SOCKET_ERROR || bytes_sent != buffer.body_size || WSAGetLastError() != 0)
 	{
-
+		//something went wrong couldnt send anything/some data
 	}
 }
 
-VoidCode TcpClient::SendMessage(const NetworkMessage &message)
+void TcpClient::SendMessage(const NetworkMessage &message)
 {
-}
-
-void TcpClient::StartSender()
-{
-	//std::thread thread = std::thread(&SendNetworkMessageNow, message);
+	std::async(std::launch::async, &SendNetworkMessage, message, this);
 }

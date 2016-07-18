@@ -39,7 +39,6 @@
     <ClCompile Include="..\..\src\NetworkBuffer.cpp" />
     <ClCompile Include="..\..\src\NetworkMessage.cpp" />
     <ClCompile Include="..\..\src\Serializer.cpp" />
-    <ClCompile Include="..\..\src\TcpClient.cpp" />
     <ClCompile Include="..\..\src\TcpClientWindows.cpp" />
     <ClCompile Include="..\..\src\Utility.cpp" />
     <ClCompile Include="..\..\src\VoidNetClient.cpp" />
