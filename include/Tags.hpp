@@ -5,7 +5,7 @@
 #pragma once
 #endif
 
-enum InternalTags : uint16
+enum InternalTags
 {
 	CONNECT = 65534,
 	DISCONNECT = 65535,

@@ -27,6 +27,7 @@
     <ClInclude Include="..\..\include\NetworkMessage.hpp" />
     <ClInclude Include="..\..\include\Serializer.hpp" />
     <ClInclude Include="..\..\include\TcpClient.hpp" />
+    <ClInclude Include="..\..\include\ThreadPool.hpp" />
     <ClInclude Include="..\..\include\Utility.hpp" />
     <ClInclude Include="..\..\include\VoidNetClient.hpp" />
     <ClInclude Include="..\..\include\VoidNetServer.hpp" />
@@ -41,9 +42,12 @@
     <ClCompile Include="..\..\src\Serializer.cpp" />
     <ClCompile Include="..\..\src\TcpClient.cpp" />
     <ClCompile Include="..\..\src\TcpClientWindows.cpp" />
+    <ClCompile Include="..\..\src\ThreadPool.cpp" />
     <ClCompile Include="..\..\src\Utility.cpp" />
+    <ClCompile Include="..\..\src\VoidNetClient.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\..\DEV_INFO" />
     <Text Include="..\..\TODO" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

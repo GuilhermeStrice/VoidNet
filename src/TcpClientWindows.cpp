@@ -7,6 +7,8 @@
 
 #include <iostream>
 
+#undef SendMessage
+
 VoidCode TcpClient::Initialize(const std::string &ip, uint16 port)
 {
 	if (ip.size() == 0 || std::count(ip.begin(), ip.end(), '.') != 4)
@@ -28,9 +30,9 @@ VoidCode TcpClient::Initialize(const std::string &ip, uint16 port)
 	}
 
 	ptr = result;
-	socket = ::socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
+	tcp_socket = ::socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
 
-	if (socket == INVALID_SOCKET)
+	if (tcp_socket == INVALID_SOCKET)
 	{
 		if (Config::GetUsingConsole())
 			std::cerr << WSAGetLastError() << std::endl; // display more info
@@ -43,12 +45,12 @@ VoidCode TcpClient::Initialize(const std::string &ip, uint16 port)
 	return VOID_SUCCESS;
 }
 
-TcpClient::TcpClient()
+TcpClient::TcpClient() : port(default_port), thread_pool(50)
 {
 }
 
 TcpClient::TcpClient(const std::string &ip, uint16 port) :
-	ip(ip), port(port)
+	ip(ip), port(port), thread_pool(50)
 {
 }
 
@@ -92,7 +94,7 @@ VoidCode TcpClient::Connect()
 		if (code != VOID_SUCCESS)
 			return code;
 	}
-	uint16 connect_code = ::connect(socket, ptr->ai_addr, ptr->ai_addrlen);
+	uint16 connect_code = ::connect(tcp_socket, ptr->ai_addr, ptr->ai_addrlen);
 	if (connect_code == SOCKET_ERROR)
 		return VOID_COULDNT_CONNECT;
 }
@@ -101,16 +103,19 @@ NetworkBuffer TcpClient::ReceiveDataArray()
 {
 	NetworkBuffer buffer;
 
-	if (recv(socket, reinterpret_cast<char*>(buffer.body_size), 4, 0) != 4 || WSAGetLastError() != 0)
+	int32 header_received = recv(tcp_socket, reinterpret_cast<char*>(buffer.body_size), 4, 0);
+
+	if (header_received != 4 || WSAGetLastError() != 0) // this header is completely unrelated to the network message header - this header is the body size of the network message
 	{
-		// there was a problem receiving the body size of the message
+		// there was a problem receiving the body size of the message or theres no header to receive
 		return NetworkBuffer();
 	}
 
 	buffer.body = new byte[buffer.body_size]();
-	if (recv(socket, reinterpret_cast<char*>(buffer.body), buffer.body_size, 0) != buffer.body_size || WSAGetLastError() != 0)
+	int32 body_received = recv(tcp_socket, reinterpret_cast<char*>(buffer.body), buffer.body_size, 0);
+	if (body_received != buffer.body_size || WSAGetLastError() != 0)
 	{
-		//there was a problem receiving the body of the message
+		//there was a problem receiving the body of the message or theres no body to receive
 		return NetworkBuffer();
 	}
 
@@ -119,8 +124,7 @@ NetworkBuffer TcpClient::ReceiveDataArray()
 
 const NetworkMessage &TcpClient::ReceiveData()
 {
-	NetworkBuffer received_data = ReceiveDataArray();
-	NetworkMessage message = NetworkMessage(received_data);
+	NetworkMessage message(ReceiveDataArray());
 	if (message.tag == CONNECT)
 		OnConnect(message.sender);
 	else if (message.tag == DISCONNECT)
@@ -130,7 +134,16 @@ const NetworkMessage &TcpClient::ReceiveData()
 	return message;
 }
 
-bool TcpClient::SendData(const NetworkMessage &message)
+VoidCode TcpClient::SendNetworkMessage(const NetworkMessage &message, TcpClient *client)
 {
-	return false;
+	NetworkBuffer buffer = message.EncodeMessage(message);
+	int32 sent_bytes = send(client->tcp_socket, reinterpret_cast<char*>(buffer.body), buffer.body_size, 0);
+}
+
+VoidCode TcpClient::SendMessage(const NetworkMessage &message)
+{
+	thread_pool.Enqueue([]()
+	{
+		//SendNetworkMessage(message, this);
+	});
 }

@@ -8,10 +8,14 @@
 #include "Defs.hpp"
 #include "Serializer.hpp"
 
+/*Client Callbacks begin*/
+
 void OnMessage(uint16 sender, uint16 tag, uint16 subject, void *data);
 
 void OnDisconnect(uint16 id);
 
 void OnConnect(uint16 id);
+
+/*Client Callbacks end*/
 
 #endif

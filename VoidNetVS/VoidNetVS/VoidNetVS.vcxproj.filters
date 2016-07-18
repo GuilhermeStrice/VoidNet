@@ -45,6 +45,9 @@
     <ClInclude Include="..\..\src\Tags.hpp">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\ThreadPool.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Init.cpp">
@@ -74,8 +77,15 @@
     <ClCompile Include="..\..\src\NetworkMessage.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\VoidNetClient.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ThreadPool.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\TODO" />
+    <Text Include="..\..\DEV_INFO" />
   </ItemGroup>
 </Project>

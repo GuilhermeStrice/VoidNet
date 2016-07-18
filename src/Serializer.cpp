@@ -1,7 +1,5 @@
 #include "Serializer.hpp"
 
-#include <vector>
-
 template<typename T> const std::vector<byte> &Serializer::to_bytes(const T& object)
 {
 	std::vector<byte> bytes;
@@ -13,7 +11,7 @@ template<typename T> const std::vector<byte> &Serializer::to_bytes(const T& obje
 	return bytes;
 }
 
-template<typename T> T& Serializer::from_bytes(byte *bytes, T& object)
+template<typename T> const T& Serializer::from_bytes(byte *bytes, T& object)
 {
 	static_assert(std::is_trivially_copyable<T>::value, "not a TriviallyCopyable type");
 

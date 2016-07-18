@@ -185,11 +185,12 @@ enum VoidCode
 enum DistributionType
 {
 	All,
+	AllAndMe,
 	Server,
 	Others,
 	ID,
 	Reply,
 	Custom,
-}
+};
 
 #endif // DEFS_HPP

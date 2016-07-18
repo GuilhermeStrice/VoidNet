@@ -1,6 +1,8 @@
 #include "NetworkMessage.hpp"
 #include "Utility.hpp"
 #include "Serializer.hpp"
+#include "Tags.hpp"
+
 #include <vector>
 
 NetworkMessage::NetworkMessage()
@@ -12,13 +14,41 @@ NetworkMessage::NetworkMessage(uint16 sender, byte distribution_mode, uint16 des
 {
 }
 
+NetworkMessage::NetworkMessage(const NetworkBuffer &buffer)
+{
+	*this = DecodeMessage(buffer);
+}
+
 NetworkMessage::~NetworkMessage()
 {
 }
 
-const NetworkMessage &NetworkMessage::EncodeMessage()
+const NetworkBuffer &NetworkMessage::EncodeMessage(const NetworkMessage &message)
 {
-	return NetworkMessage();
+	NetworkBuffer buffer;
+	uint16 size = buffer.body_size + 1;
+	byte *encoded_message = new byte[size]();
+	buffer.body_size = size;
+
+	byte *encoded_sender = &encoded_message[1];
+	encoded_sender = Utility::BitConverter::FromUint16(message.sender);
+
+	encoded_message[3] = message.distribution_mode;
+
+	byte *encoded_destination_id = &encoded_message[4];
+	encoded_destination_id = Utility::BitConverter::FromUint16(message.destination_id);
+
+	encoded_message[6] = message.tag;
+
+	byte *encoded_subject = &encoded_message[7];
+	encoded_subject = Utility::BitConverter::FromUint16(message.subject);
+
+	byte *encoded_data = &encoded_message[9];
+	std::vector<byte> serialized_data = Serializer::to_bytes(message.data);
+	encoded_data = &serialized_data[0];
+
+	buffer.body = encoded_message;
+	return buffer;
 }
 
 const NetworkMessage &NetworkMessage::DecodeMessage(const NetworkBuffer &buffer)
@@ -38,7 +68,7 @@ void *NetworkMessage::DecodeMessageData(const NetworkBuffer &buffer)
 	case 0:
 	{
 		void *object;
-		return Serializer::from_bytes(buffer.body, object);
+		return Serializer::from_bytes(buffer.body + 9, object);
 	}
 	default:
 	{
@@ -50,6 +80,12 @@ void *NetworkMessage::DecodeMessageData(const NetworkBuffer &buffer)
 
 const NetworkMessage &NetworkMessage::DecodeMessageHeader(const NetworkBuffer &buffer)
 {
-	return NetworkMessage(Utility::BitConverter::ToUint16(buffer.body, 1), buffer.body[3], Utility::BitConverter::ToUint16(buffer.body, 4),
-		buffer.body[6], Utility::BitConverter::ToUint16(buffer.body, 7), buffer);
+	sender = Utility::BitConverter::ToUint16(buffer.body, 1);
+	distribution_mode = buffer.body[3];
+	destination_id = Utility::BitConverter::ToUint16(buffer.body, 4);
+	tag = buffer.body[6];
+	subject = Utility::BitConverter::ToUint16(buffer.body, 7);
+	this->buffer = buffer;
+	valid = sender != -2 && tag != CONNECT && tag != DISCONNECT;
+	return *this;
 }

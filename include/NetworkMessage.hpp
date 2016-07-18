@@ -15,20 +15,22 @@ struct NetworkMessage
 	NetworkMessage(uint16 sender, byte distribution_mode, uint16 destination_id, byte tag, uint16 subject, NetworkBuffer buffer);
 	~NetworkMessage();
 
-	const NetworkMessage &EncodeMessage();
+	static const NetworkBuffer &EncodeMessage(const NetworkMessage &message);
 	
 	const NetworkMessage &NetworkMessage::DecodeMessage(const NetworkBuffer &buffer);
-	const NetworkMessage &NetworkMessage::DecodeMessageHeader(const NetworkBuffer &buffer);
-	void *DecodeMessageData(const NetworkBuffer &buffer);
 
-	uint16 sender;
-	uint16 destination_id;
+	uint16 sender = -2;
 	byte distribution_mode;
-	uint16 tag;
+	uint16 destination_id;
+	byte tag;
 	uint16 subject;
 	void *data;
+	
+	bool valid = false;
 
 private:
+	const NetworkMessage &NetworkMessage::DecodeMessageHeader(const NetworkBuffer &buffer);
+	void *DecodeMessageData(const NetworkBuffer &buffer);
 	NetworkBuffer buffer;
 };
 
