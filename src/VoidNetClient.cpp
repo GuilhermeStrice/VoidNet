@@ -8,7 +8,7 @@ bool VoidNetClientAPI::Connect(const std::string &ip, uint16 port)
 {
 	client->SetIP(ip);
 	client->SetPort(port);
-	return client->Connect() == VOID_SUCCESS;
+	return client->Connect();
 }
 
 void VoidNetClientAPI::SendMessageToServer(byte tag, byte subject, void *data)

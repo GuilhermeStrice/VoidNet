@@ -169,16 +169,6 @@ typedef unsigned long long uint64;
 
 const uint16 default_port = 60250;
 
-enum VoidCode
-{
-	VOID_SUCCESS,
-	VOID_WSA_INIT_FAILED,
-	VOID_TCP_INIT_FAILED,
-	VOID_INVALID_IP_ADDRESS,
-	VOID_INVALID_PORT,
-	VOID_COULDNT_CONNECT,
-};
-
 enum DistributionType
 {
 	All = 1, // Others and Server

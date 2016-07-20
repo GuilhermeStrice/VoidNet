@@ -10,7 +10,7 @@
 
 struct Initialization
 {
-	static VoidCode initialize();
+	static bool initialize();
 	static WSADATA wsa_data;
 };
 

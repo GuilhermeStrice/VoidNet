@@ -10,12 +10,12 @@
 
 #undef SendMessage
 
-VoidCode TcpClient::Initialize(const std::string &ip, uint16 port)
+bool TcpClient::Initialize(const std::string &ip, uint16 port)
 {
 	if (ip.size() == 0 || std::count(ip.begin(), ip.end(), '.') != 4)
-		return VOID_INVALID_IP_ADDRESS; 
+		return false; 
 	if (port == 0)
-		return VOID_INVALID_PORT;
+		return false;
 	ZeroMemory(&hints, sizeof(hints));
 	hints.ai_family = AF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
@@ -27,7 +27,7 @@ VoidCode TcpClient::Initialize(const std::string &ip, uint16 port)
 		if (Config::GetUsingConsole())
 			std::cerr << code << std::endl; // display more info
 		WSACleanup();
-		return VOID_TCP_INIT_FAILED;
+		return false;
 	}
 
 	ptr = result;
@@ -39,11 +39,21 @@ VoidCode TcpClient::Initialize(const std::string &ip, uint16 port)
 			std::cerr << WSAGetLastError() << std::endl; // display more info
 		freeaddrinfo(result);
 		WSACleanup();
-		return VOID_TCP_INIT_FAILED;
+		return false;
+	}
+
+	code = bind(tcp_socket, result->ai_addr, (int)result->ai_addrlen);
+	if (code == SOCKET_ERROR)
+	{
+		if (Config::GetUsingConsole())
+			std::cerr << WSAGetLastError() << std::endl; // display more info
+		freeaddrinfo(result);
+		WSACleanup();
+		return false;
 	}
 
 	initialized = true;
-	return VOID_SUCCESS;
+	return true;
 }
 
 TcpClient::TcpClient() : port(default_port)
@@ -83,23 +93,22 @@ void TcpClient::SetPort(uint16 port)
 	this->port = port;
 }
 
-VoidCode TcpClient::Connect()
+bool TcpClient::Connect()
 {
 	if (!initialized)
 	{
 		if (ip.size() == 0 || std::count(ip.begin(), ip.end(), '.') != 4)
-			return VOID_INVALID_IP_ADDRESS;
+			return false;
 		if (port == 0)
-			return VOID_INVALID_PORT;
-		VoidCode code = Initialize(ip, port);
-		if (code != VOID_SUCCESS)
-			return code;
+			return false;
+		if (Initialize(ip, port) != true)
+			return false;
 	}
 	uint16 connect_code = ::connect(tcp_socket, ptr->ai_addr, ptr->ai_addrlen);
 	if (connect_code == SOCKET_ERROR)
-		return VOID_COULDNT_CONNECT;
+		return false;
 	receive = true;
-	return VOID_SUCCESS;
+	return true;
 }
 
 const NetworkBuffer &TcpClient::ReceiveDataArray()

@@ -10,9 +10,8 @@
 
 #ifdef _MSC_VER
 #pragma once
-#endif
-
 #undef SendMessage
+#endif
 
 class TcpClient
 {
@@ -27,7 +26,7 @@ public:
 	uint16 GetPort();
 	void SetPort(uint16 port);
 
-	VoidCode Connect();
+	bool Connect();
 
 	void ReceiveMessages();
 	void SendMessage(const NetworkMessage &message);
@@ -40,7 +39,7 @@ private:
 	const NetworkBuffer &ReceiveDataArray();
 	static void ReceiveData(TcpClient *client);
 	static void SendNetworkMessage(const NetworkMessage &message, TcpClient *client);
-	VoidCode Initialize(const std::string &ip, uint16 port = default_port);
+	bool Initialize(const std::string &ip, uint16 port = default_port);
 
 	std::string ip;
 	uint16 port = 0;
@@ -55,10 +54,12 @@ private:
 #endif
 };
 
+#ifdef _MSC_VER
 #ifdef UNICODE
 #define SendMessage  SendMessageW
 #else
 #define SendMessage  SendMessageA
 #endif // !UNICODE
+#endif
 
 #endif
