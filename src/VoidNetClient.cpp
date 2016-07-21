@@ -2,6 +2,8 @@
 #include "Utility.hpp"
 #include "Tags.hpp"
 
+#include <future>
+
 #undef SendMessage
 
 bool VoidNetClientAPI::Connect(const std::string &ip, uint16 port)
@@ -50,11 +52,10 @@ void VoidNetClientAPI::SendMessage(byte distribution_mode, uint16 destination_id
 
 void VoidNetClientAPI::Receive()
 {
-	receive_thread = std::thread(ProcessAllData);
-	receive_thread.detach();
+	std::async(std::launch::async, &process_all_data);
 }
 
-void VoidNetClientAPI::ProcessAllData()
+void VoidNetClientAPI::process_all_data()
 {
 	client->ReceiveMessages();
 }

@@ -29,8 +29,8 @@ struct NetworkMessage
 	bool valid = false;
 
 private:
-	const NetworkMessage &NetworkMessage::DecodeMessageHeader(const NetworkBuffer &buffer);
-	void *DecodeMessageData(const NetworkBuffer &buffer);
+	const NetworkMessage &decode_message_header(const NetworkBuffer &buffer);
+	void *decode_message_data(const NetworkBuffer &buffer);
 	NetworkBuffer buffer;
 };
 

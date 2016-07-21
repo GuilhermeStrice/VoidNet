@@ -18,7 +18,7 @@
 
 struct VoidNetClientAPI
 {
-	static bool Connect(const std::string &ip, uint16 port = default_port);
+	static bool Connect(const std::string &ip, uint16 port = default_client_port);
 	static void Disconnect();
 
 	static void SendMessageToServer(byte tag, byte subject, void *data);
@@ -32,7 +32,7 @@ struct VoidNetClientAPI
 	static void Receive();
 
 private:
-	static void ProcessAllData();
+	static void process_all_data();
 
 	static TcpClient *client;
 	static uint16 id;

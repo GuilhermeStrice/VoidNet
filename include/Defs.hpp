@@ -167,7 +167,8 @@ typedef unsigned long long uint64;
 
 #endif // compiler data type defenitions
 
-const uint16 default_port = 60250;
+const uint16 default_client_port = 60250;
+const uint16 default_server_port = 61250;
 
 enum DistributionType
 {
@@ -176,6 +177,12 @@ enum DistributionType
 	Server,
 	Others,
 	ID,
+};
+
+enum ConnectionCode
+{
+	Accept = 0,
+	Reject
 };
 
 #endif // DEFS_HPP

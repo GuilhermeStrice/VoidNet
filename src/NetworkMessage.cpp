@@ -53,12 +53,12 @@ const NetworkBuffer &NetworkMessage::EncodeMessage(const NetworkMessage &message
 
 const NetworkMessage &NetworkMessage::DecodeMessage(const NetworkBuffer &buffer)
 {
-	NetworkMessage message = DecodeMessageHeader(buffer);
-	message.data = DecodeMessageData(buffer);
+	NetworkMessage message = decode_message_header(buffer);
+	message.data = decode_message_data(buffer);
 	return message;
 }
 
-void *NetworkMessage::DecodeMessageData(const NetworkBuffer &buffer)
+void *NetworkMessage::decode_message_data(const NetworkBuffer &buffer)
 {
 	if (buffer.body_size < 9)
 		return nullptr;
@@ -78,7 +78,7 @@ void *NetworkMessage::DecodeMessageData(const NetworkBuffer &buffer)
 	}
 }
 
-const NetworkMessage &NetworkMessage::DecodeMessageHeader(const NetworkBuffer &buffer)
+const NetworkMessage &NetworkMessage::decode_message_header(const NetworkBuffer &buffer)
 {
 	sender = Utility::BitConverter::ToUint16(buffer.body, 1);
 	distribution_mode = buffer.body[3];

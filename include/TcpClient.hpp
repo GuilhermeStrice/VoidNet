@@ -16,8 +16,9 @@
 class TcpClient
 {
 public:
-	TcpClient();
-	TcpClient(const std::string &ip, uint16 port = default_port);
+	TcpClient(const SOCKET &socket);
+	TcpClient(const std::string &ip);
+	TcpClient(const std::string &ip, uint16 port = default_client_port);
 	~TcpClient();
 
 	const std::string &GetIP();
@@ -26,9 +27,13 @@ public:
 	uint16 GetPort();
 	void SetPort(uint16 port);
 
+	uint16 GetID();
+	void SetID(uint16 id);
+
 	bool Connect();
 
 	void ReceiveMessages();
+	const NetworkMessage &ReceiveMessage();
 	void SendMessage(const NetworkMessage &message);
 
 	std::function<void(uint16)> OnDisconnect;
@@ -36,11 +41,12 @@ public:
 	std::function<void(uint16, uint16, uint16, void*)> OnMessage;
 
 private:
-	const NetworkBuffer &ReceiveDataArray();
-	static void ReceiveData(TcpClient *client);
-	static void SendNetworkMessage(const NetworkMessage &message, TcpClient *client);
-	bool Initialize(const std::string &ip, uint16 port = default_port);
+	const NetworkBuffer &receive_data_array();
+	static void receive_data(TcpClient *client);
+	static void send_network_message(const NetworkMessage &message, TcpClient *client);
+	bool initialize(const std::string &ip, uint16 port = default_client_port);
 
+	uint16 id = 0;
 	std::string ip;
 	uint16 port = 0;
 	bool initialized = false;
@@ -49,7 +55,6 @@ private:
 #ifdef _MSC_VER
 	SOCKET tcp_socket = INVALID_SOCKET;
 	struct addrinfo *result = nullptr;
-	struct addrinfo *ptr = nullptr;
 	struct addrinfo hints;
 #endif
 };

@@ -30,7 +30,6 @@
     <ClInclude Include="..\..\include\Utility.hpp" />
     <ClInclude Include="..\..\include\VoidNetClient.hpp" />
     <ClInclude Include="..\..\include\VoidNetServer.hpp" />
-    <ClInclude Include="..\..\src\Tags.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Config.cpp" />

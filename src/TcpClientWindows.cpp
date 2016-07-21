@@ -10,7 +10,7 @@
 
 #undef SendMessage
 
-bool TcpClient::Initialize(const std::string &ip, uint16 port)
+bool TcpClient::initialize(const std::string &ip, uint16 port)
 {
 	if (ip.size() == 0 || std::count(ip.begin(), ip.end(), '.') != 4)
 		return false; 
@@ -30,8 +30,7 @@ bool TcpClient::Initialize(const std::string &ip, uint16 port)
 		return false;
 	}
 
-	ptr = result;
-	tcp_socket = ::socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
+	tcp_socket = ::socket(result->ai_family, result->ai_socktype, result->ai_protocol);
 
 	if (tcp_socket == INVALID_SOCKET)
 	{
@@ -42,17 +41,23 @@ bool TcpClient::Initialize(const std::string &ip, uint16 port)
 		return false;
 	}
 
-	initialized = true;
-	return true;
+	return initialized = true;
 }
 
-TcpClient::TcpClient() : port(default_port)
+TcpClient::TcpClient(const SOCKET & socket)
 {
+	tcp_socket = socket;
+}
+
+TcpClient::TcpClient(const std::string &ip) : port(default_client_port)
+{
+	initialize(ip);
 }
 
 TcpClient::TcpClient(const std::string &ip, uint16 port) :
 	ip(ip), port(port)
 {
+	initialize(ip, port);
 }
 
 TcpClient::~TcpClient()
@@ -60,7 +65,6 @@ TcpClient::~TcpClient()
 	freeaddrinfo(result);
 	WSACleanup();
 	Utility::Delete(result);
-	Utility::Delete(ptr);
 }
 
 const std::string &TcpClient::GetIP()
@@ -83,6 +87,16 @@ void TcpClient::SetPort(uint16 port)
 	this->port = port;
 }
 
+uint16 TcpClient::GetID()
+{
+	return id;
+}
+
+void TcpClient::SetID(uint16 id)
+{
+	this->id = id;
+}
+
 bool TcpClient::Connect()
 {
 	if (!initialized)
@@ -91,17 +105,17 @@ bool TcpClient::Connect()
 			return false;
 		if (port == 0)
 			return false;
-		if (Initialize(ip, port) != true)
+		if (initialize(ip, port) != true)
 			return false;
 	}
-	uint16 connect_code = ::connect(tcp_socket, ptr->ai_addr, ptr->ai_addrlen);
+	uint16 connect_code = ::connect(tcp_socket, result->ai_addr, result->ai_addrlen);
 	if (connect_code == SOCKET_ERROR)
 		return false;
 	receive = true;
 	return true;
 }
 
-const NetworkBuffer &TcpClient::ReceiveDataArray()
+const NetworkBuffer &TcpClient::receive_data_array()
 {
 	NetworkBuffer buffer;
 
@@ -122,11 +136,11 @@ const NetworkBuffer &TcpClient::ReceiveDataArray()
 	return buffer;
 }
 
-void TcpClient::ReceiveData(TcpClient *client)
+void TcpClient::receive_data(TcpClient *client)
 {
 	while (client->receive)
 	{
-		NetworkMessage message(client->ReceiveDataArray());
+		NetworkMessage message(client->receive_data_array());
 		if (message.valid)
 		{
 			if (message.tag == CONNECT) // some user has connected
@@ -141,10 +155,15 @@ void TcpClient::ReceiveData(TcpClient *client)
 
 void TcpClient::ReceiveMessages()
 {
-	std::async(std::launch::async, &ReceiveData, this);
+	std::async(std::launch::async, &receive_data, this);
 }
 
-void TcpClient::SendNetworkMessage(const NetworkMessage &message, TcpClient *client)
+const NetworkMessage & TcpClient::ReceiveMessage()
+{
+	return receive_data_array();
+}
+
+void TcpClient::send_network_message(const NetworkMessage &message, TcpClient *client)
 {
 	NetworkBuffer buffer = message.EncodeMessage(message);
 	int32 bytes_sent = send(client->tcp_socket, reinterpret_cast<char*>(buffer.body), buffer.body_size, 0);
@@ -156,5 +175,5 @@ void TcpClient::SendNetworkMessage(const NetworkMessage &message, TcpClient *cli
 
 void TcpClient::SendMessage(const NetworkMessage &message)
 {
-	std::async(std::launch::async, &SendNetworkMessage, message, this);
+	std::async(std::launch::async, &send_network_message, message, this);
 }
