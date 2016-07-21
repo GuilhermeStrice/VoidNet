@@ -42,12 +42,12 @@
     <ClInclude Include="..\..\src\Tags.hpp">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\TcpServer.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Init.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\InitWindows.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\TcpClientWindows.cpp">
@@ -69,6 +69,15 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\VoidNetClient.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TcpServerWindows.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TcpServer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\InitWindows.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
