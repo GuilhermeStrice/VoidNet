@@ -42,16 +42,6 @@ bool TcpClient::Initialize(const std::string &ip, uint16 port)
 		return false;
 	}
 
-	code = bind(tcp_socket, result->ai_addr, (int)result->ai_addrlen);
-	if (code == SOCKET_ERROR)
-	{
-		if (Config::GetUsingConsole())
-			std::cerr << WSAGetLastError() << std::endl; // display more info
-		freeaddrinfo(result);
-		WSACleanup();
-		return false;
-	}
-
 	initialized = true;
 	return true;
 }
