@@ -67,6 +67,19 @@ TcpClient::~TcpClient()
 	Utility::Delete(result);
 }
 
+void TcpClient::Shutdown()
+{
+	uint16 code = shutdown(tcp_socket, SD_SEND);
+	if (code == SOCKET_ERROR)
+	{
+		if (Config::GetUsingConsole())
+			std::cerr << WSAGetLastError() << std::endl; // display more info
+	}
+
+	closesocket(tcp_socket);
+	WSACleanup();
+}
+
 const std::string &TcpClient::GetIP()
 {
 	return ip;

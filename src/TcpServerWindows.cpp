@@ -25,9 +25,9 @@ bool TcpServer::initialize(uint16 port)
 		return false;
 	}
 
-	socket = ::socket(result->ai_family, result->ai_socktype, result->ai_protocol);
+	server_tcp_socket = ::socket(result->ai_family, result->ai_socktype, result->ai_protocol);
 
-	if (socket == INVALID_SOCKET)
+	if (server_tcp_socket == INVALID_SOCKET)
 	{
 		if (Config::GetUsingConsole())
 			std::cerr << WSAGetLastError() << std::endl; // display more info
@@ -36,13 +36,13 @@ bool TcpServer::initialize(uint16 port)
 		return false;
 	}
 
-	code = bind(socket, result->ai_addr, result->ai_addrlen);
+	code = bind(server_tcp_socket, result->ai_addr, result->ai_addrlen);
 	if (code == SOCKET_ERROR)
 	{
 		if (Config::GetUsingConsole())
 			std::cerr << WSAGetLastError() << std::endl; // display more info
 		freeaddrinfo(result);
-		closesocket(socket);
+		closesocket(server_tcp_socket);
 		WSACleanup();
 		return false;
 	}
@@ -68,13 +68,19 @@ TcpServer::~TcpServer()
 	Utility::Delete(result);
 }
 
+void TcpServer::Shutdown()
+{
+	for (std::vector<TcpClient>::iterator it = clients.begin(); it != clients.end(); ++it)
+		(*it).Shutdown();
+}
+
 bool TcpServer::StartServer(bool accept_connections)
 {
-	if (listen(socket, SOMAXCONN) == SOCKET_ERROR)
+	if (listen(server_tcp_socket, SOMAXCONN) == SOCKET_ERROR)
 	{
 		if (Config::GetUsingConsole())
 			std::cerr << WSAGetLastError() << std::endl;
-		closesocket(socket);
+		closesocket(server_tcp_socket);
 		WSACleanup();
 		return false;
 	}
@@ -96,12 +102,12 @@ void TcpServer::accept_connections(TcpServer *server)
 	std::async(std::launch::async, &process_client_received_data, server);
 	while (server->running)
 	{
-		SOCKET client_socket = accept(server->socket, 0, 0);
+		SOCKET client_socket = accept(server->server_tcp_socket, 0, 0);
 		if (client_socket == INVALID_SOCKET)
 		{
 			if (Config::GetUsingConsole())
 				std::cerr << WSAGetLastError() << std::endl;
-			closesocket(server->socket);
+			closesocket(server->server_tcp_socket);
 			WSACleanup();
 			server->running = false;
 			break;

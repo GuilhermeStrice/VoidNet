@@ -8,8 +8,7 @@
 #include "Defs.hpp"
 
 #include <string>
-#include <streambuf>
-#include <istream>
+#include <map>
 
 struct Utility
 {
@@ -56,6 +55,18 @@ struct Utility
 		static const std::string &ToString(int64 value);
 
 		static const std::string &ToString(byte *bytes, uint16 start_index = 0, uint16 lenght = 0);
+	};
+
+	struct ConfigReader
+	{
+		const void ReadConfig(const std::string &file_name);
+		const std::map<std::string, std::string> &ReadNodes();
+
+		const std::string &operator[](uint16 index);
+
+	private:
+		std::map<std::string, std::string> nodes;
+		std::string file_content;
 	};
 };
 

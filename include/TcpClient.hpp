@@ -21,6 +21,8 @@ public:
 	TcpClient(const std::string &ip, uint16 port = default_client_port);
 	~TcpClient();
 
+	void Shutdown();
+
 	const std::string &GetIP();
 	void SetIP(const std::string &ip);
 

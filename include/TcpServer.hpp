@@ -21,6 +21,8 @@ public:
 	TcpServer(uint16 port = default_server_port);
 	~TcpServer();
 
+	void Shutdown();
+
 	uint16 AllocateID();
 	void AddToClientsList(const TcpClient &client);
 	bool StartServer(bool accept_connections);
@@ -45,7 +47,7 @@ private:
 	std::vector<TcpClient> clients;
 
 #ifdef _MSC_VER
-	SOCKET socket = INVALID_SOCKET;
+	SOCKET server_tcp_socket = INVALID_SOCKET;
 	struct addrinfo *result = nullptr;
 	struct addrinfo hints;
 #endif

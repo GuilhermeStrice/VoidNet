@@ -10,8 +10,14 @@ struct Config
 	static void SetUsingConsole(bool value);
 	static bool GetUsingConsole();
 
+	static void SetLogToFile(bool value);
+	static bool GetLogToFile();
+
+	
+
 private:
 	static bool using_console;
+	static bool log_to_file;
 };
 
 #endif
