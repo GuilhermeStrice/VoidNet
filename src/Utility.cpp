@@ -145,3 +145,18 @@ const std::string & Utility::StringConverter::ToString(byte * bytes, uint16 star
 {
 	// TODO: insert return statement here
 }
+
+const void Utility::ConfigReader::ReadConfig(const std::string & file_name)
+{
+	return void();
+}
+
+const std::map<std::string, std::string>& Utility::ConfigReader::ReadNodes()
+{
+	// TODO: insert return statement here
+}
+
+const std::string & Utility::ConfigReader::operator[](uint16 index)
+{
+	// TODO: insert return statement here
+}

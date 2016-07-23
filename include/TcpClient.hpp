@@ -34,7 +34,12 @@ public:
 
 	bool Connect();
 
+	bool DataAvailable(uint16 &size);
+
+	//this method will receive the messages automaticaly and use the callback methods
 	void ReceiveMessages();
+	
+	//this is a more manual method with no callbacks
 	const NetworkMessage &ReceiveMessage();
 	void SendMessage(const NetworkMessage &message);
 

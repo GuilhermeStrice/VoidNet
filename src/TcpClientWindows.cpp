@@ -128,16 +128,19 @@ bool TcpClient::Connect()
 	return true;
 }
 
+bool TcpClient::DataAvailable(uint16 &size)
+{
+	return ioctlsocket(tcp_socket, FIONREAD, (u_long*)size) != NO_ERROR && size > 0;
+}
+
 const NetworkBuffer &TcpClient::receive_data_array()
 {
 	NetworkBuffer buffer;
 
-	int32 header_received = recv(tcp_socket, reinterpret_cast<char*>(buffer.body_size), 4, 0);
-
-	if (header_received != 4 || WSAGetLastError() != 0) // this header is completely unrelated to the network message header - this header is the body size of the network message
-	{
-		// there was a problem receiving the body size of the message or theres no header to receive
-	}
+	uint16 body_size;
+	if (DataAvailable(body_size))
+		buffer.body_size = body_size;
+	else return NetworkBuffer();
 
 	buffer.body = new byte[buffer.body_size]();
 	int32 body_received = recv(tcp_socket, reinterpret_cast<char*>(buffer.body), buffer.body_size, 0);
@@ -157,11 +160,11 @@ void TcpClient::receive_data(TcpClient *client)
 		if (message.valid)
 		{
 			if (message.tag == CONNECT) // some user has connected
-				client->OnConnect(message.sender);
+				std::async(std::launch::async, client->OnConnect, message.sender);
 			else if (message.tag == DISCONNECT) // some user has disconnected
-				client->OnDisconnect(message.sender);
+				std::async(std::launch::async, client->OnDisconnect, message.sender);
 			else
-				client->OnMessage(message.sender, message.tag, message.subject, message.data); // we received data
+				std::async(std::launch::async, client->OnMessage, message.sender, message.tag, message.subject, message.data); // we received data
 		}
 	}
 }

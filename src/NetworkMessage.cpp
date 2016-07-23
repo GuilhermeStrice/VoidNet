@@ -26,7 +26,7 @@ NetworkMessage::~NetworkMessage()
 const NetworkBuffer &NetworkMessage::EncodeMessage(const NetworkMessage &message)
 {
 	NetworkBuffer buffer;
-	uint16 size = buffer.body_size + 1;
+	uint16 size = sizeof(buffer.body_size) + sizeof(buffer.body);
 	byte *encoded_message = new byte[size]();
 	buffer.body_size = size;
 
