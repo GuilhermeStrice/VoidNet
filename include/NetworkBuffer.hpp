@@ -14,7 +14,7 @@ struct NetworkBuffer
 	NetworkBuffer();
 	~NetworkBuffer();
 
-	std::vector<byte> header; // contains the size of the body
+	std::vector<byte> header = Utility::BitConverter::FromUint32(8); // contains the size of the body
 	std::vector<byte> body;
 };
 
