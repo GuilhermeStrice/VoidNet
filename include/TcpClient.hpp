@@ -42,10 +42,11 @@ public:
 	//this is a more manual method with no callbacks
 	const NetworkMessage &ReceiveMessage();
 	void SendMessage(const NetworkMessage &message);
+	void SendBytes(const std::vector<byte> &bytes);
 
-	std::function<void(uint16)> OnDisconnect;
-	std::function<void(uint16)> OnConnect;
-	std::function<void(uint16, byte, uint16, void*)> OnMessage;
+	void SetOnDisconnectCallback(void (*func)(uint16));
+	void SetOnConnectCallback(void (*func)(uint16));
+	void SetOnMessageCallback(void (*func)(uint16, byte, byte, void*));
 
 private:
 	const NetworkBuffer &receive_data_array();
@@ -58,6 +59,10 @@ private:
 	uint16 port = 0;
 	bool initialized = false;
 	bool receive = false;
+
+	std::function<void(uint16)> OnDisconnect;
+	std::function<void(uint16)> OnConnect;
+	std::function<void(uint16, byte, byte, void*)> OnMessage;
 
 #ifdef _MSC_VER
 	SOCKET tcp_socket = INVALID_SOCKET;

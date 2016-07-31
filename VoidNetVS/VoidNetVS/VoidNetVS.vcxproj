@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\Config.hpp" />
     <ClInclude Include="..\..\include\Defs.hpp" />
+    <ClInclude Include="..\..\include\Handshake.hpp" />
     <ClInclude Include="..\..\include\Init.hpp" />
     <ClInclude Include="..\..\include\NetworkBuffer.hpp" />
     <ClInclude Include="..\..\include\NetworkMessage.hpp" />
@@ -33,6 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Config.cpp" />
+    <ClCompile Include="..\..\src\Handshake.cpp" />
     <ClCompile Include="..\..\src\Init.cpp" />
     <ClCompile Include="..\..\src\InitWindows.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

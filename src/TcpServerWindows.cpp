@@ -1,6 +1,7 @@
 #include "TcpServer.hpp"
 #include "Config.hpp"
 #include "Utility.hpp"
+#include "Handshake.hpp"
 
 #include <string>
 #include <iostream>
@@ -211,27 +212,32 @@ uint16 TcpServer::AllocateID() // this function is only used in the AddToClients
 	return 0;
 }
 
-void TcpServer::AddToClientsList(const TcpClient & client_socket)
+void TcpServer::AddToClientsList(TcpClient & client_socket)
 {
-	TcpClient client(client_socket);
 	uint16 id = AllocateID();
 	if (id > 0)
 	{
-		client.SetID(id);
-		clients.emplace_back(client);
+		client_socket.SetID(id);
+		clients.emplace_back(client_socket);
+		AcceptConnection(client_socket);
 	}
 	else
 	{
 		if (Config::GetUsingConsole())
 			std::cout << "No available ID's" << std::endl;
-		RejectConnection(client);
+		RejectConnection(client_socket);
 	}
 }
 
 void TcpServer::RejectConnection(TcpClient &client)
 {
-	NetworkMessage message;
-	message.sender = -1;
-	message.tag = Reject; // 0 for rejected connection
-	client.SendMessage(message);
+	Handshake handshake(client.GetID(), ConnectionCode::Reject);
+	client.SendBytes(Handshake::EncodeHandshake(handshake));
+	client.Shutdown();
+}
+
+void TcpServer::AcceptConnection(TcpClient & client)
+{
+	Handshake handshake(client.GetID(), ConnectionCode::Accept);
+	client.SendBytes(Handshake::EncodeHandshake(handshake));
 }

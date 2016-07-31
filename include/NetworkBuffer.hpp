@@ -6,6 +6,7 @@
 #endif
 
 #include "Defs.hpp"
+#include "Utility.hpp"
 
 #include <vector>
 

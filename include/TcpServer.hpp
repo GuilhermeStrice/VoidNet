@@ -24,12 +24,13 @@ public:
 	void Shutdown();
 
 	uint16 AllocateID();
-	void AddToClientsList(const TcpClient &client);
+	void AddToClientsList(TcpClient &client);
 	bool StartServer(bool accept_connections);
 	void AcceptConnections();
 	void SendMessage(const NetworkMessage &message);
 
 	void RejectConnection(TcpClient &client);
+	void AcceptConnection(TcpClient &client);
 
 	std::function<void(const NetworkMessage &message)> OnMessage;
 

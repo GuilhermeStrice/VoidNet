@@ -3,6 +3,7 @@
 #include "Config.hpp"
 #include "NetworkBuffer.hpp"
 #include "Tags.hpp"
+#include "Handshake.hpp"
 
 #include <iostream>
 #include <thread>
@@ -124,8 +125,15 @@ bool TcpClient::Connect()
 	uint16 connect_code = ::connect(tcp_socket, result->ai_addr, result->ai_addrlen);
 	if (connect_code == SOCKET_ERROR)
 		return false;
-	receive = true;
-	return true;
+
+	NetworkBuffer message(receive_data_array());
+	Handshake handshake = Handshake::DecodeHandshake(message.body);
+	if (handshake.con_code == ConnectionCode::Accept)
+	{
+		receive = true;
+		return true;
+	}
+	return false;
 }
 
 bool TcpClient::DataAvailable(uint16 &size)
@@ -137,8 +145,8 @@ const NetworkBuffer &TcpClient::receive_data_array()
 {
 	NetworkBuffer buffer;
 
-	uint16 body_size;
-	if (DataAvailable(body_size))
+	uint16 temp;
+	if (DataAvailable(temp) && temp > 0)
 	{
 		if (!recv(tcp_socket, reinterpret_cast<char*>(&buffer.header[0]), 4, 0))
 			//invalid header
@@ -148,10 +156,11 @@ const NetworkBuffer &TcpClient::receive_data_array()
 		return NetworkBuffer();
 
 	uint32 body_size = Utility::BitConverter::ToUint32(buffer.header);
-	int32 body_received = recv(tcp_socket, reinterpret_cast<char*>(&buffer.body[0]), body_size, 0);
+	int16 body_received = recv(tcp_socket, reinterpret_cast<char*>(&buffer.body[0]), body_size, 0);
 	if (body_received == SOCKET_ERROR || body_received != body_size || WSAGetLastError() != 0)
 	{
 		//there was a problem receiving the body of the message or theres no body to receive
+		return NetworkBuffer();
 	}
 
 	return buffer;
@@ -188,7 +197,7 @@ void TcpClient::send_network_message(const NetworkMessage &message, TcpClient *c
 {
 	NetworkBuffer buffer = NetworkMessage::EncodeMessage(message);
 	int32 bytes_sent = send(client->tcp_socket, reinterpret_cast<char*>(&buffer.body[0]), Utility::BitConverter::ToUint32(buffer.header), 0);
-	if (bytes_sent == SOCKET_ERROR || bytes_sent != Utility::BitConverter::ToUint32(buffer.header) || WSAGetLastError() != 0)
+	if (bytes_sent == SOCKET_ERROR || bytes_sent != Utility::BitConverter::ToInt32(buffer.header) || WSAGetLastError() != 0)
 	{
 		//something went wrong couldnt send anything/some data
 	}
@@ -197,4 +206,28 @@ void TcpClient::send_network_message(const NetworkMessage &message, TcpClient *c
 void TcpClient::SendMessage(const NetworkMessage &message)
 {
 	std::async(std::launch::async, &send_network_message, message, this);
+}
+
+void TcpClient::SendBytes(const std::vector<byte>& bytes)
+{
+	int32 bytes_sent = send(tcp_socket, reinterpret_cast<const char*>(&bytes[0]), bytes.size(), 0);
+	if (bytes_sent == SOCKET_ERROR || bytes_sent != bytes.size() || WSAGetLastError() != 0)
+	{
+		//something went wrong couldnt send anything/some data
+	}
+}
+
+void TcpClient::SetOnDisconnectCallback(void(*func)(uint16))
+{
+	OnDisconnect = func;
+}
+
+void TcpClient::SetOnConnectCallback(void(*func)(uint16))
+{
+	OnConnect = func;
+}
+
+void TcpClient::SetOnMessageCallback(void(*func)(uint16, byte, byte, void*))
+{
+	OnMessage = func;
 }

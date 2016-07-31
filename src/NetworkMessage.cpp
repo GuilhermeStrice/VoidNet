@@ -9,7 +9,7 @@ NetworkMessage::NetworkMessage()
 {
 }
 
-NetworkMessage::NetworkMessage(uint16 sender, byte distribution_mode, uint16 destination_id, byte tag, uint16 subject, NetworkBuffer buffer) :
+NetworkMessage::NetworkMessage(uint16 sender, byte distribution_mode, uint16 destination_id, byte tag, byte subject, NetworkBuffer buffer) :
 	sender(sender), distribution_mode(distribution_mode), destination_id(destination_id), tag(tag), subject(subject), buffer(buffer)
 {
 }
@@ -52,7 +52,7 @@ const NetworkMessage &NetworkMessage::DecodeMessage(const NetworkBuffer &buffer)
 	message.distribution_mode = buffer.body[3];
 	message.destination_id = Utility::BitConverter::ToUint16(buffer.body, 4);
 	message.tag = buffer.body[6];
-	message.subject = Utility::BitConverter::ToUint16(buffer.body, 7);
+	message.subject = Utility::BitConverter::ToUint8(buffer.body, 7);
 	message.buffer = buffer;
 	message.valid = message.sender != -2 && message.tag != CONNECT && message.tag != DISCONNECT;
 
