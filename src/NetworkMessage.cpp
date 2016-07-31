@@ -25,67 +25,36 @@ NetworkMessage::~NetworkMessage()
 
 const NetworkBuffer &NetworkMessage::EncodeMessage(const NetworkMessage &message)
 {
-	NetworkBuffer buffer;
-	uint16 size = sizeof(buffer.body_size) + sizeof(buffer.body);
-	byte *encoded_message = new byte[size]();
-	buffer.body_size = size;
-
-	byte *encoded_sender = &encoded_message[1];
-	encoded_sender = Utility::BitConverter::FromUint16(message.sender);
-
-	encoded_message[3] = message.distribution_mode;
-
-	byte *encoded_destination_id = &encoded_message[4];
-	encoded_destination_id = Utility::BitConverter::FromUint16(message.destination_id);
-
-	encoded_message[6] = message.tag;
-
-	byte *encoded_subject = &encoded_message[7];
-	encoded_subject = Utility::BitConverter::FromUint16(message.subject);
-
-	byte *encoded_data = &encoded_message[9];
-	std::vector<byte> serialized_data = Serializer::to_bytes(message.data);
-	encoded_data = &serialized_data[0];
-
-	buffer.body = encoded_message;
-	return buffer;
+	return NetworkBuffer();
 }
 
 const NetworkMessage &NetworkMessage::DecodeMessage(const NetworkBuffer &buffer)
 {
-	NetworkMessage message = decode_message_header(buffer);
-	message.data = decode_message_data(buffer);
-	return message;
-}
+	NetworkMessage message;
+	message.sender = Utility::BitConverter::ToUint16(buffer.body, 1);
+	message.distribution_mode = buffer.body[3];
+	message.destination_id = Utility::BitConverter::ToUint16(buffer.body, 4);
+	message.tag = buffer.body[6];
+	message.subject = Utility::BitConverter::ToUint16(buffer.body, 7);
+	message.buffer = buffer;
+	message.valid = message.sender != -2 && message.tag != CONNECT && message.tag != DISCONNECT;
 
-void *NetworkMessage::decode_message_data(const NetworkBuffer &buffer)
-{
-	if (buffer.body_size < 9)
-		return nullptr;
+	if (Utility::BitConverter::ToUint32(buffer.header) < 9)
+		return message;
 	byte version = buffer.body[0];
 	switch (version)
 	{
 	case 0:
 	{
 		void *object;
-		return Serializer::from_bytes(buffer.body + 9, object);
+		object = Serializer::from_bytes(buffer.body, object);
 	}
 	default:
 	{
-		//version nor supported
+		//version not supported
 		throw std::runtime_error("NetworkMessage - Decoding version not supported");
 	}
 	}
-}
 
-const NetworkMessage &NetworkMessage::decode_message_header(const NetworkBuffer &buffer)
-{
-	sender = Utility::BitConverter::ToUint16(buffer.body, 1);
-	distribution_mode = buffer.body[3];
-	destination_id = Utility::BitConverter::ToUint16(buffer.body, 4);
-	tag = buffer.body[6];
-	subject = Utility::BitConverter::ToUint16(buffer.body, 7);
-	this->buffer = buffer;
-	valid = sender != -2 && tag != CONNECT && tag != DISCONNECT && distribution_mode > 0;
-	return *this;
+	return message;
 }

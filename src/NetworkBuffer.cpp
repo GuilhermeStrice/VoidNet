@@ -7,5 +7,4 @@ NetworkBuffer::NetworkBuffer()
 
 NetworkBuffer::~NetworkBuffer()
 {
-	Utility::DeleteArray(body);
 }

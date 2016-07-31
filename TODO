@@ -10,4 +10,6 @@ implement close() in TcpClientWindows
 
 implement ConfigReader methods
 
-Fix NetworkBuffer and NetworkMessage code
+NetworkMessage EncodeMessage
+
+Fix NetworkMessage line 50

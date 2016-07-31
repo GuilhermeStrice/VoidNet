@@ -45,7 +45,7 @@ public:
 
 	std::function<void(uint16)> OnDisconnect;
 	std::function<void(uint16)> OnConnect;
-	std::function<void(uint16, uint16, uint16, void*)> OnMessage;
+	std::function<void(uint16, byte, uint16, void*)> OnMessage;
 
 private:
 	const NetworkBuffer &receive_data_array();

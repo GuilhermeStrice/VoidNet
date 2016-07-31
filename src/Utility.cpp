@@ -16,82 +16,82 @@ void Utility::DeleteArray(void *pointer)
 	pointer = nullptr;
 }
 
-byte *Utility::BitConverter::FromUint8(uint8 number)
+const std::vector<byte> &Utility::BitConverter::FromUint8(uint8 number)
 {
-	
+	return std::vector<byte>();
 }
 
-uint8 Utility::BitConverter::ToUint8(byte *bytes, uint16 start_index)
+uint8 Utility::BitConverter::ToUint8(const std::vector<byte> &bytes, uint16 start_index)
 {
-	
+	return uint8();
 }
 
-byte *Utility::BitConverter::FromUint16(uint16 number)
+const std::vector<byte> &Utility::BitConverter::FromUint16(uint16 number)
 {
-	
+	return std::vector<byte>();
 }
 
-uint16 Utility::BitConverter::ToUint16(byte *bytes, uint16 start_index)
+uint16 Utility::BitConverter::ToUint16(const std::vector<byte> &bytes, uint16 start_index)
 {
-	
+	return uint16();
 }
 
-byte * Utility::BitConverter::FromUint32(uint32 number)
+const std::vector<byte> & Utility::BitConverter::FromUint32(uint32 number)
 {
-	return nullptr;
+	return std::vector<byte>();
 }
 
-uint32 * Utility::BitConverter::ToUint32(byte * bytes, uint16 start_index)
+uint32 Utility::BitConverter::ToUint32(const std::vector<byte> & bytes, uint16 start_index)
 {
-	return nullptr;
+	return uint32();
 }
 
-byte * Utility::BitConverter::FromUint64(uint64 number)
+const std::vector<byte> & Utility::BitConverter::FromUint64(uint64 number)
 {
-	return nullptr;
+	return std::vector<byte>();
 }
 
-uint64 Utility::BitConverter::ToUint64(byte * bytes, uint16 start_index)
+uint64 Utility::BitConverter::ToUint64(const std::vector<byte> & bytes, uint16 start_index)
 {
 	return uint64();
 }
 
-byte * Utility::BitConverter::FromInt8(int8 number)
+const std::vector<byte> & Utility::BitConverter::FromInt8(int8 number)
 {
-	return nullptr;
+	return std::vector<byte>();
 }
 
-int8 Utility::BitConverter::ToInt8(byte * bytes, uint16 start_index)
+int8 Utility::BitConverter::ToInt8(const std::vector<byte> & bytes, uint16 start_index)
 {
 	return int8();
 }
 
-byte * Utility::BitConverter::FromInt16(int16 number)
+const std::vector<byte> & Utility::BitConverter::FromInt16(int16 number)
 {
-	return nullptr;
+	return std::vector<byte>();
 }
 
-int16 Utility::BitConverter::ToInt16(byte * bytes, uint16 start_index)
+int16 Utility::BitConverter::ToInt16(const std::vector<byte> & bytes, uint16 start_index)
 {
 	return int16();
 }
 
-byte * Utility::BitConverter::FromInt32(int32 number)
+const std::vector<byte> & Utility::BitConverter::FromInt32(int32 number)
 {
-	return nullptr;
+	return std::vector<byte>();
 }
 
-int32 Utility::BitConverter::ToInt32(byte * bytes, uint16 start_index)
+int32 Utility::BitConverter::ToInt32(const std::vector<byte> & bytes, uint16 start_index)
 {
 	return int32();
 }
 
-byte * Utility::BitConverter::FromInt64(int64 number)
+const std::vector<byte> & Utility::BitConverter::FromInt64(int64 number)
 {
-	return nullptr;
+	return std::vector<byte>();
 }
 
-int64 Utility::BitConverter::ToInt64(byte * bytes, uint16 start_index)
+int64 Utility::BitConverter::ToInt64(const std::vector<byte> & bytes, uint16 start_index)
 {
 	return int64();
 }
@@ -141,7 +141,7 @@ const std::string & Utility::StringConverter::ToString(int64 value)
 	// TODO: insert return statement here
 }
 
-const std::string & Utility::StringConverter::ToString(byte * bytes, uint16 start_index, uint16 lenght)
+const std::string & Utility::StringConverter::ToString(const std::vector<byte> & bytes, uint16 start_index, uint16 lenght)
 {
 	// TODO: insert return statement here
 }

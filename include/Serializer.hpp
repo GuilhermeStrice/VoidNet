@@ -11,7 +11,7 @@
 struct Serializer
 {
 	template<typename T> static const std::vector<byte> &to_bytes(const T &object);
-	template<typename T> static const T& from_bytes(byte *bytes, T& object);
+	template<typename T> static const T& from_bytes(const std::vector<byte> &bytes, T& object);
 };
 
 #endif

@@ -17,7 +17,7 @@ struct NetworkMessage
 
 	static const NetworkBuffer &EncodeMessage(const NetworkMessage &message);
 	
-	const NetworkMessage &NetworkMessage::DecodeMessage(const NetworkBuffer &buffer);
+	static const NetworkMessage &DecodeMessage(const NetworkBuffer &buffer);
 
 	uint16 sender = -2;
 	byte distribution_mode;
@@ -29,8 +29,6 @@ struct NetworkMessage
 	bool valid = false;
 
 private:
-	const NetworkMessage &decode_message_header(const NetworkBuffer &buffer);
-	void *decode_message_data(const NetworkBuffer &buffer);
 	NetworkBuffer buffer;
 };
 

@@ -7,13 +7,15 @@
 
 #include "Defs.hpp"
 
+#include <vector>
+
 struct NetworkBuffer
 {
 	NetworkBuffer();
 	~NetworkBuffer();
 
-	byte *header = nullptr;
-	byte *body = nullptr;
+	std::vector<byte> header; // contains the size of the body
+	std::vector<byte> body;
 };
 
 #endif
