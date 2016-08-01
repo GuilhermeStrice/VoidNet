@@ -16,6 +16,7 @@
 class TcpClient
 {
 public:
+	TcpClient();
 	TcpClient(const SOCKET &socket);
 	TcpClient(const std::string &ip);
 	TcpClient(const std::string &ip, uint16 port = default_client_port);
@@ -43,6 +44,7 @@ public:
 	const NetworkMessage &ReceiveMessage();
 	void SendMessage(const NetworkMessage &message);
 	void SendBytes(const std::vector<byte> &bytes);
+	void SendBytes(byte *bytes, uint32 lenght);
 
 	void SetOnDisconnectCallback(void (*func)(uint16));
 	void SetOnConnectCallback(void (*func)(uint16));
@@ -54,7 +56,7 @@ private:
 	static void send_network_message(const NetworkMessage &message, TcpClient *client);
 	bool initialize(const std::string &ip, uint16 port = default_client_port);
 
-	uint16 id = 0;
+	uint16 id = -2;
 	std::string ip;
 	uint16 port = 0;
 	bool initialized = false;

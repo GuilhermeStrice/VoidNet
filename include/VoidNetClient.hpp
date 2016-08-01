@@ -34,9 +34,8 @@ struct VoidNetClientAPI
 private:
 	static void process_all_data();
 
-	static TcpClient *client;
+	static TcpClient client;
 	static uint16 id;
-	static std::thread receive_thread;
 	static bool receive;
 };
 

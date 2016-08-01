@@ -45,6 +45,10 @@ bool TcpClient::initialize(const std::string &ip, uint16 port)
 	return initialized = true;
 }
 
+TcpClient::TcpClient()
+{
+}
+
 TcpClient::TcpClient(const SOCKET & socket)
 {
 	tcp_socket = socket;
@@ -70,7 +74,12 @@ TcpClient::~TcpClient()
 
 void TcpClient::Shutdown()
 {
-	uint16 code = shutdown(tcp_socket, SD_SEND);
+	NetworkMessage message;
+	message.sender = id;
+	message.distribution_mode = Server;
+	message.tag = DISCONNECT;
+	SendMessage(message);
+	uint16 code = shutdown(tcp_socket, SD_BOTH);
 	if (code == SOCKET_ERROR)
 	{
 		if (Config::GetUsingConsole())
@@ -148,7 +157,7 @@ const NetworkBuffer &TcpClient::receive_data_array()
 	uint16 temp;
 	if (DataAvailable(temp) && temp > 0)
 	{
-		if (!recv(tcp_socket, reinterpret_cast<char*>(&buffer.header[0]), 4, 0))
+		if (!recv(tcp_socket, reinterpret_cast<char*>(buffer.header.data()), 4, 0))
 			//invalid header
 			return NetworkBuffer();
 	}
@@ -156,7 +165,7 @@ const NetworkBuffer &TcpClient::receive_data_array()
 		return NetworkBuffer();
 
 	uint32 body_size = Utility::BitConverter::ToUint32(buffer.header);
-	int16 body_received = recv(tcp_socket, reinterpret_cast<char*>(&buffer.body[0]), body_size, 0);
+	int16 body_received = recv(tcp_socket, reinterpret_cast<char*>(buffer.body.data()), body_size, 0);
 	if (body_received == SOCKET_ERROR || body_received != body_size || WSAGetLastError() != 0)
 	{
 		//there was a problem receiving the body of the message or theres no body to receive
@@ -196,8 +205,9 @@ const NetworkMessage & TcpClient::ReceiveMessage()
 void TcpClient::send_network_message(const NetworkMessage &message, TcpClient *client)
 {
 	NetworkBuffer buffer = NetworkMessage::EncodeMessage(message);
-	int32 bytes_sent = send(client->tcp_socket, reinterpret_cast<char*>(&buffer.body[0]), Utility::BitConverter::ToUint32(buffer.header), 0);
-	if (bytes_sent == SOCKET_ERROR || bytes_sent != Utility::BitConverter::ToInt32(buffer.header) || WSAGetLastError() != 0)
+	int32 lenght = Utility::BitConverter::ToUint32(buffer.header);
+	int32 bytes_sent = send(client->tcp_socket, reinterpret_cast<char*>(buffer.body.data()), lenght, 0);
+	if (bytes_sent == SOCKET_ERROR || bytes_sent != lenght || WSAGetLastError() != 0)
 	{
 		//something went wrong couldnt send anything/some data
 	}
@@ -210,8 +220,17 @@ void TcpClient::SendMessage(const NetworkMessage &message)
 
 void TcpClient::SendBytes(const std::vector<byte>& bytes)
 {
-	int32 bytes_sent = send(tcp_socket, reinterpret_cast<const char*>(&bytes[0]), bytes.size(), 0);
+	int32 bytes_sent = send(tcp_socket, reinterpret_cast<const char*>(bytes.data()), bytes.size(), 0);
 	if (bytes_sent == SOCKET_ERROR || bytes_sent != bytes.size() || WSAGetLastError() != 0)
+	{
+		//something went wrong couldnt send anything/some data
+	}
+}
+
+void TcpClient::SendBytes(byte * bytes, uint32 size)
+{
+	int32 bytes_sent = send(tcp_socket, reinterpret_cast<const char*>(bytes), size, 0);
+	if (bytes_sent == SOCKET_ERROR || bytes_sent != size || WSAGetLastError() != 0)
 	{
 		//something went wrong couldnt send anything/some data
 	}

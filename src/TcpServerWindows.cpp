@@ -164,6 +164,8 @@ void TcpServer::SendMessage(const NetworkMessage & message)
 	}
 	case Server: // this will only send the message to the server
 	{
+		if (message.tag == DISCONNECT)
+			CloseSocket(message.sender);
 		OnMessage(message);
 		break;
 	}
@@ -240,4 +242,32 @@ void TcpServer::AcceptConnection(TcpClient & client)
 {
 	Handshake handshake(client.GetID(), ConnectionCode::Accept);
 	client.SendBytes(Handshake::EncodeHandshake(handshake));
+}
+
+void TcpServer::CloseSocket(TcpClient & client)
+{
+	NetworkMessage message;
+	message.sender = -1;
+	message.distribution_mode = ID;
+	message.destination_id = client.GetID();
+	message.tag = DISCONNECT;
+	SendMessage(message);
+	clients.erase(std::remove(clients.begin(), clients.end(), client), clients.end());
+}
+
+void TcpServer::CloseSocket(uint16 id)
+{
+	TcpClient client = GetClientByID(id);
+	if (client.GetID() != -2)
+		CloseSocket(client);
+}
+
+const TcpClient & TcpServer::GetClientByID(uint16 id)
+{
+	for (std::vector<TcpClient>::iterator it = clients.begin(); it != clients.end(); ++it)
+	{
+		if ((*it).GetID() == id)
+			return *it;
+	}
+	return TcpClient();
 }

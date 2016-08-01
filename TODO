@@ -9,7 +9,3 @@ new StringConverter class
 implement close() in TcpClientWindows
 
 implement ConfigReader methods
-
-NetworkMessage EncodeMessage
-
-Fix NetworkMessage line 50

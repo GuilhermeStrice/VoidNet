@@ -185,4 +185,10 @@ enum ConnectionCode
 	Reject
 };
 
+enum InternalTags
+{
+	CONNECT = 65534,
+	DISCONNECT = 65535,
+};
+
 #endif // DEFS_HPP

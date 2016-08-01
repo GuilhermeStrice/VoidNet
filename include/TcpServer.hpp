@@ -32,6 +32,11 @@ public:
 	void RejectConnection(TcpClient &client);
 	void AcceptConnection(TcpClient &client);
 
+	void CloseSocket(TcpClient &client);
+	void CloseSocket(uint16 id);
+
+	const TcpClient &GetClientByID(uint16 id);
+
 	std::function<void(const NetworkMessage &message)> OnMessage;
 
 private:
