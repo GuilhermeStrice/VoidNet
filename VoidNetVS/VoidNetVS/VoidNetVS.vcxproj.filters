@@ -83,6 +83,9 @@
     <ClCompile Include="..\..\src\Handshake.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="TcpClient.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\TODO" />

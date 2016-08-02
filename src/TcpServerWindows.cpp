@@ -72,7 +72,10 @@ TcpServer::~TcpServer()
 void TcpServer::Shutdown()
 {
 	for (std::vector<TcpClient>::iterator it = clients.begin(); it != clients.end(); ++it)
-		(*it).Shutdown();
+	{
+		TcpClient client = *it;
+		client.Shutdown();
+	}
 }
 
 bool TcpServer::StartServer(bool accept_connections)
@@ -201,7 +204,8 @@ uint16 TcpServer::AllocateID() // this function is only used in the AddToClients
 		bool flag = true;
 		for (std::vector<TcpClient>::iterator it = clients.begin(); it != clients.end(); ++it)
 		{
-			if ((*it).GetID() == i)
+			TcpClient client = *it;
+			if (client.GetID() == i)
 			{
 				flag = false;
 				break;
@@ -235,7 +239,7 @@ void TcpServer::RejectConnection(TcpClient &client)
 {
 	Handshake handshake(client.GetID(), ConnectionCode::Reject);
 	client.SendBytes(Handshake::EncodeHandshake(handshake));
-	client.Shutdown();
+	CloseSocket(client);
 }
 
 void TcpServer::AcceptConnection(TcpClient & client)
@@ -246,13 +250,26 @@ void TcpServer::AcceptConnection(TcpClient & client)
 
 void TcpServer::CloseSocket(TcpClient & client)
 {
-	NetworkMessage message;
-	message.sender = -1;
-	message.distribution_mode = ID;
-	message.destination_id = client.GetID();
-	message.tag = DISCONNECT;
-	SendMessage(message);
-	clients.erase(std::remove(clients.begin(), clients.end(), client), clients.end());
+	bool removed;
+	for (std::vector<TcpClient>::iterator it = clients.begin(); it != clients.end(); ++it)
+	{
+		TcpClient it_client = *it;
+		if (client.GetID() == it_client.GetID())
+		{
+			clients.erase(it);
+			removed = true;
+		}
+	}
+
+	if (removed)
+	{
+		NetworkMessage message;
+		message.sender = -1;
+		message.distribution_mode = ID;
+		message.destination_id = client.GetID();
+		message.tag = DISCONNECT;
+		SendMessage(message);
+	}
 }
 
 void TcpServer::CloseSocket(uint16 id)
@@ -266,8 +283,9 @@ const TcpClient & TcpServer::GetClientByID(uint16 id)
 {
 	for (std::vector<TcpClient>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
-		if ((*it).GetID() == id)
-			return *it;
+		TcpClient client = *it;
+		if (client.GetID() == id)
+			return client;
 	}
 	return TcpClient();
 }

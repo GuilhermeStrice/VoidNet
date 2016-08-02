@@ -1,6 +1,5 @@
 #include "VoidNetClient.hpp"
 #include "Utility.hpp"
-#include "Tags.hpp"
 
 #include <future>
 

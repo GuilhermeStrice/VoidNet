@@ -51,6 +51,7 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Utility.cpp" />
     <ClCompile Include="..\..\src\VoidNetClient.cpp" />
+    <ClCompile Include="TcpClient.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\DEV_INFO" />

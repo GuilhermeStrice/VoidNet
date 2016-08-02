@@ -1,7 +1,6 @@
 #include "NetworkMessage.hpp"
 #include "Utility.hpp"
 #include "Serializer.hpp"
-#include "Tags.hpp"
 
 #include <vector>
 

@@ -2,7 +2,6 @@
 #include "Utility.hpp"
 #include "Config.hpp"
 #include "NetworkBuffer.hpp"
-#include "Tags.hpp"
 #include "Handshake.hpp"
 
 #include <iostream>
