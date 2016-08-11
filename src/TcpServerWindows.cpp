@@ -75,6 +75,7 @@ void TcpServer::Shutdown()
 	{
 		TcpClient client = *it;
 		client.Shutdown();
+		clients.erase(std::find(clients.begin(), clients.end(), client));
 	}
 }
 
@@ -103,7 +104,6 @@ void TcpServer::AcceptConnections()
 
 void TcpServer::accept_connections(TcpServer *server)
 {
-	std::async(std::launch::async, &process_client_received_data, server);
 	while (server->running)
 	{
 		SOCKET client_socket = accept(server->server_tcp_socket, 0, 0);
@@ -117,20 +117,20 @@ void TcpServer::accept_connections(TcpServer *server)
 			break;
 		}
 
-		server->AddToClientsList(TcpClient(client_socket));
+		TcpClient client(client_socket);
+		server->AddToClientsList(client);
+
+		std::async(std::launch::async, &process_client_messages, server, client);
 	}
 }
 
-void TcpServer::process_client_received_data(TcpServer *server)
+void TcpServer::process_client_messages(TcpServer *server, TcpClient & client)
 {
-	while (server->running) // we only process the data if we are receiving connections, 
+	while (server->running)
 	{
-		for (std::vector<TcpClient>::iterator it = server->clients.begin(); it != server->clients.end(); ++it)
-		{
-			TcpClient client = *it;
-			NetworkMessage message(client.ReceiveMessage());
-			std::async(std::launch::async, &process_message, server, message); // we start an async task so that we dont bottleneck the receiver
-		}
+		NetworkMessage message(client.ReceiveMessage());
+		if (message.valid)
+			server->SendMessage(message);
 	}
 }
 

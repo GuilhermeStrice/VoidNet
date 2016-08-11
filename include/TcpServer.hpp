@@ -25,7 +25,7 @@ public:
 
 	uint16 AllocateID();
 	void AddToClientsList(TcpClient &client);
-	bool StartServer(bool accept_connections);
+	bool StartServer(bool accept_connections); // if accept_connections is false the user must call the funcion AcceptConnections()
 	void AcceptConnections();
 	void SendMessage(const NetworkMessage &message);
 
@@ -40,8 +40,8 @@ public:
 	std::function<void(const NetworkMessage &message)> OnMessage;
 
 private:
+	static void process_client_messages(TcpServer *server, TcpClient &client);
 	static void process_message(TcpServer *server, const NetworkMessage &message);
-	static void process_client_received_data(TcpServer *server);
 	static void accept_connections(TcpServer *server);
 	bool initialize(uint16 port = default_server_port);
 

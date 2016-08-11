@@ -78,7 +78,7 @@ void TcpClient::Shutdown()
 	message.distribution_mode = Server;
 	message.tag = DISCONNECT;
 	SendMessage(message);
-	uint16 code = shutdown(tcp_socket, SD_BOTH);
+	uint16 code = closesocket(tcp_socket);
 	if (code == SOCKET_ERROR)
 	{
 		if (Config::GetUsingConsole())
@@ -156,7 +156,7 @@ const NetworkBuffer &TcpClient::receive_data_array()
 	uint16 temp;
 	if (DataAvailable(temp) && temp > 0)
 	{
-		if (!recv(tcp_socket, reinterpret_cast<char*>(buffer.header.data()), 4, 0))
+		if (recv(tcp_socket, reinterpret_cast<char*>(buffer.header.data()), 4, 0) == 4)
 			//invalid header
 			return NetworkBuffer();
 	}
