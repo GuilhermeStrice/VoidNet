@@ -98,65 +98,70 @@ int64 Utility::BitConverter::ToInt64(const std::vector<byte> & bytes, uint16 sta
 
 const std::string & Utility::StringConverter::ToString(bool value)
 {
-	// TODO: insert return statement here
+	return std::string();
 }
 
 const std::string & Utility::StringConverter::ToString(uint8 value)
 {
-	// TODO: insert return statement here
+	return std::string();
 }
 
 const std::string & Utility::StringConverter::ToString(uint16 value)
 {
-	// TODO: insert return statement here
+	return std::string();
 }
 
 const std::string & Utility::StringConverter::ToString(uint32 value)
 {
-	// TODO: insert return statement here
+	return std::string();
 }
 
 const std::string & Utility::StringConverter::ToString(uint64 value)
 {
-	// TODO: insert return statement here
+	return std::string();
 }
 
 const std::string & Utility::StringConverter::ToString(int8 value)
 {
-	// TODO: insert return statement here
+	return std::string();
 }
 
 const std::string & Utility::StringConverter::ToString(int16 value)
 {
-	// TODO: insert return statement here
+	return std::string();
 }
 
 const std::string & Utility::StringConverter::ToString(int32 value)
 {
-	// TODO: insert return statement here
+	return std::string();
 }
 
 const std::string & Utility::StringConverter::ToString(int64 value)
 {
-	// TODO: insert return statement here
+	return std::string();
+}
+
+const std::string & Utility::StringConverter::ToString(const std::vector<byte>& bytes)
+{
+	return std::string();
 }
 
 const std::string & Utility::StringConverter::ToString(const std::vector<byte> & bytes, uint16 start_index, uint16 lenght)
 {
-	// TODO: insert return statement here
+	return std::string();
 }
 
-const void Utility::ConfigReader::ReadConfig(const std::string & file_name)
+void Utility::ConfigReader::ReadConfig(const std::string & file_name)
 {
-	return void();
+	
 }
 
 const std::map<std::string, std::string>& Utility::ConfigReader::ReadNodes()
 {
-	// TODO: insert return statement here
+	return std::map<std::string, std::string>();
 }
 
 const std::string & Utility::ConfigReader::operator[](uint16 index)
 {
-	// TODO: insert return statement here
+	return std::string();
 }

@@ -6,6 +6,4 @@ handle ReceiveDataArray errors for windows
 revamped BitConverter class
 new StringConverter class
 
-implement close() in TcpClientWindows
-
 implement ConfigReader methods

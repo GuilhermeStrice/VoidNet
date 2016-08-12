@@ -75,8 +75,8 @@ void TcpClient::Shutdown()
 {
 	NetworkMessage message;
 	message.sender = id;
-	message.distribution_mode = Server;
-	message.tag = DISCONNECT;
+	message.distribution_mode = static_cast<byte>(Server);
+	message.tag = static_cast<byte>(DISCONNECT);
 	SendMessage(message);
 	uint16 code = closesocket(tcp_socket);
 	if (code == SOCKET_ERROR)

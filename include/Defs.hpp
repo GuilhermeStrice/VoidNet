@@ -187,8 +187,8 @@ enum ConnectionCode
 
 enum InternalTags
 {
-	CONNECT = 65534,
-	DISCONNECT = 65535,
+	CONNECT = 254,
+	DISCONNECT = 255,
 };
 
 #endif // DEFS_HPP

@@ -4,9 +4,10 @@
 
 int main()
 {
-	byte *bytes = Utility::BitConverter::FromUint8(20);
-	std::cout << Utility::BitConverter::ToUint8(bytes, 0) << std::endl;
-	getchar();
+	std::vector<byte> bytes = Utility::BitConverter::FromInt32(50000);
+	int32 integer = Utility::BitConverter::ToInt32(bytes);
+	std::cout << integer << std::endl;
+	std::cin.get();
 	return 0;
 }
 

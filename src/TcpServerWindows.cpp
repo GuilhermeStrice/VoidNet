@@ -73,9 +73,8 @@ void TcpServer::Shutdown()
 {
 	for (std::vector<TcpClient>::iterator it = clients.begin(); it != clients.end(); ++it)
 	{
-		TcpClient client = *it;
-		client.Shutdown();
-		clients.erase(std::find(clients.begin(), clients.end(), client));
+		(*it).Shutdown();
+		clients.erase(it);
 	}
 }
 
@@ -113,7 +112,7 @@ void TcpServer::accept_connections(TcpServer *server)
 				std::cerr << WSAGetLastError() << std::endl;
 			closesocket(server->server_tcp_socket);
 			WSACleanup();
-			server->running = false;
+			server->running = false; // if we cant accept a connection idk if we should stop the server or not mh
 			break;
 		}
 
