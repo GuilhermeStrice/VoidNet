@@ -17,6 +17,8 @@ struct NetworkBuffer
 
 	std::vector<byte> header; // size must always be 8
 	std::vector<byte> body;
+
+	bool valid = false;
 };
 
 #endif

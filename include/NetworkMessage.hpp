@@ -12,7 +12,7 @@ struct NetworkMessage
 {
 	NetworkMessage();
 	NetworkMessage(const NetworkBuffer &buffer);
-	NetworkMessage(uint16 sender, byte distribution_mode, uint16 destination_id, byte tag, byte subject, NetworkBuffer buffer);
+	NetworkMessage(uint16 sender, byte distribution_mode, uint16 destination_id, byte tag, byte subject);
 	~NetworkMessage();
 
 	static const NetworkBuffer &EncodeMessage(const NetworkMessage &message);
@@ -27,9 +27,6 @@ struct NetworkMessage
 	void *data;
 	
 	bool valid = false;
-
-private:
-	NetworkBuffer buffer;
 };
 
 #endif

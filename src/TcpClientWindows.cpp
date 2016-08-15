@@ -134,42 +134,52 @@ bool TcpClient::Connect()
 	if (connect_code == SOCKET_ERROR)
 		return false;
 
-	NetworkBuffer message(receive_data_array());
-	Handshake handshake = Handshake::DecodeHandshake(message.body);
-	if (handshake.con_code == ConnectionCode::Accept)
+	NetworkBuffer buffer(receive_data_array());
+	if (buffer.valid)
 	{
-		receive = true;
-		return true;
+		Handshake handshake = Handshake::DecodeHandshake(buffer.body);
+		if (handshake.con_code == ConnectionCode::Accept)
+		{
+			receive = true;
+			OnConnect(handshake.id);
+			return true;
+		}
 	}
 	return false;
 }
 
-bool TcpClient::DataAvailable(uint16 &size)
+bool TcpClient::DataAvailable(int32 &size)
 {
-	return ioctlsocket(tcp_socket, FIONREAD, (u_long*)size) != NO_ERROR && size > 0;
+	return ioctlsocket(tcp_socket, FIONREAD, reinterpret_cast<u_long*>(size)) != NO_ERROR && size > 0;
 }
 
 const NetworkBuffer &TcpClient::receive_data_array()
 {
 	NetworkBuffer buffer;
 
-	uint16 temp;
-	if (DataAvailable(temp) && temp > 0)
+	int32 temp;
+	if (DataAvailable(temp) && temp > sizeof(int32))
 	{
-		if (recv(tcp_socket, reinterpret_cast<char*>(buffer.header.data()), 4, 0) == 4)
+		byte *header = new byte[sizeof(int32)]();
+		if (recv(tcp_socket, reinterpret_cast<char*>(header), sizeof(int32), 0) != 4)
 			//invalid header
 			return NetworkBuffer();
+		buffer.header = std::vector<byte>(header, header + 4);
 	}
 	else 
 		return NetworkBuffer();
 
-	uint32 body_size = Utility::BitConverter::ToUint32(buffer.header);
-	int16 body_received = recv(tcp_socket, reinterpret_cast<char*>(buffer.body.data()), body_size, 0);
-	if (body_received == SOCKET_ERROR || body_received != body_size || WSAGetLastError() != 0)
+	int32 body_size = Utility::BitConverter::ToInt32(buffer.header);
+	byte *body = new byte[body_size]();
+	int16 received_bytes = recv(tcp_socket, reinterpret_cast<char*>(body), body_size, 0);
+	if (received_bytes == SOCKET_ERROR || received_bytes != body_size || WSAGetLastError() != 0)
 	{
 		//there was a problem receiving the body of the message or theres no body to receive
 		return NetworkBuffer();
 	}
+
+	buffer.body = std::vector<byte>(body, body + body_size);
+	buffer.valid = true;
 
 	return buffer;
 }
@@ -204,7 +214,7 @@ const NetworkMessage & TcpClient::ReceiveMessage()
 void TcpClient::send_network_message(const NetworkMessage &message, TcpClient *client)
 {
 	NetworkBuffer buffer = NetworkMessage::EncodeMessage(message);
-	int32 lenght = Utility::BitConverter::ToUint32(buffer.header);
+	int32 lenght = Utility::BitConverter::ToInt32(buffer.header);
 	int32 bytes_sent = send(client->tcp_socket, reinterpret_cast<char*>(buffer.body.data()), lenght, 0);
 	if (bytes_sent == SOCKET_ERROR || bytes_sent != lenght || WSAGetLastError() != 0)
 	{

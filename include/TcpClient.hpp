@@ -35,7 +35,7 @@ public:
 
 	bool Connect();
 
-	bool DataAvailable(uint16 &size);
+	bool DataAvailable(int32 &size);
 
 	//this method will receive the messages automaticaly and use the callback methods
 	void ReceiveMessages();
