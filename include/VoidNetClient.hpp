@@ -30,9 +30,10 @@ struct VoidNetClientAPI
 	static void Receive();
 
 private:
+	static void receive_data();
+
 	static TcpClient client;
 	static uint16 id;
-	static bool receive;
 };
 
 #endif

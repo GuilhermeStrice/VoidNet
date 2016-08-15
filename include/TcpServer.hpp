@@ -7,6 +7,7 @@
 
 #include "Defs.hpp"
 #include "TcpClient.hpp"
+#include "Handshake.hpp"
 
 #include <functional>
 
@@ -38,7 +39,7 @@ public:
 
 	const TcpClient &GetClientByID(uint16 id);
 
-	std::function<void(const NetworkMessage &message)> OnMessage; // this is going to be used for plugins
+	std::vector<std::function<void(const NetworkMessage &message)>> OnMessageFunctions; // this is going to be used for plugins
 
 private:
 	static void process_client_messages(TcpServer *server, TcpClient &client);

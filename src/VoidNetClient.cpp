@@ -52,11 +52,15 @@ void VoidNetClientAPI::SendMessage(byte distribution_mode, uint16 destination_id
 
 void VoidNetClientAPI::Receive()
 {
-	std::async(std::launch::async, &client.ReceiveMessages);
+	std::async(std::launch::async, &receive_data);
+}
+
+void VoidNetClientAPI::receive_data()
+{
+	client.ReceiveMessages();
 }
 
 void VoidNetClientAPI::Disconnect()
 {
-	receive = false;
-	SendMessageToServer
+	client.Shutdown();
 }

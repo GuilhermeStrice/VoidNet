@@ -60,7 +60,8 @@ void TcpServer::SendMessage(const NetworkMessage & message)
 			if (message.sender != client.GetID())
 				client.SendMessage(message);
 		}
-		OnMessage(message);
+		for (uint16 i = 0; i < OnMessageFunctions.size(); i++)
+			OnMessageFunctions[i](message);
 		break;
 	}
 	case AllAndMe: // this will send the message to EVERYONE including the user that sent it
@@ -70,14 +71,16 @@ void TcpServer::SendMessage(const NetworkMessage & message)
 			TcpClient client = *it;
 			client.SendMessage(message);
 		}
-		OnMessage(message);
+		for (uint16 i = 0; i < OnMessageFunctions.size(); i++)
+			OnMessageFunctions[i](message);
 		break;
 	}
 	case Server: // this will only send the message to the server
 	{
 		if (message.tag == DISCONNECT)
 			CloseSocket(message.sender);
-		OnMessage(message);
+		for (uint16 i = 0; i < OnMessageFunctions.size(); i++)
+			OnMessageFunctions[i](message);
 		break;
 	}
 	case Others: // this will send the message to others, excluding server and the user that sent it
@@ -106,7 +109,7 @@ void TcpServer::SendMessage(const NetworkMessage & message)
 	}
 }
 
-void TcpServer::SendHandshake(const Handshake &handshake)
+void TcpServer::SendHandshake(const Handshake & handshake)
 {
 	switch (handshake.distribution_mode)
 	{
