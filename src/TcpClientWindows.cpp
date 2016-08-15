@@ -1,14 +1,14 @@
 #include "TcpClient.hpp"
 #include "Utility.hpp"
 #include "Config.hpp"
-#include "NetworkBuffer.hpp"
 #include "Handshake.hpp"
 
 #include <iostream>
-#include <thread>
-#include <future>
 
-#undef SendMessage
+TcpClient::TcpClient(const SOCKET & socket)
+{
+	tcp_socket = socket;
+}
 
 bool TcpClient::initialize(const std::string &ip, uint16 port)
 {
@@ -44,26 +44,6 @@ bool TcpClient::initialize(const std::string &ip, uint16 port)
 	return initialized = true;
 }
 
-TcpClient::TcpClient()
-{
-}
-
-TcpClient::TcpClient(const SOCKET & socket)
-{
-	tcp_socket = socket;
-}
-
-TcpClient::TcpClient(const std::string &ip) : port(default_client_port)
-{
-	initialize(ip);
-}
-
-TcpClient::TcpClient(const std::string &ip, uint16 port) :
-	ip(ip), port(port)
-{
-	initialize(ip, port);
-}
-
 TcpClient::~TcpClient()
 {
 	freeaddrinfo(result);
@@ -89,48 +69,16 @@ void TcpClient::Shutdown()
 	WSACleanup();
 }
 
-const std::string &TcpClient::GetIP()
-{
-	return ip;
-}
-
-uint16 TcpClient::GetPort()
-{
-	return port;
-}
-
-void TcpClient::SetIP(const std::string & ip)
-{
-	this->ip = ip;
-}
-
-void TcpClient::SetPort(uint16 port)
-{
-	this->port = port;
-}
-
-uint16 TcpClient::GetID()
-{
-	return id;
-}
-
-void TcpClient::SetID(uint16 id)
-{
-	this->id = id;
-}
-
 bool TcpClient::Connect()
 {
 	if (!initialized)
 	{
-		if (ip.size() == 0 || std::count(ip.begin(), ip.end(), '.') != 4)
-			return false;
-		if (port == 0)
-			return false;
-		if (initialize(ip, port) != true)
+		if (ip.size() == 0 || std::count(ip.begin(), ip.end(), '.') != 4 && port == 0 && !initialize(ip, port))
 			return false;
 	}
-	uint16 connect_code = ::connect(tcp_socket, result->ai_addr, result->ai_addrlen);
+	else return false;
+
+	uint16 connect_code = connect(tcp_socket, result->ai_addr, result->ai_addrlen);
 	if (connect_code == SOCKET_ERROR)
 		return false;
 
@@ -161,10 +109,10 @@ const NetworkBuffer &TcpClient::receive_data_array()
 	if (DataAvailable(temp) && temp > sizeof(int32))
 	{
 		byte *header = new byte[sizeof(int32)]();
-		if (recv(tcp_socket, reinterpret_cast<char*>(header), sizeof(int32), 0) != 4)
+		if (recv(tcp_socket, reinterpret_cast<char*>(header), sizeof(int32), 0) != sizeof(int32))
 			//invalid header
 			return NetworkBuffer();
-		buffer.header = std::vector<byte>(header, header + 4);
+		buffer.header = std::vector<byte>(header, header + sizeof(int32));
 	}
 	else 
 		return NetworkBuffer();
@@ -184,33 +132,6 @@ const NetworkBuffer &TcpClient::receive_data_array()
 	return buffer;
 }
 
-void TcpClient::receive_data(TcpClient *client)
-{
-	while (client->receive)
-	{
-		NetworkMessage message(client->receive_data_array());
-		if (message.valid)
-		{
-			if (message.tag == CONNECT) // some user has connected
-				std::async(std::launch::async, client->OnConnect, message.sender);
-			else if (message.tag == DISCONNECT) // some user has disconnected
-				std::async(std::launch::async, client->OnDisconnect, message.sender);
-			else
-				std::async(std::launch::async, client->OnMessage, message.sender, message.tag, message.subject, message.data); // we received data
-		}
-	}
-}
-
-void TcpClient::ReceiveMessages()
-{
-	std::async(std::launch::async, &receive_data, this);
-}
-
-const NetworkMessage & TcpClient::ReceiveMessage()
-{
-	return receive_data_array();
-}
-
 void TcpClient::send_network_message(const NetworkMessage &message, TcpClient *client)
 {
 	NetworkBuffer buffer = NetworkMessage::EncodeMessage(message);
@@ -220,11 +141,6 @@ void TcpClient::send_network_message(const NetworkMessage &message, TcpClient *c
 	{
 		//something went wrong couldnt send anything/some data
 	}
-}
-
-void TcpClient::SendMessage(const NetworkMessage &message)
-{
-	std::async(std::launch::async, &send_network_message, message, this);
 }
 
 void TcpClient::SendBytes(const std::vector<byte>& bytes)
@@ -243,19 +159,4 @@ void TcpClient::SendBytes(byte * bytes, uint32 size)
 	{
 		//something went wrong couldnt send anything/some data
 	}
-}
-
-void TcpClient::SetOnDisconnectCallback(void(*func)(uint16))
-{
-	OnDisconnect = func;
-}
-
-void TcpClient::SetOnConnectCallback(void(*func)(uint16))
-{
-	OnConnect = func;
-}
-
-void TcpClient::SetOnMessageCallback(void(*func)(uint16, byte, byte, void*))
-{
-	OnMessage = func;
 }

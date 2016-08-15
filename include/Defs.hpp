@@ -5,10 +5,59 @@
 #pragma once
 #define WIN32_LEAN_AND_MEAN
 #define _WINSOCKAPI_
+#define _CRT_SECURE_NO_DEPRECATE
 #pragma comment(lib, "ws2_32.lib")
 #include <windows.h>
 #include <winsock2.h>
 #include <WS2tcpip.h>
+
+#undef GetBinaryType
+#undef GetShortPathName
+#undef GetLongPathName
+#undef GetEnvironmentStrings
+#undef SetEnvironmentStrings
+#undef FreeEnvironmentStrings
+#undef FormatMessage
+#undef EncryptFile
+#undef DecryptFile
+#undef CreateMutex
+#undef OpenMutex
+#undef CreateEvent
+#undef OpenEvent
+#undef CreateSemaphore
+#undef OpenSemaphore
+#undef LoadLibrary
+#undef GetModuleFileName
+#undef CreateProcess
+#undef GetCommandLine
+#undef GetEnvironmentVariable
+#undef SetEnvironmentVariable
+#undef ExpandEnvironmentStrings
+#undef OutputDebugString
+#undef FindResource
+#undef UpdateResource
+#undef FindAtom
+#undef AddAtom
+#undef GetSystemDirectory
+#undef GetTempPath
+#undef GetTempFileName
+#undef SetCurrentDirectory
+#undef GetCurrentDirectory
+#undef CreateDirectory
+#undef RemoveDirectory
+#undef CreateFile
+#undef DeleteFile
+#undef SearchPath
+#undef CopyFile
+#undef MoveFile
+#undef ReplaceFile
+#undef GetComputerName
+#undef SetComputerName
+#undef GetUserName
+#undef LogonUser
+#undef GetVersion
+#undef GetObject
+#undef SendMessage
 
 typedef signed char int8, sbyte;
 typedef unsigned char uint8, byte;
@@ -173,7 +222,7 @@ const uint16 default_server_port = 61250;
 enum DistributionType
 {
 	All = 1, // Others and Server
-	AllAndMe, // Other, Server and Ourselfs
+	AllAndMe, // Other, Server and the user sending the message
 	Server,
 	Others,
 	ID,
@@ -181,7 +230,7 @@ enum DistributionType
 
 enum ConnectionCode
 {
-	Accept = 0,
+	Accept,
 	Reject
 };
 

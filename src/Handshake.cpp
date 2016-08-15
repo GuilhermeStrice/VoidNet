@@ -6,10 +6,11 @@ Handshake::Handshake()
 	id = -2;
 }
 
-Handshake::Handshake(uint16 id, byte con_code)
+Handshake::Handshake(uint16 id, byte con_code, byte distribution_mode)
 {
 	this->id = id;
 	this->con_code = con_code;
+	this->distribution_mode = distribution_mode;
 }
 
 Handshake::~Handshake()

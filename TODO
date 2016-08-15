@@ -7,3 +7,7 @@ revamped BitConverter class
 new StringConverter class
 
 implement ConfigReader methods
+
+maybe i should implement error codes
+
+plugin system - idk how im going to implement it yet

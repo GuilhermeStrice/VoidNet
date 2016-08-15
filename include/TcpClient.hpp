@@ -10,7 +10,6 @@
 
 #ifdef _MSC_VER
 #pragma once
-#undef SendMessage
 #endif
 
 class TcpClient
@@ -72,13 +71,5 @@ private:
 	struct addrinfo hints;
 #endif
 };
-
-#ifdef _MSC_VER
-#ifdef UNICODE
-#define SendMessage  SendMessageW
-#else
-#define SendMessage  SendMessageA
-#endif // !UNICODE
-#endif
 
 #endif

@@ -12,7 +12,7 @@
 struct Handshake
 {
 	Handshake();
-	Handshake(uint16 id, byte con_code);
+	Handshake(uint16 id, byte con_code, byte distribution_mode);
 	~Handshake();
 
 	static const std::vector<byte> &EncodeHandshake(const Handshake &handshake);
@@ -20,6 +20,7 @@ struct Handshake
 
 	uint16 id;
 	byte con_code;
+	byte distribution_mode;
 };
 
 #endif

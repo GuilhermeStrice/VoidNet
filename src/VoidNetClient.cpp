@@ -3,8 +3,6 @@
 
 #include <future>
 
-#undef SendMessage
-
 bool VoidNetClientAPI::Connect(const std::string &ip, uint16 port)
 {
 	client.SetIP(ip);
@@ -39,27 +37,26 @@ void VoidNetClientAPI::SendMessageToAllAndMe(byte tag, byte subject, void *data)
 
 void VoidNetClientAPI::SendMessage(byte distribution_mode, uint16 destination_id, byte tag, byte subject, void *data)
 {
-	NetworkMessage message;
-	message.tag = tag;
-	message.subject = subject;
-	message.data = data;
-	message.distribution_mode = distribution_mode;
-	message.sender = id;
-	message.destination_id = destination_id;
-	client.SendMessage(message);
+	if (tag != CONNECT && tag != DISCONNECT)
+	{
+		NetworkMessage message;
+		message.tag = tag;
+		message.subject = subject;
+		message.data = data;
+		message.distribution_mode = distribution_mode;
+		message.sender = id;
+		message.destination_id = destination_id;
+		client.SendMessage(message);
+	}
 }
 
 void VoidNetClientAPI::Receive()
 {
-	std::async(std::launch::async, &process_all_data);
-}
-
-void VoidNetClientAPI::process_all_data()
-{
-	client.ReceiveMessages();
+	std::async(std::launch::async, &client.ReceiveMessages);
 }
 
 void VoidNetClientAPI::Disconnect()
 {
 	receive = false;
+	SendMessageToServer
 }

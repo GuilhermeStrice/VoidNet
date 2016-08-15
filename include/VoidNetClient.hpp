@@ -14,8 +14,6 @@
 #include <string>
 #include <thread>
 
-#undef SendMessage
-
 struct VoidNetClientAPI
 {
 	static bool Connect(const std::string &ip, uint16 port = default_client_port);
@@ -32,17 +30,9 @@ struct VoidNetClientAPI
 	static void Receive();
 
 private:
-	static void process_all_data();
-
 	static TcpClient client;
 	static uint16 id;
 	static bool receive;
 };
-
-#ifdef UNICODE
-#define SendMessage  SendMessageW
-#else
-#define SendMessage  SendMessageA
-#endif // !UNICODE
 
 #endif

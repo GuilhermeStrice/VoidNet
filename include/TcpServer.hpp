@@ -10,10 +10,6 @@
 
 #include <functional>
 
-#ifdef _MSC_VER
-#undef SendMessage
-#endif
-
 class TcpServer
 {
 public:
@@ -27,22 +23,29 @@ public:
 	void AddToClientsList(TcpClient &client);
 	bool StartServer(bool accept_connections); // if accept_connections is false the user must call the funcion AcceptConnections()
 	void AcceptConnections();
+
 	void SendMessage(const NetworkMessage &message);
+	void SendHandshake(const Handshake &handshake);
 
 	void RejectConnection(TcpClient &client);
-	void AcceptConnection(TcpClient &client);
+	void AcceptConnection(uint16 client);
 
 	void CloseSocket(TcpClient &client);
 	void CloseSocket(uint16 id);
 
+	uint16 GetMaxConnections();
+	void SetMaxConnections(uint16 value);
+
 	const TcpClient &GetClientByID(uint16 id);
 
-	std::function<void(const NetworkMessage &message)> OnMessage;
+	std::function<void(const NetworkMessage &message)> OnMessage; // this is going to be used for plugins
 
 private:
 	static void process_client_messages(TcpServer *server, TcpClient &client);
-	static void process_message(TcpServer *server, const NetworkMessage &message);
 	static void accept_connections(TcpServer *server);
+
+	void shutdown_internal();
+
 	bool initialize(uint16 port = default_server_port);
 
 	bool initialized = false;
@@ -58,13 +61,5 @@ private:
 	struct addrinfo hints;
 #endif
 };
-
-#ifdef _MSC_VER
-#ifdef UNICODE
-#define SendMessage  SendMessageW
-#else
-#define SendMessage  SendMessageA
-#endif // !UNICODE
-#endif
 
 #endif
