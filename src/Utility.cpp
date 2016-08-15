@@ -1,5 +1,9 @@
 #include "Utility.hpp"
 
+#include <fstream>
+#include <sstream>
+#include <algorithm>
+
 void Utility::Delete(void *pointer)
 {
 	if (pointer == nullptr)
@@ -14,6 +18,18 @@ void Utility::DeleteArray(void *pointer)
 		return;
 	delete[] pointer;
 	pointer = nullptr;
+}
+
+std::vector<std::string> Utility::StringConverter::Split(const std::string & str, const std::string & delimiter)
+{
+	std::vector<std::string> splited;
+	if (str.empty() && delimiter.empty())
+		return std::vector<std::string>();
+	std::stringstream ss(str);
+	std::string token;
+	while (std::getline(ss, token, delimiter[0]))
+		splited.push_back(token);
+	return splited;
 }
 
 const std::vector<byte> &Utility::BitConverter::FromUint8(uint8 number)
@@ -151,17 +167,55 @@ const std::string & Utility::StringConverter::ToString(const std::vector<byte> &
 	return std::string();
 }
 
+const std::string & Utility::StringConverter::Trim(std::string & str, char ch)
+{
+	if (str.empty() && ch == 0)
+		return std::string();
+	for (std::string::iterator it = str.begin(); it != str.end(); ++it)
+	{
+		if (*it == ch)
+			str.erase(it);
+	}
+	return str;
+}
+
 void Utility::ConfigReader::ReadConfig(const std::string & file_name)
 {
-	
+	if (file_name.empty())
+		return;
+	std::fstream file;
+	file.open(file_name);
+	if (file.is_open)
+	{
+		longlong file_lenght = file.gcount();
+		char *content = new char[file_lenght]();
+		file.read(content, file_lenght);
+		file_content = std::string(content);
+	}
 }
 
-const std::map<std::string, std::string>& Utility::ConfigReader::ReadNodes()
+void Utility::ConfigReader::ReadNodes()
 {
-	return std::map<std::string, std::string>();
+	if (file_content.empty())
+		return;
+	std::stringstream ss(file_content);
+	std::string temp;
+	std::vector<std::string> nodes_lines;
+	while (std::getline(ss, temp, '\n'))
+	{
+		if (temp.substr(0, 2) != "//")
+			nodes_lines.emplace_back(temp);
+	}
+
+	for (std::vector<std::string>::iterator it = nodes_lines.begin(); it != nodes_lines.end(); ++it)
+	{
+		std::string node_str = Utility::StringConverter::Trim(*it, ' ');
+		std::vector<std::string> node = Utility::StringConverter::Split(node_str, "=");
+		nodes.insert(std::pair<std::string, std::string>(node.at(0), node.at(1)));
+	}
 }
 
-const std::string & Utility::ConfigReader::operator[](uint16 index)
+const std::string & Utility::ConfigReader::operator[](const std::string &key)
 {
-	return std::string();
+	return nodes.at(key);
 }

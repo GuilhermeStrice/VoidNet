@@ -12,9 +12,8 @@
 #pragma once
 #endif
 
-class TcpClient
+struct TcpClient
 {
-public:
 	TcpClient();
 	TcpClient(const SOCKET &socket);
 	TcpClient(const std::string &ip);

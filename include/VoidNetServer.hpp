@@ -5,4 +5,12 @@
 #pragma once
 #endif
 
+#include "TcpServer.hpp"
+
+struct VoidNetServer
+{
+private:
+	TcpServer server;
+};
+
 #endif

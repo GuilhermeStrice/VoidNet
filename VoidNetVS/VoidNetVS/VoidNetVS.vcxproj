@@ -28,6 +28,7 @@
     <ClInclude Include="..\..\include\Serializer.hpp" />
     <ClInclude Include="..\..\include\TcpClient.hpp" />
     <ClInclude Include="..\..\include\TcpServer.hpp" />
+    <ClInclude Include="..\..\include\UdpClient.hpp" />
     <ClInclude Include="..\..\include\Utility.hpp" />
     <ClInclude Include="..\..\include\VoidNetClient.hpp" />
     <ClInclude Include="..\..\include\VoidNetServer.hpp" />

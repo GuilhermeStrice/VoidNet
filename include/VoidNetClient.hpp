@@ -32,7 +32,7 @@ struct VoidNetClientAPI
 private:
 	static void receive_data();
 
-	static TcpClient client;
+	static TcpClient tcp_client;
 	static uint16 id;
 };
 

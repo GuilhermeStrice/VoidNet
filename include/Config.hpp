@@ -13,8 +13,6 @@ struct Config
 	static void SetLogToFile(bool value);
 	static bool GetLogToFile();
 
-	
-
 private:
 	static bool using_console;
 	static bool log_to_file;

@@ -5,9 +5,9 @@
 
 bool VoidNetClientAPI::Connect(const std::string &ip, uint16 port)
 {
-	client.SetIP(ip);
-	client.SetPort(port);
-	return client.Connect();
+	tcp_client.SetIP(ip);
+	tcp_client.SetPort(port);
+	return tcp_client.Connect();
 }
 
 void VoidNetClientAPI::SendMessageToServer(byte tag, byte subject, void *data)
@@ -46,7 +46,7 @@ void VoidNetClientAPI::SendMessage(byte distribution_mode, uint16 destination_id
 		message.distribution_mode = distribution_mode;
 		message.sender = id;
 		message.destination_id = destination_id;
-		client.SendMessage(message);
+		tcp_client.SendMessage(message);
 	}
 }
 
@@ -57,10 +57,10 @@ void VoidNetClientAPI::Receive()
 
 void VoidNetClientAPI::receive_data()
 {
-	client.ReceiveMessages();
+	tcp_client.ReceiveMessages();
 }
 
 void VoidNetClientAPI::Disconnect()
 {
-	client.Shutdown();
+	tcp_client.Shutdown();
 }

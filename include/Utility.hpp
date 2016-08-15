@@ -57,14 +57,17 @@ struct Utility
 		static const std::string &ToString(const std::vector<byte> &bytes);
 
 		static const std::string &ToString(const std::vector<byte> &bytes, uint16 start_index = 0, uint16 lenght = 0);
+
+		static const std::string &Trim(std::string &str, char ch);
+		static std::vector<std::string> Split(const std::string &str, const std::string &delimiter);
 	};
 
 	struct ConfigReader
 	{
 		void ReadConfig(const std::string &file_name);
-		const std::map<std::string, std::string> &ReadNodes();
+		void ReadNodes();
 
-		const std::string &operator[](uint16 index);
+		const std::string &operator[](const std::string &key);
 
 	private:
 		std::map<std::string, std::string> nodes;

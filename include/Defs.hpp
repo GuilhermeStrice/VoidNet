@@ -216,6 +216,8 @@ typedef unsigned long long uint64;
 
 #endif // compiler data type defenitions
 
+typedef long long longlong;
+
 const uint16 default_client_port = 60250;
 const uint16 default_server_port = 61250;
 

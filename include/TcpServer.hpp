@@ -11,9 +11,8 @@
 
 #include <functional>
 
-class TcpServer
+struct TcpServer
 {
-public:
 	TcpServer();
 	TcpServer(uint16 port = default_server_port);
 	~TcpServer();

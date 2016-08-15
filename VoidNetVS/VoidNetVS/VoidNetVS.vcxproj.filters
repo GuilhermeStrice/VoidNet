@@ -45,6 +45,9 @@
     <ClInclude Include="..\..\include\Handshake.hpp">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\UdpClient.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Init.cpp">
