@@ -21,12 +21,13 @@ const std::vector<byte>& Handshake::EncodeHandshake(const Handshake & handshake)
 {
 	std::vector<byte> handshake_bytes;
 
-	std::vector<byte> id = Utility::BitConverter::FromUint16(handshake.id);
-	std::vector<byte> con_mode = Utility::BitConverter::FromUint8(handshake.con_code);
-	
-	handshake_bytes.emplace_back(Utility::BitConverter::FromUint8(1));
-	handshake_bytes.emplace_back(id.begin(), id.end());
-	handshake_bytes.emplace_back(con_mode.begin(), con_mode.end());
+	std::vector<byte> id = Utility::BitConverter::ToBytes(handshake.id);
+	std::vector<byte> con_mode = Utility::BitConverter::ToBytes(handshake.con_code);
+	std::vector<byte> type = Utility::BitConverter::ToBytes(static_cast<uint8>(1));
+
+	handshake_bytes.insert(handshake_bytes.begin(), type.begin(), type.end());
+	handshake_bytes.insert(handshake_bytes.begin(), id.begin(), id.end());
+	handshake_bytes.insert(handshake_bytes.begin(), con_mode.begin(), con_mode.end());
 
 	return handshake_bytes;
 }

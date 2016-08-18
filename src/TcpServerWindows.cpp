@@ -82,7 +82,7 @@ void TcpServer::accept_connections(TcpServer *server)
 		}
 
 		TcpClient client(client_socket);
-		server->AddToClientsList(client);
+		server->add_to_clients_list(client);
 
 		std::async(std::launch::async, &process_client_messages, server, client);
 	}

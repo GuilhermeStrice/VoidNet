@@ -38,18 +38,18 @@
     <ClCompile Include="..\..\src\Handshake.cpp" />
     <ClCompile Include="..\..\src\Init.cpp" />
     <ClCompile Include="..\..\src\InitWindows.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\src\NetworkBuffer.cpp" />
     <ClCompile Include="..\..\src\NetworkMessage.cpp" />
     <ClCompile Include="..\..\src\Serializer.cpp" />
     <ClCompile Include="..\..\src\TcpClient.cpp" />
     <ClCompile Include="..\..\src\TcpClientWindows.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\src\TcpServer.cpp" />
     <ClCompile Include="..\..\src\TcpServerWindows.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\src\Utility.cpp" />
     <ClCompile Include="..\..\src\VoidNetClient.cpp" />

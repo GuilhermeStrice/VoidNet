@@ -32,7 +32,7 @@ std::vector<std::string> Utility::StringConverter::Split(const std::string & str
 	return splited;
 }
 
-const std::vector<byte> &Utility::BitConverter::FromUint8(uint8 number)
+const std::vector<byte> &Utility::BitConverter::ToBytes(uint8 number)
 {
 	return std::vector<byte>();
 }
@@ -42,7 +42,7 @@ uint8 Utility::BitConverter::ToUint8(const std::vector<byte> &bytes, uint16 star
 	return uint8();
 }
 
-const std::vector<byte> &Utility::BitConverter::FromUint16(uint16 number)
+const std::vector<byte> &Utility::BitConverter::ToBytes(uint16 number)
 {
 	return std::vector<byte>();
 }
@@ -52,7 +52,7 @@ uint16 Utility::BitConverter::ToUint16(const std::vector<byte> &bytes, uint16 st
 	return uint16();
 }
 
-const std::vector<byte> & Utility::BitConverter::FromUint32(uint32 number)
+const std::vector<byte> & Utility::BitConverter::ToBytes(uint32 number)
 {
 	return std::vector<byte>();
 }
@@ -62,7 +62,7 @@ uint32 Utility::BitConverter::ToUint32(const std::vector<byte> & bytes, uint16 s
 	return uint32();
 }
 
-const std::vector<byte> & Utility::BitConverter::FromUint64(uint64 number)
+const std::vector<byte> & Utility::BitConverter::ToBytes(uint64 number)
 {
 	return std::vector<byte>();
 }
@@ -72,7 +72,7 @@ uint64 Utility::BitConverter::ToUint64(const std::vector<byte> & bytes, uint16 s
 	return uint64();
 }
 
-const std::vector<byte> & Utility::BitConverter::FromInt8(int8 number)
+const std::vector<byte> & Utility::BitConverter::ToBytes(int8 number)
 {
 	return std::vector<byte>();
 }
@@ -82,7 +82,7 @@ int8 Utility::BitConverter::ToInt8(const std::vector<byte> & bytes, uint16 start
 	return int8();
 }
 
-const std::vector<byte> & Utility::BitConverter::FromInt16(int16 number)
+const std::vector<byte> & Utility::BitConverter::ToBytes(int16 number)
 {
 	return std::vector<byte>();
 }
@@ -92,7 +92,7 @@ int16 Utility::BitConverter::ToInt16(const std::vector<byte> & bytes, uint16 sta
 	return int16();
 }
 
-const std::vector<byte> & Utility::BitConverter::FromInt32(int32 number)
+const std::vector<byte> & Utility::BitConverter::ToBytes(int32 number)
 {
 	return std::vector<byte>();
 }
@@ -102,7 +102,7 @@ int32 Utility::BitConverter::ToInt32(const std::vector<byte> & bytes, uint16 sta
 	return int32();
 }
 
-const std::vector<byte> & Utility::BitConverter::FromInt64(int64 number)
+const std::vector<byte> & Utility::BitConverter::ToBytes(int64 number)
 {
 	return std::vector<byte>();
 }
@@ -160,6 +160,11 @@ const std::string & Utility::StringConverter::ToString(int64 value)
 const std::string & Utility::StringConverter::ToString(const std::vector<byte>& bytes)
 {
 	return std::string();
+}
+
+const std::vector<byte>& Utility::StringConverter::ToBytes(const std::string & str)
+{
+	return std::vector<byte>();
 }
 
 const std::string & Utility::StringConverter::ToString(const std::vector<byte> & bytes, uint16 start_index, uint16 lenght)

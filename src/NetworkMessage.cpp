@@ -29,33 +29,36 @@ const NetworkBuffer &NetworkMessage::EncodeMessage(const NetworkMessage &message
 	{
 		NetworkBuffer net_buffer;
 
-		if (message.subject != 1)
+		if (!IS_HANDSHAKE(message))
 		{
-			std::vector<byte> sender = Utility::BitConverter::FromUint16(message.sender);
-			std::vector<byte> distribution_mode = Utility::BitConverter::FromUint8(message.distribution_mode);
-			std::vector<byte> destination_id = Utility::BitConverter::FromUint16(message.destination_id);
-			std::vector<byte> tag = Utility::BitConverter::FromUint8(message.tag);
-			std::vector<byte> subject = Utility::BitConverter::FromUint16(message.subject);
+			std::vector<byte> sender = Utility::BitConverter::ToBytes(message.sender);
+			std::vector<byte> distribution_mode = Utility::BitConverter::ToBytes(message.distribution_mode);
+			std::vector<byte> destination_id = Utility::BitConverter::ToBytes(message.destination_id);
+			std::vector<byte> tag = Utility::BitConverter::ToBytes(message.tag);
+			std::vector<byte> subject = Utility::BitConverter::ToBytes(message.subject);
 			std::vector<byte> data;
 			if (message.data != nullptr)
 				data = Serializer::to_bytes(message.data);
+			std::vector<byte> type = Utility::BitConverter::ToBytes(0);
 
-			net_buffer.body.emplace_back(Utility::BitConverter::FromInt8(0));
-			net_buffer.body.emplace_back(sender.begin(), sender.end());
-			net_buffer.body.emplace_back(distribution_mode.begin(), distribution_mode.end());
-			net_buffer.body.emplace_back(destination_id.begin(), destination_id.end());
-			net_buffer.body.emplace_back(tag.begin(), tag.end());
-			net_buffer.body.emplace_back(subject.begin(), subject.end());
+			net_buffer.body.insert(net_buffer.body.begin(), type.begin(), type.end());
+			net_buffer.body.insert(net_buffer.body.begin(), sender.begin(), sender.end());
+			net_buffer.body.insert(net_buffer.body.begin(), distribution_mode.begin(), distribution_mode.end());
+			net_buffer.body.insert(net_buffer.body.begin(), destination_id.begin(), destination_id.end());
+			net_buffer.body.insert(net_buffer.body.begin(), tag.begin(), tag.end());
+			net_buffer.body.insert(net_buffer.body.begin(), subject.begin(), subject.end());
 			if (message.data != nullptr && data.size() > 0)
-				net_buffer.body.emplace_back(data.begin(), data.end());
-			net_buffer.header = Utility::BitConverter::FromInt32(sender.size() + distribution_mode.size() + destination_id.size() +
+				net_buffer.body.insert(net_buffer.body.begin(), data.begin(), data.end());
+			net_buffer.header = Utility::BitConverter::ToBytes(sender.size() + distribution_mode.size() + destination_id.size() +
 				tag.size() + subject.size() + data.size());
 			net_buffer.valid = true;
 		}
 		else
 		{
 			std::vector<byte> handshake_bytes = Handshake::EncodeHandshake(Handshake::NetworkMessageToHandshake(message));
-			net_buffer.header = Utility::BitConverter::FromInt32(handshake_bytes.size());
+			std::vector<byte> type = Utility::BitConverter::ToBytes(static_cast<uint8>(1));
+			handshake_bytes.insert(handshake_bytes.begin(), type.begin(), type.end());
+			net_buffer.header = Utility::BitConverter::ToBytes(handshake_bytes.size());
 			net_buffer.body = handshake_bytes;
 		}
 		return net_buffer;

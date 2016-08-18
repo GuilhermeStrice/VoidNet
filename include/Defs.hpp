@@ -243,4 +243,6 @@ enum InternalTags
 	DISCONNECT = 255,
 };
 
+#define IS_HANDSHAKE(name) name.subject == 1 && (name.tag == DISCONNECT || name.tag == CONNECT || name.tag == ConnectionCode::Accept || name.tag == ConnectionCode::Close || name.tag == ConnectionCode::Reject)
+
 #endif // DEFS_HPP

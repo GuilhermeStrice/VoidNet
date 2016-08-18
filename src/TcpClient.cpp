@@ -56,7 +56,7 @@ void TcpClient::receive_data(TcpClient *client)
 		NetworkMessage message(client->ReceiveMessage());
 		if (message.valid)
 		{
-			if (message.subject == 1) // its a handshake
+			if (IS_HANDSHAKE(message))
 			{
 				if (message.tag == CONNECT) // some user has connected - not us, never
 					std::async(std::launch::async, client->OnConnect, message.sender);

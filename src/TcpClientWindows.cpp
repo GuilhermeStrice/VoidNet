@@ -80,7 +80,7 @@ bool TcpClient::Connect()
 		return false;
 
 	NetworkMessage message(receive_data_array());
-	if (message.valid && message.subject == 1)
+	if (IS_HANDSHAKE(message))
 	{
 		if (message.tag == ConnectionCode::Accept)
 		{
