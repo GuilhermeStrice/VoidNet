@@ -233,7 +233,8 @@ enum DistributionType
 enum ConnectionCode
 {
 	Accept,
-	Reject
+	Reject,
+	Close
 };
 
 enum InternalTags

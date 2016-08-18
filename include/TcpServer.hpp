@@ -19,13 +19,10 @@ struct TcpServer
 
 	void Shutdown();
 
-	uint16 AllocateID();
-	void AddToClientsList(TcpClient &client);
 	bool StartServer(bool accept_connections); // if accept_connections is false the user must call the funcion AcceptConnections()
 	void AcceptConnections();
 
 	void SendMessage(const NetworkMessage &message);
-	void SendHandshake(const Handshake &handshake);
 
 	void RejectConnection(TcpClient &client);
 	void AcceptConnection(uint16 client);
@@ -43,6 +40,10 @@ struct TcpServer
 private:
 	static void process_client_messages(TcpServer *server, TcpClient &client);
 	static void accept_connections(TcpServer *server);
+
+	void add_to_clients_list(TcpClient &client);
+
+	uint16 allocate_id();
 
 	void shutdown_internal();
 

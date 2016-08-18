@@ -53,11 +53,8 @@ TcpClient::~TcpClient()
 
 void TcpClient::Shutdown()
 {
-	NetworkMessage message;
-	message.sender = id;
-	message.distribution_mode = Server;
-	message.tag = DISCONNECT;
-	SendMessage(message);
+	Handshake handshake(id, Close, Server);
+	SendMessage(Handshake::HandshakeToNetworkMessage(handshake));
 	uint16 code = closesocket(tcp_socket);
 	if (code == SOCKET_ERROR)
 	{
@@ -82,14 +79,13 @@ bool TcpClient::Connect()
 	if (connect_code == SOCKET_ERROR)
 		return false;
 
-	NetworkBuffer buffer(receive_data_array());
-	if (buffer.valid)
+	NetworkMessage message(receive_data_array());
+	if (message.valid && message.subject == 1)
 	{
-		Handshake handshake = Handshake::DecodeHandshake(buffer.body);
-		if (handshake.con_code == ConnectionCode::Accept)
+		if (message.tag == ConnectionCode::Accept)
 		{
 			receive = true;
-			OnConnect(handshake.id);
+			OnConnect(message.sender);
 			return true;
 		}
 	}

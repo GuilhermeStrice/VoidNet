@@ -56,6 +56,8 @@ struct Utility
 		static const std::string &ToString(int64 value);
 		static const std::string &ToString(const std::vector<byte> &bytes);
 
+		static const std::vector<byte> &FromString(const std::string &str);
+
 		static const std::string &ToString(const std::vector<byte> &bytes, uint16 start_index = 0, uint16 lenght = 0);
 
 		static const std::string &Trim(std::string &str, char ch);

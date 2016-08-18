@@ -24,8 +24,9 @@ const std::vector<byte>& Handshake::EncodeHandshake(const Handshake & handshake)
 	std::vector<byte> id = Utility::BitConverter::FromUint16(handshake.id);
 	std::vector<byte> con_mode = Utility::BitConverter::FromUint8(handshake.con_code);
 	
-	handshake_bytes.insert(handshake_bytes.end(), id.begin(), id.end());
-	handshake_bytes.insert(handshake_bytes.end(), con_mode.begin(), con_mode.end());
+	handshake_bytes.emplace_back(Utility::BitConverter::FromUint8(1));
+	handshake_bytes.emplace_back(id.begin(), id.end());
+	handshake_bytes.emplace_back(con_mode.begin(), con_mode.end());
 
 	return handshake_bytes;
 }
@@ -34,8 +35,25 @@ Handshake & Handshake::DecodeHandshake(const std::vector<byte>& bytes)
 {
 	Handshake handshake;
 	
-	handshake.id = Utility::BitConverter::ToUint16(bytes);
-	handshake.con_code = Utility::BitConverter::ToUint8(bytes, 2);
+	handshake.id = Utility::BitConverter::ToUint16(bytes, 1);
+	handshake.con_code = Utility::BitConverter::ToUint8(bytes, 3);
 
+	return handshake;
+}
+
+const NetworkMessage & Handshake::HandshakeToNetworkMessage(const Handshake & handshake)
+{
+	NetworkMessage message;
+	message.sender = handshake.id;
+	message.tag = handshake.con_code;
+	message.subject = 1;
+	return message;
+}
+
+const Handshake & Handshake::NetworkMessageToHandshake(const NetworkMessage & message)
+{
+	Handshake handshake;
+	handshake.id = message.sender;
+	handshake.con_code = message.tag;
 	return handshake;
 }

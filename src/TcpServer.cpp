@@ -34,8 +34,11 @@ void TcpServer::Shutdown()
 
 void TcpServer::AcceptConnections()
 {
-	running = true;
-	std::async(std::launch::async, &accept_connections, this);
+	if (!running)
+	{
+		running = true;
+		std::async(std::launch::async, &accept_connections, this);
+	}
 }
 
 void TcpServer::process_client_messages(TcpServer *server, TcpClient & client)
@@ -109,36 +112,7 @@ void TcpServer::SendMessage(const NetworkMessage & message)
 	}
 }
 
-void TcpServer::SendHandshake(const Handshake & handshake)
-{
-	switch (handshake.distribution_mode)
-	{
-	case AllAndMe: // this will send the message to EVERYONE including the user that sent it
-	{
-		for (std::vector<TcpClient>::iterator it = clients.begin(); it != clients.end(); ++it)
-		{
-			TcpClient client = *it;
-			client.SendBytes(Handshake::EncodeHandshake(handshake));
-		}
-		break;
-	}
-	case ID: // this will send the message to a specific id
-	{
-		for (std::vector<TcpClient>::iterator it = clients.begin(); it != clients.end(); ++it)
-		{
-			TcpClient client = *it;
-			if (handshake.id == client.GetID())
-			{
-				client.SendBytes(Handshake::EncodeHandshake(handshake));
-				break;
-			}
-		}
-		break;
-	}
-	}
-}
-
-uint16 TcpServer::AllocateID() // this function is only used in the AddToClientsList function
+uint16 TcpServer::allocate_id() // this function is only used in the AddToClientsList function
 {
 	for (uint16 i = 1; i < max_connections; ++i)
 	{
@@ -159,9 +133,9 @@ uint16 TcpServer::AllocateID() // this function is only used in the AddToClients
 	return 0;
 }
 
-void TcpServer::AddToClientsList(TcpClient & client_socket)
+void TcpServer::add_to_clients_list(TcpClient & client_socket)
 {
-	uint16 id = AllocateID();
+	uint16 id = allocate_id();
 	if (id > 0)
 	{
 		client_socket.SetID(id);
@@ -179,14 +153,13 @@ void TcpServer::AddToClientsList(TcpClient & client_socket)
 void TcpServer::RejectConnection(TcpClient &client)
 {
 	Handshake handshake(client.GetID(), ConnectionCode::Reject, ID);
-	client.SendBytes(Handshake::EncodeHandshake(handshake));
-	CloseSocket(client);
+	SendMessage(Handshake::HandshakeToNetworkMessage(handshake));
 }
 
 void TcpServer::AcceptConnection(uint16 id)
 {
 	Handshake handshake(id, ConnectionCode::Accept, AllAndMe);
-	SendHandshake(handshake);
+	SendMessage(Handshake::HandshakeToNetworkMessage(handshake));
 }
 
 void TcpServer::CloseSocket(TcpClient & client)

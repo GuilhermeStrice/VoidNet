@@ -185,10 +185,10 @@ void Utility::ConfigReader::ReadConfig(const std::string & file_name)
 		return;
 	std::fstream file;
 	file.open(file_name);
-	if (file.is_open)
+	if (file.is_open())
 	{
 		longlong file_lenght = file.gcount();
-		char *content = new char[file_lenght]();
+		char *content = new char[static_cast<uint32>(file_lenght)]();
 		file.read(content, file_lenght);
 		file_content = std::string(content);
 	}

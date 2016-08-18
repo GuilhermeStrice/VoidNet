@@ -9,6 +9,8 @@
 
 struct VoidNetServer
 {
+	void StartServer(uint16 port);
+	void StopServer();
 private:
 	TcpServer server;
 };

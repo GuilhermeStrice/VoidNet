@@ -56,10 +56,13 @@ void TcpClient::receive_data(TcpClient *client)
 		NetworkMessage message(client->ReceiveMessage());
 		if (message.valid)
 		{
-			if (message.tag == CONNECT) // some user has connected
-				std::async(std::launch::async, client->OnConnect, message.sender);
-			else if (message.tag == DISCONNECT) // some user has disconnected
-				std::async(std::launch::async, client->OnDisconnect, message.sender);
+			if (message.subject == 1) // its a handshake
+			{
+				if (message.tag == CONNECT) // some user has connected - not us, never
+					std::async(std::launch::async, client->OnConnect, message.sender);
+				else if (message.tag == DISCONNECT || message.tag == ConnectionCode::Close) // some user has disconnected
+					std::async(std::launch::async, client->OnDisconnect, message.sender);
+			}
 			else
 				std::async(std::launch::async, client->OnMessage, message.sender, message.tag, message.subject, message.data); // we received data
 		}

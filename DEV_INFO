@@ -1,2 +1,4 @@
 id -1 is server / valid message if other parameters are valid as well
 id -2 is invalid network message
+
+NetworkMessage: subject 1 is reserved for handshake validation
