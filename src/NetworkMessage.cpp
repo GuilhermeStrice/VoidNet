@@ -81,7 +81,7 @@ const NetworkMessage &NetworkMessage::DecodeMessage(const NetworkBuffer &buffer)
 			message.destination_id = Utility::BitConverter::ToUint16(buffer.body, 4);
 			message.tag = buffer.body[6];
 			message.subject = Utility::BitConverter::ToUint8(buffer.body, 7);
-			message.valid = message.sender != -2 && message.tag != CONNECT && message.tag != DISCONNECT;
+			message.valid = message.sender != -2 && message.tag != ConnectTag && message.tag != DisconnectTag;
 			if (Utility::BitConverter::ToInt32(buffer.header) < 9)
 				return message;
 			void *object;
@@ -94,8 +94,7 @@ const NetworkMessage &NetworkMessage::DecodeMessage(const NetworkBuffer &buffer)
 			message.sender = Utility::BitConverter::ToUint16(buffer.body, 1);
 			message.tag = Utility::BitConverter::ToUint8(buffer.body, 3);
 			message.subject = 1;
-			message.valid = message.sender != -2 && (message.tag == DISCONNECT || message.tag == CONNECT || message.tag == ConnectionCode::Accept ||
-				message.tag == ConnectionCode::Close || message.tag == ConnectionCode::Reject);
+			message.valid = message.sender != -2 && IS_HANDSHAKE(message);
 			return message;
 			break;
 		}

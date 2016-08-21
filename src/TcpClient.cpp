@@ -4,10 +4,6 @@
 #include <string>
 #include <future>
 
-TcpClient::TcpClient()
-{
-}
-
 TcpClient::TcpClient(const std::string &ip) : port(default_client_port)
 {
 	initialize(ip);
@@ -58,9 +54,9 @@ void TcpClient::receive_data(TcpClient *client)
 		{
 			if (IS_HANDSHAKE(message))
 			{
-				if (message.tag == CONNECT) // some user has connected - not us, never
+				if (message.tag == ConnectTag) // some user has connected - not us, never
 					std::async(std::launch::async, client->OnConnect, message.sender);
-				else if (message.tag == DISCONNECT || message.tag == ConnectionCode::Close) // some user has disconnected
+				else if (message.tag == DisconnectTag || message.tag == Close) // some user has disconnected
 					std::async(std::launch::async, client->OnDisconnect, message.sender);
 			}
 			else

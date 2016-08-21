@@ -80,7 +80,7 @@ void TcpServer::SendMessage(const NetworkMessage & message)
 	}
 	case Server: // this will only send the message to the server
 	{
-		if (message.tag == DISCONNECT)
+		if (message.tag == DisconnectTag)
 			CloseSocket(message.sender);
 		for (uint16 i = 0; i < OnMessageFunctions.size(); i++)
 			OnMessageFunctions[i](message);
@@ -152,13 +152,13 @@ void TcpServer::add_to_clients_list(TcpClient & client_socket)
 
 void TcpServer::RejectConnection(TcpClient &client)
 {
-	Handshake handshake(client.GetID(), ConnectionCode::Reject, ID);
+	Handshake handshake(client.GetID(), Reject, ID);
 	SendMessage(Handshake::HandshakeToNetworkMessage(handshake));
 }
 
 void TcpServer::AcceptConnection(uint16 id)
 {
-	Handshake handshake(id, ConnectionCode::Accept, AllAndMe);
+	Handshake handshake(id, Accept, AllAndMe);
 	SendMessage(Handshake::HandshakeToNetworkMessage(handshake));
 }
 

@@ -12,12 +12,10 @@ TcpClient::TcpClient(const SOCKET & socket)
 
 bool TcpClient::initialize(const std::string &ip, uint16 port)
 {
-	if (ip.size() == 0 || std::count(ip.begin(), ip.end(), '.') != 4)
+	if (ip.size() == 0 || std::count(ip.begin(), ip.end(), '.') != 4 || port == 0)
 		return false; 
-	if (port == 0)
-		return false;
 	ZeroMemory(&hints, sizeof(hints));
-	hints.ai_family = AF_UNSPEC;
+	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
 
@@ -82,7 +80,7 @@ bool TcpClient::Connect()
 	NetworkMessage message(receive_data_array());
 	if (IS_HANDSHAKE(message))
 	{
-		if (message.tag == ConnectionCode::Accept)
+		if (message.tag == Accept)
 		{
 			receive = true;
 			OnConnect(message.sender);

@@ -5,9 +5,15 @@
 #pragma once
 #endif
 
+#include "Defs.hpp"
+#include "NetworkMessage.hpp"
+
+#include <string>
+#include <functional>
+
 struct UdpClient
 {
-
+	
 };
 
 #endif

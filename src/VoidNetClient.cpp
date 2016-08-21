@@ -37,7 +37,7 @@ void VoidNetClientAPI::SendMessageToAllAndMe(byte tag, byte subject, void *data)
 
 void VoidNetClientAPI::SendMessage(byte distribution_mode, uint16 destination_id, byte tag, byte subject, void *data)
 {
-	if (tag != CONNECT && tag != DISCONNECT)
+	if (tag != ConnectTag && tag != DisconnectTag)
 	{
 		NetworkMessage message;
 		message.tag = tag;

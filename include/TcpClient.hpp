@@ -14,7 +14,6 @@
 
 struct TcpClient
 {
-	TcpClient();
 	TcpClient(const SOCKET &socket);
 	TcpClient(const std::string &ip);
 	TcpClient(const std::string &ip, uint16 port = default_client_port);
