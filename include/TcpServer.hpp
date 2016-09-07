@@ -22,7 +22,7 @@ struct TcpServer
 	bool StartServer(bool accept_connections); // if accept_connections is false the user must call the funcion AcceptConnections()
 	void AcceptConnections();
 
-	void SendMessage(const NetworkMessage &message);
+	bool SendMessage(const NetworkMessage &message);
 
 	void RejectConnection(TcpClient &client);
 	void AcceptConnection(uint16 client);
@@ -56,11 +56,9 @@ private:
 
 	std::vector<TcpClient> clients;
 
-#ifdef _MSC_VER
 	SOCKET server_tcp_socket = INVALID_SOCKET;
 	struct addrinfo *result = nullptr;
 	struct addrinfo hints;
-#endif
 };
 
 #endif

@@ -1,13 +1,14 @@
 initialization code for other operating systems - currently VoidNet only supports windows
 initialization code for tcp client and tcp server for other operating systems - currently windows only
-handle SendNetworkMessage errors for windows
-handle ReceiveDataArray errors for windows
 
 revamped BitConverter class
 new StringConverter class
+IPUtil class for other os's
 
-maybe i should implement error codes
+maybe i should implement error codes and exceptions
 
 plugin system - idk how im going to implement it yet
 
 maybe i should use virtual methods for the server and client, maybe...
+
+TcpServer::SendMessage rework

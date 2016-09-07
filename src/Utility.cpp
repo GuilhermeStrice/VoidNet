@@ -162,6 +162,46 @@ const std::string & Utility::StringConverter::ToString(const std::vector<byte>& 
 	return std::string();
 }
 
+uint8 Utility::StringConverter::ToUint8(const std::string & str)
+{
+	return uint8();
+}
+
+uint16 Utility::StringConverter::ToUint16(const std::string & str)
+{
+	return uint16();
+}
+
+uint32 Utility::StringConverter::ToUint32(const std::string & str)
+{
+	return uint32();
+}
+
+uint64 Utility::StringConverter::ToUint64(const std::string & str)
+{
+	return uint64();
+}
+
+int8 Utility::StringConverter::ToInt8(const std::string & str)
+{
+	return int8();
+}
+
+int16 Utility::StringConverter::ToInt16(const std::string & str)
+{
+	return int16();
+}
+
+int32 Utility::StringConverter::ToInt32(const std::string & str)
+{
+	return int32();
+}
+
+int64 Utility::StringConverter::ToInt64(const std::string & str)
+{
+	return int64();
+}
+
 const std::vector<byte>& Utility::StringConverter::ToBytes(const std::string & str)
 {
 	return std::vector<byte>();
@@ -223,4 +263,18 @@ void Utility::ConfigReader::ReadNodes()
 const std::string & Utility::ConfigReader::operator[](const std::string &key)
 {
 	return nodes.at(key);
+}
+
+bool Utility::IPUtil::ValidIPV4(const std::string & ip)
+{
+	std::vector<std::string> splitted_address = Utility::StringConverter::Split(ip, ".");
+	if (splitted_address.size() != 4)
+		return false;
+	uint8 a1 = Utility::StringConverter::ToUint8(splitted_address[0]);
+	uint8 a2 = Utility::StringConverter::ToUint8(splitted_address[1]);
+	uint8 a3 = Utility::StringConverter::ToUint8(splitted_address[2]);
+	uint8 a4 = Utility::StringConverter::ToUint8(splitted_address[3]);
+
+	return a1 != 0 && a2 != 0 && a3 != 0 && a4 != 0 &&
+		a1 != 255 && a2 != 255 && a3 != 255 && a4 != 255;
 }

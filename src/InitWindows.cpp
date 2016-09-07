@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-bool Initialization::initialize()
+bool Initialization::Initialize()
 {
 	uint16 code = WSAStartup(MAKEWORD(2, 2), &wsa_data);
 	if (code != 0)
@@ -13,4 +13,9 @@ bool Initialization::initialize()
 		return false;
 	}
 	return true;
+}
+
+const WSADATA &Initialization::GetData()
+{
+	return wsa_data;
 }

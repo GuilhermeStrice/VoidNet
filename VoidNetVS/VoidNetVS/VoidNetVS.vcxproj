@@ -29,6 +29,7 @@
     <ClInclude Include="..\..\include\TcpClient.hpp" />
     <ClInclude Include="..\..\include\TcpServer.hpp" />
     <ClInclude Include="..\..\include\UdpClient.hpp" />
+    <ClInclude Include="..\..\include\UdpServer.hpp" />
     <ClInclude Include="..\..\include\Utility.hpp" />
     <ClInclude Include="..\..\include\VoidNetClient.hpp" />
     <ClInclude Include="..\..\include\VoidNetServer.hpp" />
@@ -44,17 +45,9 @@
     <ClCompile Include="..\..\src\NetworkMessage.cpp" />
     <ClCompile Include="..\..\src\Serializer.cpp" />
     <ClCompile Include="..\..\src\TcpClient.cpp" />
-    <ClCompile Include="..\..\src\TcpClientWindows.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\..\src\TcpServer.cpp" />
-    <ClCompile Include="..\..\src\TcpServerWindows.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\..\src\UdpClient.cpp" />
-    <ClCompile Include="..\..\src\UdpClientWindows.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="..\..\src\UdpServer.cpp" />
     <ClCompile Include="..\..\src\Utility.cpp" />
     <ClCompile Include="..\..\src\VoidNetClient.cpp" />
   </ItemGroup>

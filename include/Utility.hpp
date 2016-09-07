@@ -56,12 +56,26 @@ struct Utility
 		static const std::string &ToString(int64 value);
 		static const std::string &ToString(const std::vector<byte> &bytes);
 
+		static uint8 ToUint8(const std::string &str);
+		static uint16 ToUint16(const std::string &str);
+		static uint32 ToUint32(const std::string &str);
+		static uint64 ToUint64(const std::string &str);
+		static int8 ToInt8(const std::string &str);
+		static int16 ToInt16(const std::string &str);
+		static int32 ToInt32(const std::string &str);
+		static int64 ToInt64(const std::string &str);
+
 		static const std::vector<byte> &ToBytes(const std::string &str);
 
 		static const std::string &ToString(const std::vector<byte> &bytes, uint16 start_index = 0, uint16 lenght = 0);
 
 		static const std::string &Trim(std::string &str, char ch);
 		static std::vector<std::string> Split(const std::string &str, const std::string &delimiter);
+	};
+
+	struct IPUtil
+	{
+		static bool ValidIPV4(const std::string &ip);
 	};
 
 	struct ConfigReader

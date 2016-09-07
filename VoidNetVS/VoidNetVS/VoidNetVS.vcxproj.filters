@@ -48,12 +48,12 @@
     <ClInclude Include="..\..\include\UdpClient.hpp">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\UdpServer.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Init.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\TcpClientWindows.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Utility.cpp">
@@ -74,9 +74,6 @@
     <ClCompile Include="..\..\src\VoidNetClient.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\TcpServerWindows.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\TcpServer.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -92,7 +89,7 @@
     <ClCompile Include="..\..\src\UdpClient.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\UdpClientWindows.cpp">
+    <ClCompile Include="..\..\src\UdpServer.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

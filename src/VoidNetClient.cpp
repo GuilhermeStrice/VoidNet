@@ -37,17 +37,15 @@ void VoidNetClientAPI::SendMessageToAllAndMe(byte tag, byte subject, void *data)
 
 void VoidNetClientAPI::SendMessage(byte distribution_mode, uint16 destination_id, byte tag, byte subject, void *data)
 {
-	if (tag != ConnectTag && tag != DisconnectTag)
-	{
-		NetworkMessage message;
-		message.tag = tag;
-		message.subject = subject;
-		message.data = data;
-		message.distribution_mode = distribution_mode;
-		message.sender = id;
-		message.destination_id = destination_id;
+	NetworkMessage message;
+	message.tag = tag;
+	message.subject = subject;
+	message.data = data;
+	message.distribution_mode = distribution_mode;
+	message.sender = id;
+	message.destination_id = destination_id;
+	if (!IS_HANDSHAKE(message))
 		tcp_client.SendMessage(message);
-	}
 }
 
 void VoidNetClientAPI::Receive()

@@ -10,8 +10,16 @@
 
 struct Initialization
 {
-	static bool initialize();
+	static bool Initialize();
+
+#ifdef _MSC_VER
+	const WSADATA &GetData();
+#endif
+
+private:
+#ifdef _MSC_VER
 	static WSADATA wsa_data;
+#endif
 };
 
 #endif
