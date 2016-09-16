@@ -57,6 +57,7 @@ private:
 	const NetworkBuffer &receive_data_array();
 	static void receive_data(TcpClient *client);
 	static bool send_network_message(const NetworkMessage &message, TcpClient *client);
+	static void close_connection(TcpClient *client);
 
 	bool initialize(const std::string &ip, uint16 port = default_client_port);
 

@@ -10,13 +10,13 @@
 TcpServer::TcpServer()
 {
 	initialize(); // initialize with the default port
-	clients = std::vector<TcpClient>(max_connections);
+	clients.reserve(max_connections);
 }
 
 TcpServer::TcpServer(uint16 port)
 {
 	initialize(port);
-	clients = std::vector<TcpClient>(max_connections);
+	clients.reserve(max_connections);
 }
 
 TcpServer::~TcpServer()

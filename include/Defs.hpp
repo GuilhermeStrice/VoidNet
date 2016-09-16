@@ -245,4 +245,12 @@ enum InternalTags
 
 #define IS_HANDSHAKE(name) name.subject == 1 || (name.tag == DisconnectTag || name.tag == ConnectTag || name.tag == Accept || name.tag == Close || name.tag == Reject)
 
+#ifdef __linux__
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+void closesocket(int socket) { close(socket); }
+#endif
+
 #endif // DEFS_HPP

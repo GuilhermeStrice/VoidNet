@@ -60,8 +60,13 @@ void TcpClient::receive_data(TcpClient *client)
 			{
 				if (message.tag == ConnectTag) // some user has connected - not us, never
 					std::async(std::launch::async, client->OnConnect, message.sender);
-				else if (message.tag == DisconnectTag || message.tag == Close) // some user has disconnected, it can be us
+				else if (message.tag == DisconnectTag) // some user has disconnected, it can be us
 					std::async(std::launch::async, client->OnDisconnect, message.sender);
+				else if (message.tag == Close)
+				{
+					std::async(std::launch::async, client->OnDisconnect, message.sender);
+					close_connection(client);
+				}
 			}
 			else
 				std::async(std::launch::async, client->OnMessage, message.sender, message.tag, message.subject, message.data); // we received data
@@ -226,6 +231,12 @@ bool TcpClient::send_network_message(const NetworkMessage &message, TcpClient *c
 	int32 lenght = Utility::BitConverter::ToInt32(buffer.header);
 	int32 bytes_sent = send(client->tcp_socket, reinterpret_cast<char*>(buffer.body.data()), lenght, 0);
 	return bytes_sent == SOCKET_ERROR || bytes_sent != lenght || WSAGetLastError() != 0;
+}
+
+void TcpClient::close_connection(TcpClient * client)
+{
+	shutdown(client->tcp_socket, SD_BOTH);
+	closesocket(client->tcp_socket);
 }
 
 bool TcpClient::SendBytes(const std::vector<byte>& bytes)
