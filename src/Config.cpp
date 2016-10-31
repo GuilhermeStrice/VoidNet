@@ -1,5 +1,13 @@
 #include "Config.hpp"
 
+#include <fstream>
+
+void Config::Initialize()
+{
+	Configuration.ReadConfig("config.dat");
+	Configuration.ReadNodes();
+}
+
 inline void Config::SetUsingConsole(bool value)
 {
 	using_console = value;

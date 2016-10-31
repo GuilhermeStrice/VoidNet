@@ -89,17 +89,17 @@ std::future<bool> TcpClient::SendMessage(const NetworkMessage &message)
 	return std::async(std::launch::async, &send_network_message, message, this);
 }
 
-void TcpClient::SetOnDisconnectCallback(void(*func)(uint16))
+void TcpClient::SetOnDisconnectCallback(std::function<void(uint16)> func)
 {
 	OnDisconnect = func;
 }
 
-void TcpClient::SetOnConnectCallback(void(*func)(uint16))
+void TcpClient::SetOnConnectCallback(std::function<void(uint16)> func)
 {
 	OnConnect = func;
 }
 
-void TcpClient::SetOnMessageCallback(void(*func)(uint16, byte, byte, void*))
+void TcpClient::SetOnMessageCallback(std::function<void(uint16, byte, byte, void*)> func)
 {
 	OnMessage = func;
 }

@@ -36,6 +36,15 @@ void UdpClient::SetID(uint16 id)
 	this->id = id;
 }
 
+void UdpClient::ReceiveMessages()
+{
+}
+
+const NetworkMessage & UdpClient::ReceiveMessage()
+{
+	// TODO: insert return statement here
+}
+
 std::future<bool> UdpClient::SendMessage(const NetworkMessage & message)
 {
 	return std::async(std::launch::async, &send_network_message, message, this);
@@ -54,6 +63,15 @@ void UdpClient::SetIP(const std::string & ip)
 UdpClient::UdpClient(const SOCKET & socket)
 {
 	udp_socket = socket;
+}
+
+const NetworkBuffer & UdpClient::receive_data_array()
+{
+	// TODO: insert return statement here
+}
+
+void UdpClient::receive_data(UdpClient * client)
+{
 }
 
 bool UdpClient::initialize(const std::string &ip, uint16 port)

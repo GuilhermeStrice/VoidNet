@@ -51,6 +51,9 @@
     <ClInclude Include="..\..\include\UdpServer.hpp">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\PluginManager.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Init.cpp">

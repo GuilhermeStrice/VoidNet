@@ -45,9 +45,9 @@ struct TcpClient
 	bool SendBytes(const std::vector<byte> &bytes);
 	bool SendBytes(byte *bytes, uint32 lenght);
 
-	void SetOnDisconnectCallback(void (*func)(uint16));
-	void SetOnConnectCallback(void (*func)(uint16));
-	void SetOnMessageCallback(void (*func)(uint16, byte, byte, void*));
+	void SetOnDisconnectCallback(std::function<void(uint16)> func);
+	void SetOnConnectCallback(std::function<void(uint16)> func);
+	void SetOnMessageCallback(std::function<void(uint16, byte, byte, void*)> func);
 
 	static const TcpClient &DefaultTcpClient();
 

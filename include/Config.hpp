@@ -5,13 +5,19 @@
 #pragma once
 #endif
 
+#include "Utility.hpp"
+
 struct Config
 {
+	static void Initialize();
+	
 	static void SetUsingConsole(bool value);
 	static bool GetUsingConsole();
 
 	static void SetLogToFile(bool value);
 	static bool GetLogToFile();
+
+	static Utility::ConfigReader Configuration;
 
 private:
 	static bool using_console;

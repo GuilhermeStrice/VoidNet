@@ -31,11 +31,17 @@ struct UdpClient
 	uint16 GetID();
 	void SetID(uint16 id);
 
+	void ReceiveMessages();
+
+	const NetworkMessage &ReceiveMessage();
+
 	std::future<bool> SendMessage(const NetworkMessage &message);
 	bool SendBytes(const std::vector<byte> &bytes);
 	bool SendBytes(byte *bytes, uint32 lenght);
 
 private:
+	const NetworkBuffer &receive_data_array();
+	static void receive_data(UdpClient *client);
 	bool initialize(const std::string &ip, uint16 port = default_client_port);
 
 	static bool send_network_message(const NetworkMessage &message, UdpClient *client);

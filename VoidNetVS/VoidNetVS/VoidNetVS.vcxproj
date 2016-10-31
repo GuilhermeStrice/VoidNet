@@ -25,6 +25,7 @@
     <ClInclude Include="..\..\include\Init.hpp" />
     <ClInclude Include="..\..\include\NetworkBuffer.hpp" />
     <ClInclude Include="..\..\include\NetworkMessage.hpp" />
+    <ClInclude Include="..\..\include\PluginManager.hpp" />
     <ClInclude Include="..\..\include\Serializer.hpp" />
     <ClInclude Include="..\..\include\TcpClient.hpp" />
     <ClInclude Include="..\..\include\TcpServer.hpp" />
