@@ -7,97 +7,118 @@
     <Filter Include="src">
       <UniqueIdentifier>{4c99f44e-3ff9-4d5c-a3a1-27d1f02b0b7f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\Http">
+      <UniqueIdentifier>{b40bea23-e721-4605-9fb2-1a893c226525}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Http">
+      <UniqueIdentifier>{d78dfc6c-3983-4cd8-9cb1-d101a0162e77}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\..\TODO" />
+    <Text Include="..\..\DEV_INFO" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\Enums.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\include\Init.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\Defs.hpp">
+    <ClInclude Include="..\..\include\IPAddress.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ISocket.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Net.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\SecureSocket.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Socket.hpp">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\TcpClient.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\Utility.hpp">
+    <ClInclude Include="..\..\include\TcpListener.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\Config.hpp">
+    <ClInclude Include="..\..\include\TcpSocketBuilder.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\NetworkMessage.hpp">
+    <ClInclude Include="..\..\include\UdpSocket.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\VoidNetClient.hpp">
+    <ClInclude Include="..\..\include\UdpSocketBuilder.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\VoidNetServer.hpp">
+    <ClInclude Include="..\..\include\Util.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\NetworkBuffer.hpp">
-      <Filter>include</Filter>
+    <ClInclude Include="..\..\include\Cookies.hpp">
+      <Filter>include\Http</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\Serializer.hpp">
-      <Filter>include</Filter>
+    <ClInclude Include="..\..\include\Headers.hpp">
+      <Filter>include\Http</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\TcpServer.hpp">
-      <Filter>include</Filter>
+    <ClInclude Include="..\..\include\Http.hpp">
+      <Filter>include\Http</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\Handshake.hpp">
-      <Filter>include</Filter>
+    <ClInclude Include="..\..\include\Request.hpp">
+      <Filter>include\Http</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\UdpClient.hpp">
-      <Filter>include</Filter>
+    <ClInclude Include="..\..\include\Response.hpp">
+      <Filter>include\Http</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\UdpServer.hpp">
-      <Filter>include</Filter>
+    <ClInclude Include="..\..\include\Parse.hpp">
+      <Filter>include\Http</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\PluginManager.hpp">
-      <Filter>include</Filter>
+    <ClInclude Include="..\..\include\Uri.hpp">
+      <Filter>include\Http</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\Init.cpp">
+    <ClCompile Include="..\..\src\IPAddress.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Utility.cpp">
+    <ClCompile Include="..\..\src\SecureSocket.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Config.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\NetworkBuffer.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Serializer.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\NetworkMessage.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\VoidNetClient.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\TcpServer.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\InitWindows.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Handshake.cpp">
+    <ClCompile Include="..\..\src\Socket.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\TcpClient.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\UdpClient.cpp">
+    <ClCompile Include="..\..\src\TcpListener.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\UdpServer.cpp">
+    <ClCompile Include="..\..\src\TcpSocketBuilder.cpp">
       <Filter>src</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\TODO" />
-    <Text Include="..\..\DEV_INFO" />
+    <ClCompile Include="..\..\src\UdpSocket.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Cookies.cpp">
+      <Filter>src\Http</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Headers.cpp">
+      <Filter>src\Http</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Http.cpp">
+      <Filter>src\Http</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Request.cpp">
+      <Filter>src\Http</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Response.cpp">
+      <Filter>src\Http</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Uri.cpp">
+      <Filter>src\Http</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

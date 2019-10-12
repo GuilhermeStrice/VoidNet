@@ -19,42 +19,45 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\Config.hpp" />
-    <ClInclude Include="..\..\include\Defs.hpp" />
-    <ClInclude Include="..\..\include\Handshake.hpp" />
-    <ClInclude Include="..\..\include\Init.hpp" />
-    <ClInclude Include="..\..\include\NetworkBuffer.hpp" />
-    <ClInclude Include="..\..\include\NetworkMessage.hpp" />
-    <ClInclude Include="..\..\include\PluginManager.hpp" />
-    <ClInclude Include="..\..\include\Serializer.hpp" />
-    <ClInclude Include="..\..\include\TcpClient.hpp" />
-    <ClInclude Include="..\..\include\TcpServer.hpp" />
-    <ClInclude Include="..\..\include\UdpClient.hpp" />
-    <ClInclude Include="..\..\include\UdpServer.hpp" />
-    <ClInclude Include="..\..\include\Utility.hpp" />
-    <ClInclude Include="..\..\include\VoidNetClient.hpp" />
-    <ClInclude Include="..\..\include\VoidNetServer.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\src\Config.cpp" />
-    <ClCompile Include="..\..\src\Handshake.cpp" />
-    <ClCompile Include="..\..\src\Init.cpp" />
-    <ClCompile Include="..\..\src\InitWindows.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\src\NetworkBuffer.cpp" />
-    <ClCompile Include="..\..\src\NetworkMessage.cpp" />
-    <ClCompile Include="..\..\src\Serializer.cpp" />
-    <ClCompile Include="..\..\src\TcpClient.cpp" />
-    <ClCompile Include="..\..\src\TcpServer.cpp" />
-    <ClCompile Include="..\..\src\UdpClient.cpp" />
-    <ClCompile Include="..\..\src\UdpServer.cpp" />
-    <ClCompile Include="..\..\src\Utility.cpp" />
-    <ClCompile Include="..\..\src\VoidNetClient.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="..\..\DEV_INFO" />
     <Text Include="..\..\TODO" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\Cookies.hpp" />
+    <ClInclude Include="..\..\include\Enums.hpp" />
+    <ClInclude Include="..\..\include\Headers.hpp" />
+    <ClInclude Include="..\..\include\Http.hpp" />
+    <ClInclude Include="..\..\include\Init.hpp" />
+    <ClInclude Include="..\..\include\IPAddress.hpp" />
+    <ClInclude Include="..\..\include\ISocket.hpp" />
+    <ClInclude Include="..\..\include\Net.hpp" />
+    <ClInclude Include="..\..\include\Parse.hpp" />
+    <ClInclude Include="..\..\include\Request.hpp" />
+    <ClInclude Include="..\..\include\Response.hpp" />
+    <ClInclude Include="..\..\include\SecureSocket.hpp" />
+    <ClInclude Include="..\..\include\Socket.hpp" />
+    <ClInclude Include="..\..\include\TcpClient.hpp" />
+    <ClInclude Include="..\..\include\TcpListener.hpp" />
+    <ClInclude Include="..\..\include\TcpSocketBuilder.hpp" />
+    <ClInclude Include="..\..\include\UdpSocket.hpp" />
+    <ClInclude Include="..\..\include\UdpSocketBuilder.hpp" />
+    <ClInclude Include="..\..\include\Uri.hpp" />
+    <ClInclude Include="..\..\include\Util.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\Cookies.cpp" />
+    <ClCompile Include="..\..\src\Headers.cpp" />
+    <ClCompile Include="..\..\src\Http.cpp" />
+    <ClCompile Include="..\..\src\IPAddress.cpp" />
+    <ClCompile Include="..\..\src\Request.cpp" />
+    <ClCompile Include="..\..\src\Response.cpp" />
+    <ClCompile Include="..\..\src\SecureSocket.cpp" />
+    <ClCompile Include="..\..\src\Socket.cpp" />
+    <ClCompile Include="..\..\src\TcpClient.cpp" />
+    <ClCompile Include="..\..\src\TcpListener.cpp" />
+    <ClCompile Include="..\..\src\TcpSocketBuilder.cpp" />
+    <ClCompile Include="..\..\src\UdpSocket.cpp" />
+    <ClCompile Include="..\..\src\Uri.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5172321E-CCB0-4A77-9F3D-FAAF0084F434}</ProjectGuid>
@@ -76,7 +79,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -120,7 +123,9 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

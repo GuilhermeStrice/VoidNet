@@ -1,25 +1,40 @@
-#ifndef INIT_HPP
-#define INIT_HPP
+#pragma once
 
 #ifdef _MSC_VER
-	#pragma once
-#endif
 
-#include "Defs.hpp"
+	#include <winsock2.h>
+	#include <ws2tcpip.h>
 
+	namespace std::net
+	{
+		namespace priv
+		{
+			static WSADATA WsaData;
+			static bool Initialized;
+		}
 
-struct Initialization
-{
-	static bool Initialize();
+		inline static bool Initialize()
+		{
+			if (priv::Initialized) return true;
+			return (priv::Initialized = WSAStartup(MAKEWORD(2, 2), &priv::WsaData)) == 0;
+		}
 
-#ifdef _MSC_VER
-	const WSADATA &GetData();
-#endif
+		inline static void Cleanup()
+		{
+			if (priv::Initialized)
+			{
+				WSACleanup();
+				priv::Initialized = false;
+			}
+		}
+	}
 
-private:
-#ifdef _MSC_VER
-	static WSADATA wsa_data;
-#endif
-};
+#else
+
+	namespace std::net
+	{
+		inline static bool Initialize() { return true; }
+		inline static void Cleanup() { }
+	}
 
 #endif
