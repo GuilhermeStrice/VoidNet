@@ -1,2 +1,6 @@
 *.db
 *.opendb
+
+Release/
+x64/
+.vs/
