@@ -82,7 +82,7 @@ namespace std::net
 
 	uint32_t TcpConnectionHandler::GetAvailableID()
 	{
-		for (int i = 1; i <= m_maxConnections; i++)
+		for (uint32_t i = 1; i <= m_maxConnections; i++)
 		{
 			bool flag = true;
 			m_listMutex.lock();

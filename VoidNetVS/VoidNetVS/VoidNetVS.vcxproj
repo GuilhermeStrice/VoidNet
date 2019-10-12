@@ -23,41 +23,42 @@
     <Text Include="..\..\TODO" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\Cookies.hpp" />
-    <ClInclude Include="..\..\include\Enums.hpp" />
-    <ClInclude Include="..\..\include\Headers.hpp" />
-    <ClInclude Include="..\..\include\Http.hpp" />
-    <ClInclude Include="..\..\include\Init.hpp" />
-    <ClInclude Include="..\..\include\IPAddress.hpp" />
-    <ClInclude Include="..\..\include\ISocket.hpp" />
-    <ClInclude Include="..\..\include\Net.hpp" />
-    <ClInclude Include="..\..\include\Parse.hpp" />
-    <ClInclude Include="..\..\include\Request.hpp" />
-    <ClInclude Include="..\..\include\Response.hpp" />
-    <ClInclude Include="..\..\include\SecureSocket.hpp" />
-    <ClInclude Include="..\..\include\Socket.hpp" />
-    <ClInclude Include="..\..\include\TcpClient.hpp" />
-    <ClInclude Include="..\..\include\TcpListener.hpp" />
-    <ClInclude Include="..\..\include\TcpSocketBuilder.hpp" />
-    <ClInclude Include="..\..\include\UdpSocket.hpp" />
-    <ClInclude Include="..\..\include\UdpSocketBuilder.hpp" />
-    <ClInclude Include="..\..\include\Uri.hpp" />
-    <ClInclude Include="..\..\include\Util.hpp" />
+    <ClInclude Include="..\..\include\VoidNet\Cookies.hpp" />
+    <ClInclude Include="..\..\include\VoidNet\Enums.hpp" />
+    <ClInclude Include="..\..\include\VoidNet\Headers.hpp" />
+    <ClInclude Include="..\..\include\VoidNet\Http.hpp" />
+    <ClInclude Include="..\..\include\VoidNet\Init.hpp" />
+    <ClInclude Include="..\..\include\VoidNet\IPAddress.hpp" />
+    <ClInclude Include="..\..\include\VoidNet\ISocket.hpp" />
+    <ClInclude Include="..\..\include\VoidNet\Net.hpp" />
+    <ClInclude Include="..\..\include\VoidNet\Parse.hpp" />
+    <ClInclude Include="..\..\include\VoidNet\Request.hpp" />
+    <ClInclude Include="..\..\include\VoidNet\Response.hpp" />
+    <ClInclude Include="..\..\include\VoidNet\SecureSocket.hpp" />
+    <ClInclude Include="..\..\include\VoidNet\Socket.hpp" />
+    <ClInclude Include="..\..\include\VoidNet\TcpClient.hpp" />
+    <ClInclude Include="..\..\include\VoidNet\TcpListener.hpp" />
+    <ClInclude Include="..\..\include\VoidNet\TcpSocketBuilder.hpp" />
+    <ClInclude Include="..\..\include\VoidNet\UdpSocket.hpp" />
+    <ClInclude Include="..\..\include\VoidNet\UdpSocketBuilder.hpp" />
+    <ClInclude Include="..\..\include\VoidNet\Uri.hpp" />
+    <ClInclude Include="..\..\include\VoidNet\Util.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\Cookies.cpp" />
-    <ClCompile Include="..\..\src\Headers.cpp" />
-    <ClCompile Include="..\..\src\Http.cpp" />
-    <ClCompile Include="..\..\src\IPAddress.cpp" />
-    <ClCompile Include="..\..\src\Request.cpp" />
-    <ClCompile Include="..\..\src\Response.cpp" />
-    <ClCompile Include="..\..\src\SecureSocket.cpp" />
-    <ClCompile Include="..\..\src\Socket.cpp" />
-    <ClCompile Include="..\..\src\TcpClient.cpp" />
-    <ClCompile Include="..\..\src\TcpListener.cpp" />
-    <ClCompile Include="..\..\src\TcpSocketBuilder.cpp" />
-    <ClCompile Include="..\..\src\UdpSocket.cpp" />
-    <ClCompile Include="..\..\src\Uri.cpp" />
+    <ClCompile Include="..\..\src\VoidNet\Cookies.cpp" />
+    <ClCompile Include="..\..\src\VoidNet\Headers.cpp" />
+    <ClCompile Include="..\..\src\VoidNet\Http.cpp" />
+    <ClCompile Include="..\..\src\VoidNet\IPAddress.cpp" />
+    <ClCompile Include="..\..\src\VoidNet\Parse.cpp" />
+    <ClCompile Include="..\..\src\VoidNet\Request.cpp" />
+    <ClCompile Include="..\..\src\VoidNet\Response.cpp" />
+    <ClCompile Include="..\..\src\VoidNet\SecureSocket.cpp" />
+    <ClCompile Include="..\..\src\VoidNet\Socket.cpp" />
+    <ClCompile Include="..\..\src\VoidNet\TcpClient.cpp" />
+    <ClCompile Include="..\..\src\VoidNet\TcpListener.cpp" />
+    <ClCompile Include="..\..\src\VoidNet\TcpSocketBuilder.cpp" />
+    <ClCompile Include="..\..\src\VoidNet\UdpSocket.cpp" />
+    <ClCompile Include="..\..\src\VoidNet\Uri.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5172321E-CCB0-4A77-9F3D-FAAF0084F434}</ProjectGuid>
@@ -123,7 +124,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../../include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include/VoidNet</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>

@@ -28,7 +28,6 @@
 
 	#define SOCKET int
 	#define closesocket close
-	#define ioctlsocket ioctl
 
 	int closesocket(SOCKET soc)
 	{

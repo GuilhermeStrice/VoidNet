@@ -19,106 +19,109 @@
     <Text Include="..\..\DEV_INFO" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\Enums.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\Init.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\IPAddress.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ISocket.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\Net.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\SecureSocket.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\Socket.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\TcpClient.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\TcpListener.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\TcpSocketBuilder.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\UdpSocket.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\UdpSocketBuilder.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\Util.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\Cookies.hpp">
+    <ClInclude Include="..\..\include\VoidNet\Cookies.hpp">
       <Filter>include\Http</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\Headers.hpp">
+    <ClInclude Include="..\..\include\VoidNet\Headers.hpp">
       <Filter>include\Http</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\Http.hpp">
+    <ClInclude Include="..\..\include\VoidNet\Parse.hpp">
       <Filter>include\Http</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\Request.hpp">
+    <ClInclude Include="..\..\include\VoidNet\Request.hpp">
       <Filter>include\Http</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\Response.hpp">
+    <ClInclude Include="..\..\include\VoidNet\Response.hpp">
       <Filter>include\Http</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\Parse.hpp">
+    <ClInclude Include="..\..\include\VoidNet\Uri.hpp">
       <Filter>include\Http</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\Uri.hpp">
+    <ClInclude Include="..\..\include\VoidNet\Enums.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\VoidNet\Init.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\VoidNet\IPAddress.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\VoidNet\ISocket.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\VoidNet\Net.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\VoidNet\SecureSocket.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\VoidNet\Socket.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\VoidNet\TcpClient.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\VoidNet\TcpListener.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\VoidNet\TcpSocketBuilder.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\VoidNet\UdpSocket.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\VoidNet\UdpSocketBuilder.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\VoidNet\Util.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\VoidNet\Http.hpp">
       <Filter>include\Http</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\IPAddress.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\SecureSocket.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Socket.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\TcpClient.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\TcpListener.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\TcpSocketBuilder.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\UdpSocket.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Cookies.cpp">
+    <ClCompile Include="..\..\src\VoidNet\Cookies.cpp">
       <Filter>src\Http</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Headers.cpp">
+    <ClCompile Include="..\..\src\VoidNet\Headers.cpp">
       <Filter>src\Http</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Http.cpp">
+    <ClCompile Include="..\..\src\VoidNet\Http.cpp">
       <Filter>src\Http</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Request.cpp">
+    <ClCompile Include="..\..\src\VoidNet\Parse.cpp">
       <Filter>src\Http</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Response.cpp">
+    <ClCompile Include="..\..\src\VoidNet\Request.cpp">
       <Filter>src\Http</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Uri.cpp">
+    <ClCompile Include="..\..\src\VoidNet\Response.cpp">
       <Filter>src\Http</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\VoidNet\Uri.cpp">
+      <Filter>src\Http</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\VoidNet\IPAddress.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\VoidNet\SecureSocket.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\VoidNet\Socket.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\VoidNet\TcpClient.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\VoidNet\TcpListener.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\VoidNet\TcpSocketBuilder.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\VoidNet\UdpSocket.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
