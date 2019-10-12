@@ -1,2 +1,4 @@
 *.db
 *.opendb
+
+./VoidNetVS/.vs
