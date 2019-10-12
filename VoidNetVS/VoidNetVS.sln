@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VoidNetVS", "VoidNetVS\VoidNetVS.vcxproj", "{5172321E-CCB0-4A77-9F3D-FAAF0084F434}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "..\TestsVS\Tests\Tests.vcxproj", "{41663B22-3949-4570-9AB5-309363EAD56F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HLAPI", "..\HLAPI\HLAPI\HLAPI.vcxproj", "{989D0F55-C4B9-44D2-AD2B-DD7E1AAABFC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,8 +33,19 @@ Global
 		{41663B22-3949-4570-9AB5-309363EAD56F}.Release|x64.Build.0 = Release|x64
 		{41663B22-3949-4570-9AB5-309363EAD56F}.Release|x86.ActiveCfg = Release|Win32
 		{41663B22-3949-4570-9AB5-309363EAD56F}.Release|x86.Build.0 = Release|Win32
+		{989D0F55-C4B9-44D2-AD2B-DD7E1AAABFC1}.Debug|x64.ActiveCfg = Debug|x64
+		{989D0F55-C4B9-44D2-AD2B-DD7E1AAABFC1}.Debug|x64.Build.0 = Debug|x64
+		{989D0F55-C4B9-44D2-AD2B-DD7E1AAABFC1}.Debug|x86.ActiveCfg = Debug|Win32
+		{989D0F55-C4B9-44D2-AD2B-DD7E1AAABFC1}.Debug|x86.Build.0 = Debug|Win32
+		{989D0F55-C4B9-44D2-AD2B-DD7E1AAABFC1}.Release|x64.ActiveCfg = Release|x64
+		{989D0F55-C4B9-44D2-AD2B-DD7E1AAABFC1}.Release|x64.Build.0 = Release|x64
+		{989D0F55-C4B9-44D2-AD2B-DD7E1AAABFC1}.Release|x86.ActiveCfg = Release|Win32
+		{989D0F55-C4B9-44D2-AD2B-DD7E1AAABFC1}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {30B0A8A0-814A-40F1-99DB-799D6ABB368C}
 	EndGlobalSection
 EndGlobal
