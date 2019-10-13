@@ -194,8 +194,8 @@ namespace std::net
 		{
 			if (std::chrono::system_clock::now().time_since_epoch().count() - m_lastActivityTime > std::chrono::milliseconds(5).count())
 			{
-				SocketReturn writeState = HasState(SocketParam::CanWrite, std::chrono::milliseconds(1));
-				SocketReturn readState = HasState(SocketParam::CanRead, std::chrono::milliseconds(1));
+				SocketReturn writeState = HasState(SocketParam::CanWrite);
+				SocketReturn readState = HasState(SocketParam::CanRead);
 
 				if (writeState == SocketReturn::Yes || readState == SocketReturn::Yes)
 				{
@@ -311,7 +311,7 @@ namespace std::net
 		sockaddr_in addr;
 		socklen_t size = sizeof(sockaddr_in);
 		if (getsockname(m_socket, (sockaddr*)&addr, &size) != 0)
-			return 0; // invalid port
+			throw std::runtime_error("Invalid port");
 		return ntohs(addr.sin_port);
 	}
 

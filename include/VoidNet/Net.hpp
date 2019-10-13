@@ -24,15 +24,10 @@
 
 	#define SOCKET_ERROR -1
 	#define NO_ERROR 0
-	#define INVALID_SOCKET NO_ERROR 
+	#define INVALID_SOCKET NO_ERROR
 
 	#define SOCKET int
 	#define closesocket close
-
-	int closesocket(SOCKET soc)
-	{
-		return close(soc);
-	}
 
 #endif
 

@@ -49,7 +49,6 @@
     <ClCompile Include="..\..\src\VoidNet\Headers.cpp" />
     <ClCompile Include="..\..\src\VoidNet\Http.cpp" />
     <ClCompile Include="..\..\src\VoidNet\IPAddress.cpp" />
-    <ClCompile Include="..\..\src\VoidNet\Parse.cpp" />
     <ClCompile Include="..\..\src\VoidNet\Request.cpp" />
     <ClCompile Include="..\..\src\VoidNet\Response.cpp" />
     <ClCompile Include="..\..\src\VoidNet\SecureSocket.cpp" />
@@ -59,6 +58,7 @@
     <ClCompile Include="..\..\src\VoidNet\TcpSocketBuilder.cpp" />
     <ClCompile Include="..\..\src\VoidNet\UdpSocket.cpp" />
     <ClCompile Include="..\..\src\VoidNet\Uri.cpp" />
+    <ClCompile Include="..\..\src\VoidNet\Util.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5172321E-CCB0-4A77-9F3D-FAAF0084F434}</ProjectGuid>

@@ -19,8 +19,8 @@ namespace std::net
 		friend class std::net::TcpConnectionHandler;
 
 	public:
-		TcpListener(uint16_t port, std::chrono::milliseconds inSleepTime = std::chrono::milliseconds(1));
-		TcpListener(Socket *InSocket, std::chrono::milliseconds inSleepTime = std::chrono::milliseconds(1));
+		TcpListener(uint16_t port, std::chrono::milliseconds inSleepTime = std::chrono::milliseconds(0));
+		TcpListener(Socket *InSocket, std::chrono::milliseconds inSleepTime = std::chrono::milliseconds(0));
 
 		TcpClient *AcceptClient();
 

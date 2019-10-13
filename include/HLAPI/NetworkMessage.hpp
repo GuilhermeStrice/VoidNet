@@ -1,7 +1,7 @@
 #pragma once
 
 #include "NetworkHeader.hpp"
-#include "BitConverter.hpp"
+#include "ByteConverter.hpp"
 
 #include <cstdint>
 #include <cstring>
@@ -68,9 +68,9 @@ namespace std::net
 			uint8_t *bytes = new uint8_t[header.Size];
 			memcpy(bytes, &header, sizeOfNetHeader);
 
-			uint8_t *sender = BitConverter::ToBytes<uint32_t>(m_senderID); // 4
-			uint8_t *destination = BitConverter::ToBytes<uint32_t>(m_destinationID); // 4
-			uint8_t *tag = BitConverter::ToBytes<uint32_t>(m_tag); // 4
+			uint8_t *sender = ByteConverter::ToBytes<uint32_t>(m_senderID); // 4
+			uint8_t *destination = ByteConverter::ToBytes<uint32_t>(m_destinationID); // 4
+			uint8_t *tag = ByteConverter::ToBytes<uint32_t>(m_tag); // 4
 
 			memcpy(bytes + sizeOfNetHeader, sender, 4);
 			bytes[sizeOfNetHeader + 4] = (uint8_t)m_distributionMode;

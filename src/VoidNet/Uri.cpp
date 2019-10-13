@@ -75,7 +75,7 @@ namespace std::net
 		return result;
 	}
 
-	static ParseResult<Authority> parseAuthority(char const* str) 
+	static ParseResult<Authority> ParseAuthority(char const* str) 
 	{
 		ParseResult<Authority> result
 		{
@@ -99,7 +99,7 @@ namespace std::net
 		return result;
 	}
 
-	static ParseResult<std::string> parsePath(char const* str) 
+	static ParseResult<std::string> ParsePath(char const* str) 
 	{
 		// Return query/frag as part of path for now
 		ParseResult<std::string> result = ParseWhile(str, [](char ch) 
@@ -121,8 +121,8 @@ namespace std::net
 		Uri uri;
 
 		auto scheme = ParseScheme(str);
-		auto authority = parseAuthority(scheme.ch);
-		auto path = parsePath(authority.ch);
+		auto authority = ParseAuthority(scheme.ch);
+		auto path = ParsePath(authority.ch);
 
 		uri.SetScheme(scheme.value);
 		uri.SetAuthority(authority.value);

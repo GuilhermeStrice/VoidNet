@@ -21,7 +21,7 @@ namespace std::net
 			return m_status; 
 		}
 
-		const std::string& daGetDatata() const 
+		const std::string& GetData() const 
 		{ 
 			return m_data; 
 		}

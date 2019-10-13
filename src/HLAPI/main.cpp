@@ -1,6 +1,6 @@
 #include "Init.hpp"
 #include "Server.hpp"
-#include "BitConverter.hpp"
+#include "ByteConverter.hpp"
 #include "TcpClient.hpp"
 #include "InternalTags.hpp"
 #include "NetworkMessage.hpp"
@@ -34,7 +34,7 @@ int main()
 
 			message.Deserialize(bytes, data_size);
 
-			uint32_t id = std::BitConverter::FromBytes<uint32_t>((uint8_t*)(message.GetData<void>()));
+			uint32_t id = std::ByteConverter::FromBytes<uint32_t>((uint8_t*)(message.GetData<void>()));
 			if (message.GetTag() == (uint32_t)InternalTags::AssignID)
 			std::cout << id << std::endl;
 		}
@@ -50,7 +50,7 @@ int main()
 
 			message2.Deserialize(bytes2, data_size);
 
-			uint32_t id2 = std::BitConverter::FromBytes<uint32_t>((uint8_t*)(message2.GetData<void>()));
+			uint32_t id2 = std::ByteConverter::FromBytes<uint32_t>((uint8_t*)(message2.GetData<void>()));
 			if (message2.GetTag() == (uint32_t)InternalTags::AssignID)
 				std::cout << id2 << std::endl;
 		}

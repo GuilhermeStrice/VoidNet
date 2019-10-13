@@ -20,7 +20,5 @@ namespace std::net
 
 	private:
 		std::shared_ptr<std::net::TcpServer> m_tcpServer;
-
-		std::shared_ptr<MessageQueue> m_queue;
 	};
 }

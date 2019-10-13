@@ -9,7 +9,7 @@
 
 namespace std
 {
-	class BitConverter
+	class ByteConverter
 	{
 	public:
 		template<typename T>
@@ -24,7 +24,7 @@ namespace std
 		inline static T FromBytes(uint8_t *data)
 		{
 			if (!data)
-				throw std::invalid_argument("cant have null parameter -> BitConverter::FromBytes");
+				throw std::invalid_argument("cant have null parameter -> ByteConverter::FromBytes");
 			T value;
 			memcpy(&value, data, sizeof(T));
 			return value;

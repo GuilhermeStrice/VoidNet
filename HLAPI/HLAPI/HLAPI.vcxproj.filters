@@ -9,9 +9,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\HLAPI\BitConverter.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\HLAPI\DataReceivedEvent.hpp">
       <Filter>include</Filter>
     </ClInclude>
@@ -43,6 +40,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\HLAPI\TcpServer.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\HLAPI\ByteConverter.hpp">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

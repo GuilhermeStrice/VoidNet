@@ -7,18 +7,12 @@
 #include <TcpListener.hpp>
 #include <TcpConnection.hpp>
 
-//#include <BaseLibrary/SpinMutex.hpp>
-
 namespace std::net
 {
 	class MessageQueue;
 	class TcpConnection;
 	class Server;
-
-	namespace sockets
-	{
-		class TcpListener;
-	}
+	class TcpListener;
 }
 
 namespace std::net
@@ -49,7 +43,7 @@ namespace std::net
 		std::vector<std::shared_ptr<TcpConnection>> m_list;
 		std::mutex m_listMutex;
 
-		uint32_t m_maxConnections;
+		uint32_t m_maxConnections = 0;
 
 		std::thread m_receiveThread;
 		std::thread m_sendThread;
@@ -59,5 +53,7 @@ namespace std::net
 		std::shared_ptr<MessageQueue> m_queue;
 
 		std::shared_ptr<TcpListener> m_listenerPtr;
+
+		std::vector<pollfd> poll_fds;
 	};
 }

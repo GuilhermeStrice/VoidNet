@@ -90,9 +90,6 @@
     <ClCompile Include="..\..\src\VoidNet\Http.cpp">
       <Filter>src\Http</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\VoidNet\Parse.cpp">
-      <Filter>src\Http</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\VoidNet\Request.cpp">
       <Filter>src\Http</Filter>
     </ClCompile>
@@ -121,6 +118,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\VoidNet\UdpSocket.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\VoidNet\Util.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

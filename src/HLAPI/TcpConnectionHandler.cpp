@@ -28,11 +28,17 @@ namespace std::net
 	void TcpConnectionHandler::Start()
 	{
 		m_run.exchange(true);
+
+		pollfd master_fd;
+		master_fd.fd = m_listenerPtr->m_socket->GetNativeSocket();
+		master_fd.events = POLLRDNORM;
+		poll_fds.emplace_back(master_fd);
+
 		std::thread receive_thread(&TcpConnectionHandler::HandleReceiveMsgAndConnsThreaded, this);
 		m_receiveThread.swap(receive_thread);
 
-		//std::thread send_thread(&TcpConnectionHandler::HandleSendThreaded, this);
-		//m_sendThread.swap(send_thread);
+		std::thread send_thread(&TcpConnectionHandler::HandleSendThreaded, this);
+		m_sendThread.swap(send_thread);
 	}
 
 	void TcpConnectionHandler::Stop()
@@ -60,14 +66,9 @@ namespace std::net
 
 		uint32_t *id_ptr = &id;
 
-		NetworkMessage msg(0, DistributionMode::ID, id, (uint32_t)InternalTags::AssignID, id_ptr, sizeof(id_ptr));
+		NetworkMessage msg(-1, DistributionMode::ID, id, (uint32_t)InternalTags::AssignID, id_ptr, sizeof(id_ptr));
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(50));
-
-		uint32_t serialized_size;
-		uint8_t *serialized_data = msg.SerializeData<uint32_t>(serialized_size);
-		int32_t sent;
-		if (!c->GetClient()->Send(serialized_data, serialized_size, sent))
+		if (!c->sendMessage(msg))
 		{
 			//couldnt send
 			return;
@@ -76,6 +77,11 @@ namespace std::net
 		m_listMutex.lock();
 		m_list.push_back(c);
 		m_listMutex.unlock();
+
+		pollfd client_fd;
+		client_fd.fd = c->m_client->m_socket->GetNativeSocket();
+		client_fd.events = POLLRDNORM;
+		poll_fds.emplace_back(client_fd);
 
 		m_queue->EnqueueConnection(msg);
 	}
@@ -108,21 +114,6 @@ namespace std::net
 
 	void TcpConnectionHandler::HandleReceiveMsgAndConns()
 	{
-		// https://www.ibm.com/support/knowledgecenter/en/ssw_i5_54/rzab6/poll.htm
-		std::vector<pollfd> poll_fds;
-		pollfd master_fd;
-		master_fd.fd = m_listenerPtr->m_socket->GetNativeSocket();
-		master_fd.events = POLLRDNORM;
-		poll_fds.emplace_back(master_fd);
-
-		for (size_t i = 0; i < m_list.size(); i++)
-		{
-			pollfd client_fd;
-			client_fd.fd = m_list.at(i)->m_client->m_socket->GetNativeSocket();
-			client_fd.events = POLLRDNORM;
-			poll_fds.emplace_back(client_fd);
-		}
-
 		int res = poll(poll_fds.data(), poll_fds.size(), -1);
 
 		if (res < 0)
@@ -138,13 +129,9 @@ namespace std::net
 
 		for (int i = 0; i < poll_fds.size(); i++)
 		{
-			if (poll_fds.at(i).revents == 0)
+			if (poll_fds.at(i).revents == 0 || poll_fds[i].revents != POLLRDNORM)
 				continue;
 
-			if (poll_fds[i].revents != POLLRDNORM)
-			{
-				continue;
-			}
 			if (poll_fds.at(i).fd == m_listenerPtr->m_socket->GetNativeSocket())
 			{
 				TcpClient *c = m_listenerPtr->AcceptClient();
@@ -173,7 +160,12 @@ namespace std::net
 					msg.Deserialize(buffer.get(), net_header->Size);
 
 					if (msg.GetTag() == (uint32_t)InternalTags::Disconnect)
+					{
+						// i? or i+1
+						poll_fds.erase(poll_fds.begin() + i);
+
 						m_queue->EnqueueDisconnection(msg);
+					}
 					else if (msg.GetTag() == (uint32_t)InternalTags::Connect)
 						m_queue->EnqueueConnection(msg);
 					else
@@ -191,9 +183,6 @@ namespace std::net
 		{
 			NetworkMessage msg = m_queue->DequeueMessageToSend();
 
-			uint32_t size;
-			std::unique_ptr<uint8_t> data(msg.SerializeData(size));
-
 			if (msg.GetDistributionMode() == DistributionMode::Others)
 			{
 				m_listMutex.lock();
@@ -202,8 +191,7 @@ namespace std::net
 					std::shared_ptr<TcpConnection> c = m_list.at(i);
 					if (c->GetID() != msg.GetSenderID())
 					{
-						int32_t sent;
-						if (!c->GetClient()->Send(data.get(), size, sent))
+						if (!c->sendMessage(msg))
 						{
 							// it failed - retry? or just disconnect right in the first try
 						}
@@ -219,8 +207,7 @@ namespace std::net
 					std::shared_ptr<TcpConnection> c = m_list.at(i);
 					if (c->GetID() != msg.GetSenderID())
 					{
-						int32_t sent;
-						if (!c->GetClient()->Send(data.get(), size, sent))
+						if (!c->sendMessage(msg))
 						{
 							// it failed - retry? or just disconnect right in the first try
 						}
@@ -238,8 +225,7 @@ namespace std::net
 					std::shared_ptr<TcpConnection> c = m_list.at(i);
 					if (c->GetID() == msg.GetSenderID())
 					{
-						int32_t sent;
-						if (!c->GetClient()->Send(data.get(), size, sent))
+						if (!c->sendMessage(msg))
 						{
 							// it failed - retry? or just disconnect right in the first try
 						}
@@ -254,8 +240,7 @@ namespace std::net
 				{
 					std::shared_ptr<TcpConnection> c = m_list.at(i);
 
-					int32_t sent;
-					if (!c->GetClient()->Send(data.get(), size, sent))
+					if (!c->sendMessage(msg))
 					{
 						// it failed - retry? or just disconnect right in the first try
 					}
@@ -268,9 +253,8 @@ namespace std::net
 				for (int i = 0; i < m_list.size(); i++)
 				{
 					std::shared_ptr<TcpConnection> c = m_list.at(i);
-						
-					int32_t sent;
-					if (!c->GetClient()->Send(data.get(), size, sent))
+					
+					if (!c->sendMessage(msg))
 					{
 						// it failed - retry? or just disconnect right in the first try
 					}
@@ -289,18 +273,12 @@ namespace std::net
 	void TcpConnectionHandler::HandleReceiveMsgAndConnsThreaded()
 	{
 		while (m_run.load())
-		{
 			HandleReceiveMsgAndConns();
-			std::this_thread::sleep_for(std::chrono::milliseconds(5));
-		}
 	}
 
 	void TcpConnectionHandler::HandleSendThreaded()
 	{
 		while (m_run.load())
-		{
 			HandleSend();
-			std::this_thread::sleep_for(std::chrono::milliseconds(5));
-		}
 	}
 }

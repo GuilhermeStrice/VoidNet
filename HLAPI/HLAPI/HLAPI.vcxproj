@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\HLAPI\BitConverter.hpp" />
+    <ClInclude Include="..\..\include\HLAPI\ByteConverter.hpp" />
     <ClInclude Include="..\..\include\HLAPI\DataReceivedEvent.hpp" />
     <ClInclude Include="..\..\include\HLAPI\DisconnectedEvent.hpp" />
     <ClInclude Include="..\..\include\HLAPI\InternalTags.hpp" />
