@@ -1,7 +1,7 @@
 // https://github.com/mfichman/http
 
-#include "VoidNet/Uri.hpp"
-#include "VoidNet/Parse.hpp"
+#include "VoidNet_LL/Uri.hpp"
+#include "VoidNet_LL/Parse.hpp"
 
 namespace std::net
 {
@@ -20,7 +20,7 @@ namespace std::net
 		}
 	}
 
-	static ParseResult<std::string> ParseScheme(char const* str) 
+	static ParseResult<string> ParseScheme(char const* str) 
 	{
 		auto result = ParseWhile(str, [](char ch) 
 		{
@@ -31,7 +31,7 @@ namespace std::net
 		return result;
 	}
 
-	static ParseResult<std::string> ParseUser(char const* str) 
+	static ParseResult<string> ParseUser(char const* str) 
 	{
 		auto result = ParseWhile(str, [](char ch) 
 		{
@@ -47,7 +47,7 @@ namespace std::net
 		return result;
 	}
 
-	static ParseResult<std::string> ParseHost(char const* str) 
+	static ParseResult<string> ParseHost(char const* str) 
 	{
 		return ParseWhile(str, [](char ch) 
 		{
@@ -99,10 +99,10 @@ namespace std::net
 		return result;
 	}
 
-	static ParseResult<std::string> ParsePath(char const* str) 
+	static ParseResult<string> ParsePath(char const* str) 
 	{
 		// Return query/frag as part of path for now
-		ParseResult<std::string> result = ParseWhile(str, [](char ch) 
+		ParseResult<string> result = ParseWhile(str, [](char ch) 
 		{
 			return true;
 		});
@@ -131,7 +131,7 @@ namespace std::net
 	}
 
 
-	Authority::Authority(std::string const& user, std::string const& host, uint16_t port) 
+	Authority::Authority(string const& user, string const& host, uint16_t port) 
 	{
 		m_user = user;
 		m_host = host;
@@ -143,12 +143,12 @@ namespace std::net
 		m_port = 0;
 	}
 
-	void Authority::SetUser(std::string const& user) 
+	void Authority::SetUser(string const& user) 
 	{
 		m_user = user;
 	}
 
-	void Authority::SetHost(std::string const& host) 
+	void Authority::SetHost(string const& host) 
 	{
 		m_host = host;
 	}
@@ -163,7 +163,7 @@ namespace std::net
 		*this = parseUri(value);
 	}
 
-	Uri::Uri(const std::string& value) 
+	Uri::Uri(const string& value) 
 	{
 		*this = parseUri(value.c_str());
 	}
@@ -171,7 +171,7 @@ namespace std::net
 	Uri::Uri() {
 	}
 
-	void Uri::SetScheme(const std::string& scheme) 
+	void Uri::SetScheme(const string& scheme) 
 	{
 		m_scheme = scheme;
 	}
@@ -181,7 +181,7 @@ namespace std::net
 		m_authority = authority;
 	}
 
-	void Uri::SetPath(const std::string& path) 
+	void Uri::SetPath(const string& path) 
 	{
 		m_path = path;
 	}

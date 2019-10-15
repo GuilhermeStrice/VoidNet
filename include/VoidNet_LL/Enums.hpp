@@ -1,7 +1,5 @@
 #pragma once
 
-#undef DELETE
-
 namespace std::net
 {
 	enum class SocketParam

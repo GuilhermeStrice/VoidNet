@@ -1,15 +1,15 @@
-#include "VoidNet/UdpSocket.hpp"
+#include "VoidNet_LL/UdpSocket.hpp"
 
 namespace std::net
 {
 	UdpSocket::UdpSocket(Socket * soc)
 	{
-		m_socket = std::unique_ptr<Socket>(soc); // will this work
+		m_socket = unique_ptr<Socket>(soc); // will this work
 	}
 
 	UdpSocket::UdpSocket(SocketProtocol protocol)
 	{
-		m_socket = std::make_unique<Socket>(SocketType::Datagram, protocol);
+		m_socket = make_unique<Socket>(SocketType::Datagram, protocol);
 	}
 
 	bool UdpSocket::Bind(const IPAddress & addr)
@@ -17,12 +17,12 @@ namespace std::net
 		return m_socket->Bind(addr);
 	}
 
-	bool UdpSocket::SendTo(const uint8_t * data, int32_t count, int32_t & sent, const IPAddress & addrDest)
+	bool UdpSocket::SendTo(const byte * data, int32_t count, int32_t & sent, const IPAddress & addrDest)
 	{
 		return m_socket->SendTo(data, count, sent, addrDest);
 	}
 
-	bool UdpSocket::RecvFrom(uint8_t * data, int32_t size, int32_t & read, IPAddress & srcAddr, SocketReceiveFlags flags)
+	bool UdpSocket::RecvFrom(byte * data, int32_t size, int32_t & read, IPAddress & srcAddr, SocketReceiveFlags flags)
 	{
 		return m_socket->RecvFrom(data, size, read, srcAddr, flags);
 	}
@@ -47,7 +47,7 @@ namespace std::net
 		return m_socket->SetMulticastLoopback(loopback);
 	}
 
-	bool UdpSocket::SetMulticastTtl(uint8_t timeToLive)
+	bool UdpSocket::SetMulticastTtl(byte timeToLive)
 	{
 		return m_socket->SetMulticastTtl(timeToLive);
 	}

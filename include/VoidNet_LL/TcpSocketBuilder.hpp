@@ -1,7 +1,7 @@
 #pragma once
 
-#include "VoidNet/Enums.hpp"
-#include "VoidNet/IPAddress.hpp"
+#include "VoidNet_LL/Enums.hpp"
+#include "VoidNet_LL/IPAddress.hpp"
 
 namespace std::net
 {
@@ -92,9 +92,9 @@ namespace std::net
 		}
 
 	public:
-		std::unique_ptr<Socket> Build() const;
-		std::unique_ptr<TcpClient> BuildClient() const;
-		std::unique_ptr<TcpListener> BuildListener() const;
+		unique_ptr<Socket> Build() const;
+		unique_ptr<TcpClient> BuildClient() const;
+		unique_ptr<TcpListener> BuildListener() const;
 
 	private:
 		bool m_blocking;

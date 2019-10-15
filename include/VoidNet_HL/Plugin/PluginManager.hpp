@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "HLAPI/Plugin/Plugin.hpp"
+#include "VoidNet_HL/Plugin/Plugin.hpp"
 
 namespace std::net
 {
@@ -24,6 +24,6 @@ namespace std::net
 		}
 
 	private:
-		std::vector<Plugin*> m_plugins = std::vector<Plugin*>();
+		vector<Plugin*> m_plugins;
 	};
 }

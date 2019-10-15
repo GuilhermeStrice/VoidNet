@@ -1,4 +1,4 @@
-#include "VoidNet/IPAddress.hpp"
+#include "VoidNet_LL/IPAddress.hpp"
 
 namespace std::net
 {
@@ -7,7 +7,7 @@ namespace std::net
 	const IPAddress IPAddress::LocalHost(127, 0, 0, 1);
 	const IPAddress IPAddress::Broadcast(255, 255, 255, 255);
 
-	std::string IPAddress::ToString() const
+	string IPAddress::ToString() const
 	{
 		in_addr address;
 		address.s_addr = m_address;
@@ -15,7 +15,7 @@ namespace std::net
 		return inet_ntoa(address);
 	}
 
-	void IPAddress::Resolve(const std::string& address)
+	void IPAddress::Resolve(const string& address)
 	{
 		m_address = 0;
 		m_valid = false;
@@ -43,7 +43,7 @@ namespace std::net
 			else
 			{
 				addrinfo hints;
-				std::memset(&hints, 0, sizeof(hints));
+				memset(&hints, 0, sizeof(hints));
 				hints.ai_family = AF_INET;
 				addrinfo* result = NULL;
 				if (getaddrinfo(address.c_str(), NULL, &hints, &result) == 0)

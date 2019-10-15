@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "VoidNet/Uri.hpp"
-#include "VoidNet/Headers.hpp"
-#include "VoidNet/Enums.hpp"
+#include "VoidNet_LL/Uri.hpp"
+#include "VoidNet_LL/Headers.hpp"
+#include "VoidNet_LL/Enums.hpp"
 
 namespace std::net
 {
@@ -21,17 +21,17 @@ namespace std::net
 			return m_uri;
 		}
 
-		const std::string& GetPath() const 
+		const string& GetPath() const 
 		{ 
 			return m_uri.GetPath();
 		}
 
-		const std::string& GetData() const 
+		const string& GetData() const 
 		{ 
 			return m_data;
 		}
 
-		const std::string GetHeaderElement(const std::string& name) const;
+		const string GetHeaderElement(const string& name) const;
 
 		const Headers& GetHeaders() const 
 		{ 
@@ -40,13 +40,13 @@ namespace std::net
 
 		void SetMethod(Method method);
 		void SetUri(const Uri& path);
-		void SetData(const std::string& data);
-		void AddHeader(const std::string& name, const std::string& value);
+		void SetData(const string& data);
+		void AddHeader(const string& name, const string& value);
 
 	private:
 		Method m_method = Method::GET;
 		Uri m_uri;
-		std::string m_data;
+		string m_data;
 		Headers m_headers;
 	};
 }

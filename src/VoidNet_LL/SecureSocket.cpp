@@ -1,4 +1,4 @@
-#include "VoidNet/SecureSocket.hpp"
+#include "VoidNet_LL/SecureSocket.hpp"
 
 #include <cassert>
 
@@ -7,7 +7,7 @@ namespace inl::net::sockets
 	/*SecureSocket::SecureSocket()
 		: m_context(0), m_conn(0), m_eof(false) 
 	{
-		m_socket = std::make_unique<Socket>(SocketType::Streaming);
+		m_socket = make_unique<Socket>(SocketType::Streaming);
 
 		// Intitialize the SSL client-side socket
 		SSL_library_init();
@@ -46,7 +46,7 @@ namespace inl::net::sockets
 		return m_socket->HasPendingData(pendingDataSize);
 	}
 
-	bool SecureSocket::Send(uint8_t* data, int32_t count, int32_t &sent, int flags)
+	bool SecureSocket::Send(byte* data, int32_t count, int32_t &sent, int flags)
 	{
 		sent = SSL_write(m_conn, data, count);
 		SendFromBio(); // Write data if available
@@ -58,7 +58,7 @@ namespace inl::net::sockets
 		return sent > 0;
 	}
 
-	bool SecureSocket::SendRaw(uint8_t * buf, size_t len, int flags)
+	bool SecureSocket::SendRaw(byte * buf, size_t len, int flags)
 	{
 		int32_t sent;
 		return m_socket->Send(buf, len, sent) && sent == len;
@@ -67,7 +67,7 @@ namespace inl::net::sockets
 
 	bool SecureSocket::SendFromBio(int flags)
 	{
-		uint8_t buf[4096];
+		byte buf[4096];
 		size_t pending = BIO_ctrl_pending(m_out);
 		if (!pending) 
 			return true;
@@ -81,7 +81,7 @@ namespace inl::net::sockets
 
 	bool SecureSocket::RecvToBio(int flags)
 	{
-		uint8_t buf[4096];
+		byte buf[4096];
 		size_t bytes = m_socket->Recv(buf, sizeof(buf), flags);
 		if (bytes > 0) 
 		{
@@ -111,7 +111,7 @@ namespace inl::net::sockets
 			assert(!"unexpected error");
 	}
 
-	bool SecureSocket::Recv(uint8_t* data, int32_t count, int32_t &read, int flags)
+	bool SecureSocket::Recv(byte* data, int32_t count, int32_t &read, int flags)
 	{
 		read = SSL_read(m_conn, data, count);
 		if (read < 0) 
@@ -123,7 +123,7 @@ namespace inl::net::sockets
 		return read > 0;
 	}
 
-	bool SecureSocket::Wait(SocketWaitConditions cond, std::chrono::milliseconds t) const
+	bool SecureSocket::Wait(SocketWaitConditions cond, chrono::milliseconds t) const
 	{
 		return m_socket->Wait(cond, t);
 	}
@@ -143,7 +143,7 @@ namespace inl::net::sockets
 		return m_socket->GetPort();
 	}
 
-	void SecureSocket::UseCertificateFile(std::string const & path)
+	void SecureSocket::UseCertificateFile(string const & path)
 	{
 		if (!m_context) 
 			assert(!"not initialized yet");
@@ -151,7 +151,7 @@ namespace inl::net::sockets
 			throw inl::RuntimeException();
 	}
 
-	void SecureSocket::UsePrivateKeyFile(std::string const & path)
+	void SecureSocket::UsePrivateKeyFile(string const & path)
 	{
 		if (!m_context)
 			assert(!"not initialized yet");

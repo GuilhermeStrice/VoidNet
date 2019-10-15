@@ -1,9 +1,9 @@
-#include "HLAPI/TcpServer.hpp"
+#include "VoidNet_HL/TcpServer.hpp"
 
-#include "HLAPI/TcpConnection.hpp"
-#include "VoidNet/TcpSocketBuilder.hpp"
-#include "VoidNet/TcpClient.hpp"
-#include "HLAPI/TcpConnectionHandler.hpp"
+#include "VoidNet_HL/TcpConnection.hpp"
+#include "VoidNet_LL/TcpSocketBuilder.hpp"
+#include "VoidNet_LL/TcpClient.hpp"
+#include "VoidNet_HL/TcpConnectionHandler.hpp"
 
 namespace std::net
 {
@@ -13,10 +13,10 @@ namespace std::net
 		, m_run(false)
 	{
 		if (port == 0)
-			throw std::invalid_argument("TcpServer::TcpServer()");
+			throw invalid_argument("TcpServer::TcpServer()");
 
-		listener = std::shared_ptr<TcpListener>(TcpSocketBuilder().AsReusable().Bind(IPAddress(0, 0, 0, 0, port)).Listening().BuildListener().release());
-		m_connectionHandler = std::make_shared<std::net::TcpConnectionHandler>(listener);
+		listener = shared_ptr<TcpListener>(TcpSocketBuilder().AsReusable().Bind(IPAddress(0, 0, 0, 0, port)).Listening().BuildListener().release());
+		m_connectionHandler = make_shared<TcpConnectionHandler>(listener);
 		m_connectionHandler->SetMaxConnections(max_connections);
 	}
 

@@ -5,7 +5,7 @@
 #include <ostream>
 #include <string>
 
-#include "VoidNet/Net.hpp"
+#include "VoidNet_LL/Net.hpp"
 
 namespace std::net
 {
@@ -26,7 +26,7 @@ namespace std::net
 		{
 		}
 
-		inline IPAddress(const std::string& address, uint16_t port = DEFAULT_SERVER_PORT)
+		inline IPAddress(const string& address, uint16_t port = DEFAULT_SERVER_PORT)
 			: m_address(0)
 			, m_valid(false)
 			, m_port(port)
@@ -56,7 +56,7 @@ namespace std::net
 		{
 		}
 
-		std::string ToString() const;
+		string ToString() const;
 		inline uint32_t ToInteger() const { return ntohl(m_address); }
 		inline uint16_t GetPort() const { return m_port; }
 
@@ -68,7 +68,7 @@ namespace std::net
 		inline sockaddr_in ToCAddr() const
 		{
 			sockaddr_in addr;
-			std::memset(&addr, 0, sizeof(addr));
+			memset(&addr, 0, sizeof(addr));
 			addr.sin_addr.s_addr = htonl(ToInteger());
 			addr.sin_family = AF_INET;
 			addr.sin_port = htons(GetPort());
@@ -80,7 +80,7 @@ namespace std::net
 
 		friend bool operator <(const IPAddress& left, const IPAddress& right);
 
-		void Resolve(const std::string& address);
+		void Resolve(const string& address);
 
 	private:
 		uint32_t m_address;
@@ -90,19 +90,19 @@ namespace std::net
 
 	inline bool operator ==(const IPAddress& left, const IPAddress& right) { return !(left < right) && !(right < left); }
 	inline bool operator !=(const IPAddress& left, const IPAddress& right) { return !(left == right); }
-	inline bool operator <(const IPAddress& left, const IPAddress& right) { return std::make_pair(left.m_valid, left.m_address) < std::make_pair(right.m_valid, right.m_address); }
+	inline bool operator <(const IPAddress& left, const IPAddress& right) { return make_pair(left.m_valid, left.m_address) < make_pair(right.m_valid, right.m_address); }
 	inline bool operator >(const IPAddress& left, const IPAddress& right) { return right < left; }
 	inline bool operator <=(const IPAddress& left, const IPAddress& right) { return !(right < left); }
 	inline bool operator >=(const IPAddress& left, const IPAddress& right) { return !(left < right); }
 
-	inline std::istream& operator >>(std::istream& stream, IPAddress& address)
+	inline istream& operator >>(istream& stream, IPAddress& address)
 	{
-		std::string str;
+		string str;
 		stream >> str;
 		address = IPAddress(str);
 
 		return stream;
 	}
 
-	inline std::ostream& operator <<(std::ostream& stream, const IPAddress& address) { return stream << address.ToString(); }
+	inline ostream& operator <<(ostream& stream, const IPAddress& address) { return stream << address.ToString(); }
 }

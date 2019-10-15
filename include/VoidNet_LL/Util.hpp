@@ -3,10 +3,10 @@
 #include <vector>
 #include <sstream>
 
-#include "VoidNet/Net.hpp"
+#include "VoidNet_LL/Net.hpp"
 
 namespace std::net
 {
-	static std::vector<std::string> Split(const std::string& str, const std::string& delimiter);
+	static vector<string> Split(const string& str, const string& delimiter);
 	static sockaddr_in CreateAddress(uint32_t address, uint16_t port);
 }

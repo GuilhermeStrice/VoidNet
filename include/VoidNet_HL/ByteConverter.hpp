@@ -4,8 +4,7 @@
 // now ive hit a wall
 // casting vs bitshifting
 
-#include <cstdint>
-#include <cstring>
+#include "VoidNet_LL/Net.hpp"
 
 namespace std
 {
@@ -13,15 +12,15 @@ namespace std
 	{
 	public:
 		template<typename T>
-		inline static uint8_t *ToBytes(T value)
+		inline static byte *ToBytes(T value)
 		{
-			uint8_t *data = new uint8_t[sizeof(T)]();
+			byte *data = new byte[sizeof(T)]();
 			memcpy(data, &value, sizeof(T));
 			return data;
 		}
 
 		template<typename T>
-		inline static T FromBytes(uint8_t *data)
+		inline static T FromBytes(byte *data)
 		{
 			if (!data)
 				throw std::invalid_argument("cant have null parameter -> ByteConverter::FromBytes");

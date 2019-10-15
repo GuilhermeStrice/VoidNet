@@ -1,14 +1,14 @@
-#include "VoidNet/TcpSocketBuilder.hpp"
+#include "VoidNet_LL/TcpSocketBuilder.hpp"
 
-#include "VoidNet/Socket.hpp"
-#include "VoidNet/TcpClient.hpp"
-#include "VoidNet/TcpListener.hpp"
+#include "VoidNet_LL/Socket.hpp"
+#include "VoidNet_LL/TcpClient.hpp"
+#include "VoidNet_LL/TcpListener.hpp"
 
 namespace std::net
 {
-	std::unique_ptr<Socket> TcpSocketBuilder::Build() const
+	unique_ptr<Socket> TcpSocketBuilder::Build() const
 	{
-		std::unique_ptr<Socket> socket = std::make_unique<Socket>(SocketType::Streaming, m_socketProtocol);
+		unique_ptr<Socket> socket = make_unique<Socket>(SocketType::Streaming, m_socketProtocol);
 
 		if (socket != nullptr)
 		{
@@ -32,21 +32,19 @@ namespace std::net
 			}
 
 			if (Error)
-				throw std::runtime_error("Couldnt create socket"); // make parameter a string depending on the error
+				throw runtime_error("Couldnt create socket"); // make parameter a string depending on the error
 		}
 
 		return socket;
 	}
 
-	std::unique_ptr<TcpClient> TcpSocketBuilder::BuildClient() const
+	unique_ptr<TcpClient> TcpSocketBuilder::BuildClient() const
 	{
-		std::unique_ptr<Socket> socket = Build();
-		return std::make_unique<TcpClient>(socket.release());
+		return std::make_unique<TcpClient>(Build().release());
 	}
 
-	std::unique_ptr<TcpListener> TcpSocketBuilder::BuildListener() const
+	unique_ptr<TcpListener> TcpSocketBuilder::BuildListener() const
 	{
-		std::unique_ptr<Socket> socket = Build();
-		return std::make_unique<TcpListener>(socket.release());
+		return std::make_unique<TcpListener>(Build().release());
 	}
 }

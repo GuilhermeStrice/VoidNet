@@ -1,7 +1,7 @@
 #pragma once
 
-#include <VoidNet/Net.hpp>
-#include "HLAPI/ServerConfig.hpp"
+#include <VoidNet_LL/Net.hpp>
+#include "VoidNet_HL/ServerConfig.hpp"
 
 #include <memory>
 
@@ -24,6 +24,6 @@ namespace std::net
 		ServerConfig Config;
 
 	private:
-		std::shared_ptr<std::net::TcpServer> m_tcpServer;
+		shared_ptr<TcpServer> m_tcpServer;
 	};
 }

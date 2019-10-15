@@ -9,25 +9,25 @@ namespace std::net
 	class Headers 
 	{
 	public:
-		const std::string operator[](const std::string &name) const;
+		const string operator[](const string &name) const;
 
-		std::multimap<std::string, std::string>::const_iterator begin() const
+		multimap<string, string>::const_iterator begin() const
 		{ 
 			return m_header.begin();
 		}
 
-		std::multimap<std::string, std::string>::const_iterator end() const
+		multimap<string, string>::const_iterator end() const
 		{ 
 			return m_header.end();
 		}
 
-		void AddHeader(std::string const& name, std::string const& value);
+		void AddHeader(string const& name, string const& value);
 
-		static std::string const HOST;
-		static std::string const CONTENT_LENGTH;
-		static std::string const ACCEPT_ENCODING;
-		static std::string const CONNECTION;
+		static string const HOST;
+		static string const CONTENT_LENGTH;
+		static string const ACCEPT_ENCODING;
+		static string const CONNECTION;
 	private:
-		std::multimap<std::string, std::string> m_header;
+		multimap<string, string> m_header;
 };
 }

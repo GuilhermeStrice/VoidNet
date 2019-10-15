@@ -4,9 +4,9 @@
 #include <chrono>
 #include <memory>
 
-#include "VoidNet/Net.hpp"
-#include "VoidNet/IPAddress.hpp"
-#include "VoidNet/Enums.hpp"
+#include "VoidNet_LL/Net.hpp"
+#include "VoidNet_LL/IPAddress.hpp"
+#include "VoidNet_LL/Enums.hpp"
 
 namespace std::net
 {
@@ -35,14 +35,14 @@ namespace std::net
 		virtual bool Bind(const IPAddress &addr) = 0;
 		virtual bool Connect(const IPAddress& addr) = 0;
 		virtual bool Listen() = 0;
-		virtual bool WaitForPendingConnection(bool& hasPendingConnection, std::chrono::milliseconds t) = 0;
+		virtual bool WaitForPendingConnection(bool& hasPendingConnection, chrono::milliseconds t) = 0;
 		virtual bool HasPendingData(uint32_t& pendingDataSize) = 0;
-		virtual std::unique_ptr<Socket> Accept() = 0;
-		virtual bool SendTo(const uint8_t* data, int32_t count, int32_t& sent, const IPAddress& addrDest) = 0;
-		virtual bool Send(const uint8_t* data, int32_t count, int32_t& sent) = 0;
-		virtual bool RecvFrom(uint8_t* data, int32_t size, int32_t& read, IPAddress& srcAddr, SocketReceiveFlags flags = SocketReceiveFlags::None) = 0;
-		virtual bool Recv(uint8_t* data, int32_t size, int32_t& read, SocketReceiveFlags flags = SocketReceiveFlags::None) = 0;
-		virtual bool Wait(SocketWaitConditions cond, std::chrono::milliseconds t) = 0;
+		virtual unique_ptr<Socket> Accept() = 0;
+		virtual bool SendTo(const byte* data, int32_t count, int32_t& sent, const IPAddress& addrDest) = 0;
+		virtual bool Send(const byte* data, int32_t count, int32_t& sent) = 0;
+		virtual bool RecvFrom(byte* data, int32_t size, int32_t& read, IPAddress& srcAddr, SocketReceiveFlags flags = SocketReceiveFlags::None) = 0;
+		virtual bool Recv(byte* data, int32_t size, int32_t& read, SocketReceiveFlags flags = SocketReceiveFlags::None) = 0;
+		virtual bool Wait(SocketWaitConditions cond, chrono::milliseconds t) = 0;
 		virtual SocketConnectionState GetConnectionState() = 0;
 		virtual void GetAddress(IPAddress& outAddr) = 0;
 		virtual bool GetPeerAddress(IPAddress& outAddr) = 0;
@@ -50,7 +50,7 @@ namespace std::net
 		virtual bool JoinMulticastGroup(const IPAddress& addrStr) = 0;
 		virtual bool LeaveMulticastGroup(const IPAddress& addrStr) = 0;
 		virtual bool SetMulticastLoopback(bool loopback) = 0;
-		virtual bool SetMulticastTtl(uint8_t timeToLive) = 0;
+		virtual bool SetMulticastTtl(byte timeToLive) = 0;
 		virtual bool SetReuseAddr(bool allowReuse = true) = 0;
 		virtual bool SetLinger(bool shouldLinger = true, int32_t t = 0) = 0;
 		virtual bool SetSendBufferSize(int32_t size, int32_t& newSize) = 0;

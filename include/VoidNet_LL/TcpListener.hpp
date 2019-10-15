@@ -3,7 +3,7 @@
 #include <thread>
 #include <queue>
 
-#include "VoidNet/Socket.hpp"
+#include "VoidNet_LL/Socket.hpp"
 
 namespace std::net
 {
@@ -16,17 +16,17 @@ namespace std::net
 
 	class TcpListener
 	{
-		friend class std::net::TcpConnectionHandler;
+		friend class TcpConnectionHandler;
 
 	public:
-		TcpListener(uint16_t port, std::chrono::milliseconds inSleepTime = std::chrono::milliseconds(0));
-		TcpListener(Socket *InSocket, std::chrono::milliseconds inSleepTime = std::chrono::milliseconds(0));
+		TcpListener(uint16_t port, chrono::milliseconds inSleepTime = chrono::milliseconds(0));
+		TcpListener(Socket *InSocket, chrono::milliseconds inSleepTime = chrono::milliseconds(0));
 
 		TcpClient *AcceptClient();
 
 	private:
-		std::chrono::milliseconds m_sleepTime;
-		std::unique_ptr<Socket> m_socket;
+		chrono::milliseconds m_sleepTime;
+		unique_ptr<Socket> m_socket;
 		uint16_t m_port = 0;
 	};
 }

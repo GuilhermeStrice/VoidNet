@@ -1,6 +1,6 @@
-#include "HLAPI/TcpConnection.hpp"
+#include "VoidNet_HL/TcpConnection.hpp"
 
-#include "HLAPI/InternalTags.hpp"
+#include "VoidNet_HL/InternalTags.hpp"
 
 #include <iostream>
 
@@ -40,7 +40,7 @@ namespace std::net
 	{
 	}
 
-	std::shared_ptr<TcpClient> TcpConnection::GetClient()
+	shared_ptr<TcpClient> TcpConnection::GetClient()
 	{
 		return m_client;
 	}
@@ -58,7 +58,7 @@ namespace std::net
 	bool TcpConnection::sendMessage(const NetworkMessage & msg)
 	{
 		uint32_t size;
-		uint8_t *data = msg.SerializeData(size);
+		byte *data = msg.SerializeData(size);
 		int32_t sent;
 		return m_client->Send(data, size, sent);
 	}
@@ -68,9 +68,9 @@ namespace std::net
 		uint32_t data_size;
 		while (m_client->HasPendingData(data_size))
 		{
-			std::net::NetworkMessage message;
+			NetworkMessage message;
 
-			uint8_t* bytes = new uint8_t[data_size]();
+			byte* bytes = new byte[data_size]();
 
 			int32_t read;
 			m_client->Recv(bytes, data_size, read);
@@ -80,7 +80,7 @@ namespace std::net
 			if (message.GetTag() == (uint32_t)InternalTags::Disconnect)
 			{
 				if (DisconnectedEvent)
-					DisconnectedEvent(*(message.GetData<std::string>()));
+					DisconnectedEvent(*(message.GetData<string>()));
 			}
 			else if (message.GetTag() == (uint32_t)InternalTags::Connect)
 			{

@@ -9,15 +9,15 @@ namespace std::net
 	class Authority 
 	{
 	public:
-		Authority(const std::string& user, const std::string& host, uint16_t port);
+		Authority(const string& user, const string& host, uint16_t port);
 		Authority();
 
-		const std::string& GetUser() const 
+		const string& GetUser() const 
 		{ 
 			return m_user;
 		}
 
-		const std::string& GetHost() const 
+		const string& GetHost() const 
 		{ 
 			return m_host;
 		}
@@ -27,22 +27,22 @@ namespace std::net
 			return m_port;
 		}
 
-		void SetUser(const std::string& user);
-		void SetHost(const std::string& host);
+		void SetUser(const string& user);
+		void SetHost(const string& host);
 		void SetPort(uint16_t port);
 	private:
-		std::string m_user;
-		std::string m_host;
+		string m_user;
+		string m_host;
 		uint16_t m_port;
 	};
 
 	class Uri {
 	public:
 		Uri(const char* value);
-		Uri(const std::string& value);
+		Uri(const string& value);
 		Uri();
 
-		const std::string& GetScheme() const 
+		const string& GetScheme() const 
 		{ 
 			return m_scheme;
 		}
@@ -52,12 +52,12 @@ namespace std::net
 			return m_authority;
 		}
 
-		const std::string& GetPath() const 
+		const string& GetPath() const 
 		{ 
 			return m_path;
 		}
 
-		const std::string& GetHost() const 
+		const string& GetHost() const 
 		{
 			return m_authority.GetHost();
 		}
@@ -67,12 +67,12 @@ namespace std::net
 			return m_authority.GetPort();
 		}
 
-		void SetScheme(const std::string& scheme);
+		void SetScheme(const string& scheme);
 		void SetAuthority(const Authority& authority);
-		void SetPath(const std::string& path);
+		void SetPath(const string& path);
 	private:
-		std::string m_scheme;
+		string m_scheme;
 		Authority m_authority;
-		std::string m_path;
+		string m_path;
 	};
 }

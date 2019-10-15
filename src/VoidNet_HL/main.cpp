@@ -1,13 +1,13 @@
-#include "VoidNet/Init.hpp"
-#include "HLAPI/Server.hpp"
-#include "HLAPI/ByteConverter.hpp"
-#include "VoidNet/TcpClient.hpp"
-#include "HLAPI/InternalTags.hpp"
-#include "HLAPI/NetworkMessage.hpp"
-#include "HLAPI/Plugin/Plugin.hpp"
+#include "VoidNet_LL/Init.hpp"
+#include "VoidNet_HL/Server.hpp"
+#include "VoidNet_HL/ByteConverter.hpp"
+#include "VoidNet_LL/TcpClient.hpp"
+#include "VoidNet_HL/InternalTags.hpp"
+#include "VoidNet_HL/NetworkMessage.hpp"
+#include "VoidNet_HL/Plugin/Plugin.hpp"
 
 #include <iostream>
-#include <HLAPI\TcpConnection.hpp>
+#include <VoidNet_HL\TcpConnection.hpp>
 
 class Plugin : public std::net::Plugin
 {
@@ -20,7 +20,7 @@ class Plugin : public std::net::Plugin
 int main()
 {
 	std::net::Initialize();
-	std::net::Server server(0);
+	std::net::Server server(1);
 	server.AddPlugin(new Plugin());
 	server.Start();
 	

@@ -1,11 +1,14 @@
-#include "HLAPI/Plugin/PluginManager.hpp"
+#include "VoidNet_HL/Plugin/PluginManager.hpp"
 
-#include "HLAPI/Plugin/Plugin.hpp"
+#include "VoidNet_HL/Plugin/Plugin.hpp"
 
-std::net::PluginManager::PluginManager()
+namespace std::net
 {
-}
+	PluginManager::PluginManager()
+	{
+	}
 
-std::net::PluginManager::~PluginManager()
-{
+	PluginManager::~PluginManager()
+	{
+	}
 }

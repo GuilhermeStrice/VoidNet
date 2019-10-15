@@ -2,7 +2,7 @@
 
 #include <atomic>
 
-#include "VoidNet/TcpListener.hpp"
+#include "VoidNet_LL/TcpListener.hpp"
 
 namespace std::net
 {
@@ -11,7 +11,7 @@ namespace std::net
 
 	class TcpServer
 	{
-		friend class std::net::Server;
+		friend class Server;
 
 	public:
 		TcpServer(uint32_t max_connections, uint16_t port = DEFAULT_SERVER_PORT);
@@ -20,12 +20,12 @@ namespace std::net
 		void Stop();
 
 	private:
-		std::shared_ptr<TcpListener> listener;
+		shared_ptr<TcpListener> listener;
 		uint32_t m_maxConnections;
 		uint16_t m_port;
 
-		std::atomic_bool m_run;
+		atomic_bool m_run;
 
-		std::shared_ptr<std::net::TcpConnectionHandler> m_connectionHandler;
+		shared_ptr<TcpConnectionHandler> m_connectionHandler;
 	};
 }

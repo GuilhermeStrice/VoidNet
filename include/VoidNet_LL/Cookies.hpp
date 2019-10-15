@@ -9,23 +9,23 @@ namespace std::net
 	class Cookie 
 	{
 	public:
-		Cookie(const std::string& text);
+		Cookie(const string& text);
 
 		Cookie() : m_httpOnly(false), m_secure(false)
 		{
 		}
 
-		const std::string& GetName() const 
+		const string& GetName() const 
 		{ 
 			return m_name;
 		}
 
-		const std::string& GetValue() const 
+		const string& GetValue() const 
 		{ 
 			return m_value;
 		}
 
-		const std::string& GetPath() const 
+		const string& GetPath() const 
 		{ 
 			return m_path;
 		}
@@ -40,17 +40,17 @@ namespace std::net
 			return m_secure;
 		}
 
-		void SetName(const std::string& name) 
+		void SetName(const string& name) 
 		{ 
 			m_name = name;
 		}
 
-		void SetValue(const std::string& value) 
+		void SetValue(const string& value) 
 		{ 
 			m_value = value;
 		}
 
-		void SetPath(const std::string& path) 
+		void SetPath(const string& path) 
 		{ 
 			m_path = path;
 		}
@@ -66,9 +66,9 @@ namespace std::net
 		}
 
 	private:
-		std::string m_name;
-		std::string m_value;
-		std::string m_path;
+		string m_name;
+		string m_value;
+		string m_path;
 		bool m_httpOnly;
 		bool m_secure;
 	};
@@ -76,25 +76,25 @@ namespace std::net
 	class Cookies 
 	{
 	public:
-		const Cookie operator[](const std::string &name) const;
+		const Cookie operator[](const string &name) const;
 
-		std::map<std::string, Cookie>::const_iterator begin() const
+		map<string, Cookie>::const_iterator begin() const
 		{ 
 			return m_cookie.begin();
 		}
 
-		std::map<std::string, Cookie>::const_iterator end() const
+		map<string, Cookie>::const_iterator end() const
 		{ 
 			return m_cookie.end();
 		}
 
 		void SetCookie(Cookie const& cookie);
 
-		static const std::string HOST;
-		static const std::string CONTENT_LENGTH;
-		static const std::string ACCEPT_ENCODING;
-		static const std::string CONNECTION;
+		static const string HOST;
+		static const string CONTENT_LENGTH;
+		static const string ACCEPT_ENCODING;
+		static const string CONNECTION;
 	private:
-		std::map<std::string, Cookie> m_cookie;
+		map<string, Cookie> m_cookie;
 	};
 }

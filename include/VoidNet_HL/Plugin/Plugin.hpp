@@ -1,6 +1,6 @@
 #pragma once
 
-#include <HLAPI/NetworkMessage.hpp>
+#include <VoidNet_HL/NetworkMessage.hpp>
 
 namespace std::net
 {

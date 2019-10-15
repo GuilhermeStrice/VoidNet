@@ -1,7 +1,7 @@
 #pragma once
 
-#include "VoidNet/UdpSocket.hpp"
-#include "VoidNet/IPAddress.hpp"
+#include "VoidNet_LL/UdpSocket.hpp"
+#include "VoidNet_LL/IPAddress.hpp"
 
 #include <vector>
 
@@ -73,7 +73,7 @@ namespace std::net
 			return *this;
 		}
 
-		UdpSocketBuilder WithMulticastTtl(uint8_t time_to_live)
+		UdpSocketBuilder WithMulticastTtl(byte time_to_live)
 		{
 			m_multicastTtl = time_to_live;
 
@@ -95,9 +95,9 @@ namespace std::net
 		}
 
 	public:
-		std::unique_ptr<UdpSocket> Build() const
+		unique_ptr<UdpSocket> Build() const
 		{
-			std::unique_ptr<Socket> soc = std::make_unique<Socket>(SocketType::Datagram);
+			unique_ptr<Socket> soc = make_unique<Socket>(SocketType::Datagram);
 			
 			if (soc)
 			{
@@ -132,19 +132,19 @@ namespace std::net
 				}
 
 				if (Error)
-					throw inl::RuntimeException("Couldnt create socket"); // make parameter a string depending on the error
-				return std::make_unique<UdpSocket>();
+					throw runtime_error("Couldnt create socket"); // make parameter a string depending on the error
+				return make_unique<UdpSocket>();
 			}
-			return std::unique_ptr<UdpSocket>(nullptr);
+			return unique_ptr<UdpSocket>(nullptr);
 		}
 
 	private:
 		bool m_blocking;
 		bool m_bound;
 		IPAddress m_boundEndpoint;
-		std::vector<IPAddress> m_joinedGroups;
+		vector<IPAddress> m_joinedGroups;
 		bool m_multicastLoopback;
-		uint8_t m_multicastTtl;
+		byte m_multicastTtl;
 		uint32_t m_receiveBufferSize;
 		bool m_reusable;
 		uint32_t m_sendBufferSize;

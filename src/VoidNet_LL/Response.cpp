@@ -1,7 +1,7 @@
 // https://github.com/mfichman/http
 
-#include "VoidNet/Response.hpp"
-#include "VoidNet/Parse.hpp"
+#include "VoidNet_LL/Response.hpp"
+#include "VoidNet_LL/Parse.hpp"
 
 namespace std::net
 {
@@ -13,7 +13,7 @@ namespace std::net
 
 		auto code = ParseToken(str);
 
-		result.value = (HttpStatus)std::atoi(code.value.c_str());
+		result.value = (HttpStatus)atoi(code.value.c_str());
 		result.ch = code.ch;
 		return result;
 	}
@@ -30,7 +30,7 @@ namespace std::net
 
 		auto response = Response();
 		if (version.value != "HTTP/1.1")
-			throw std::runtime_error("bad HTTP version");
+			throw runtime_error("bad HTTP version");
 
 		auto ch = parseCrLf(message.ch).ch;
 		while (*ch != '\0' && *ch != '\r') 
@@ -60,17 +60,17 @@ namespace std::net
 		return response;
 	}
 
-	Response::Response(const std::string& response) 
+	Response::Response(const string& response) 
 	{
 		*this = ParseResponse(response.c_str());
 	}
 
-	const std::string Response::GetHeader(const std::string& name) const 
+	const string Response::GetHeader(const string& name) const 
 	{
 		return m_headers[name];
 	}
 
-	const Cookie Response::GetCookie(const std::string& name) const 
+	const Cookie Response::GetCookie(const string& name) const 
 	{
 		return m_cookies[name];
 	}
@@ -80,12 +80,12 @@ namespace std::net
 		m_status = status;
 	}
 
-	void Response::SetData(const std::string& data) 
+	void Response::SetData(const string& data) 
 	{
 		m_data = data;
 	}
 
-	void Response::SetHeader(const std::string& name, const std::string& value) 
+	void Response::SetHeader(const string& name, const string& value) 
 	{
 		m_headers.AddHeader(name, value);
 	}

@@ -1,16 +1,16 @@
-#include "HLAPI/TcpConnectionHandler.hpp"
+#include "VoidNet_HL/TcpConnectionHandler.hpp"
 
-#include "HLAPI/InternalTags.hpp"
+#include "VoidNet_HL/InternalTags.hpp"
 
-#include "HLAPI/NetworkMessage.hpp"
-#include "HLAPI/TcpConnection.hpp"
-#include "VoidNet/TcpListener.hpp"
+#include "VoidNet_HL/NetworkMessage.hpp"
+#include "VoidNet_HL/TcpConnection.hpp"
+#include "VoidNet_LL/TcpListener.hpp"
 
 #include <chrono>
 
 namespace std::net
 {
-	TcpConnectionHandler::TcpConnectionHandler(std::shared_ptr<TcpListener> listener_ptr)
+	TcpConnectionHandler::TcpConnectionHandler(shared_ptr<TcpListener> listener_ptr)
 		: m_run(false)
 		, m_listenerPtr(listener_ptr)
 		, m_pluginManager(new PluginManager())
@@ -31,7 +31,7 @@ namespace std::net
 		master_fd.events = POLLRDNORM;
 		m_pollFds.emplace_back(master_fd);
 
-		std::thread receive_thread(&TcpConnectionHandler::HandleReceiveMsgAndConnsThreaded, this);
+		thread receive_thread(&TcpConnectionHandler::HandleReceiveMsgAndConnsThreaded, this);
 		m_receiveThread.swap(receive_thread);
 	}
 
@@ -40,16 +40,16 @@ namespace std::net
 		m_run.exchange(false);
 	}
 
-	void TcpConnectionHandler::AddClient(std::shared_ptr<TcpConnection> &c)
+	void TcpConnectionHandler::AddClient(shared_ptr<TcpConnection> &c)
 	{
 		uint32_t id = GetAvailableID();
 		if (id == -1)
 		{
-			std::shared_ptr<TcpClient> client = c->GetClient();
-			std::string reason("Server is full");
+			shared_ptr<TcpClient> client = c->GetClient();
+			string reason("Server is full");
 			NetworkMessage msg(0, DistributionMode::ID, 0, (uint32_t)InternalTags::Disconnect, &reason, sizeof(reason));
 			uint32_t size;
-			uint8_t* msgArr = msg.SerializeData(size);
+			byte* msgArr = msg.SerializeData(size);
 			int32_t sent;
 			client->Send(msgArr, size, sent);
 			client->Close();
@@ -132,7 +132,7 @@ namespace std::net
 				TcpClient *c = m_listenerPtr->AcceptClient();
 				if (c)
 				{
-					std::shared_ptr<TcpConnection> connection = std::make_shared<TcpConnection>(c);
+					shared_ptr<TcpConnection> connection = make_shared<TcpConnection>(c);
 					AddClient(connection);
 					break;
 				}
@@ -141,14 +141,14 @@ namespace std::net
 			{
 				SOCKET c = m_pollFds.at(i).fd;
 
-				uint8_t* header = new uint8_t[sizeof(NetworkHeader)]();
+				byte* header = new byte[sizeof(NetworkHeader)]();
 
 				int32_t read;
 				if ((read = recv(c, (char*)header, sizeof(NetworkHeader), 0)) != sizeof(NetworkHeader))
 					continue;
 
 				NetworkHeader net_header(*(NetworkHeader*)(header));
-				uint8_t *buffer = new uint8_t[net_header.Size]();
+				byte *buffer = new byte[net_header.Size]();
 
 				read = recv(c, (char*)buffer, net_header.Size - 4, 0);
 				if ((read) == net_header.Size - 4)
@@ -180,7 +180,7 @@ namespace std::net
 			m_listMutex.lock();
 			for (int i = 0; i < m_list.size(); i++)
 			{
-				std::shared_ptr<TcpConnection> c = m_list.at(i);
+				shared_ptr<TcpConnection> c = m_list.at(i);
 				if (c->GetID() != msg.GetSenderID())
 				{
 					if (!c->sendMessage(msg))
@@ -198,7 +198,7 @@ namespace std::net
 			m_listMutex.lock();
 			for (int i = 0; i < m_list.size(); i++)
 			{
-				std::shared_ptr<TcpConnection> c = m_list.at(i);
+				shared_ptr<TcpConnection> c = m_list.at(i);
 				if (c->GetID() != msg.GetSenderID())
 				{
 					if (!c->sendMessage(msg))
@@ -214,7 +214,7 @@ namespace std::net
 			m_listMutex.lock();
 			for (int i = 0; i < m_list.size(); i++)
 			{
-				std::shared_ptr<TcpConnection> c = m_list.at(i);
+				shared_ptr<TcpConnection> c = m_list.at(i);
 				if (c->GetID() == msg.GetSenderID())
 				{
 					if (!c->sendMessage(msg))
@@ -230,7 +230,7 @@ namespace std::net
 			m_listMutex.lock();
 			for (int i = 0; i < m_list.size(); i++)
 			{
-				std::shared_ptr<TcpConnection> c = m_list.at(i);
+				shared_ptr<TcpConnection> c = m_list.at(i);
 
 				if (!c->sendMessage(msg))
 				{
@@ -246,7 +246,7 @@ namespace std::net
 			m_listMutex.lock();
 			for (int i = 0; i < m_list.size(); i++)
 			{
-				std::shared_ptr<TcpConnection> c = m_list.at(i);
+				shared_ptr<TcpConnection> c = m_list.at(i);
 					
 				if (!c->sendMessage(msg))
 				{

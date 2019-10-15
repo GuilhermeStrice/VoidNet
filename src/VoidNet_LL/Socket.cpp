@@ -1,19 +1,19 @@
-#include "VoidNet/Socket.hpp"
-#include "VoidNet/IPAddress.hpp"
+#include "VoidNet_LL/Socket.hpp"
+#include "VoidNet_LL/IPAddress.hpp"
 
 namespace std::net
 {
 	void Socket::init()
 	{
 		if (GetSocketType() == SocketType::Unknown)
-			throw std::invalid_argument("Unknown socket type");
+			throw invalid_argument("Unknown socket type");
 
 		if (m_socket == INVALID_SOCKET)
 		{
 			m_socket = socket(AF_INET, (int)GetSocketType(), 0);
 
 			if (m_socket == INVALID_SOCKET)
-				throw std::runtime_error("Couldnt create socket");
+				throw runtime_error("Couldnt create socket");
 		}
 
 		if (GetSocketType() == SocketType::Streaming)
@@ -62,7 +62,7 @@ namespace std::net
 		return ((Error == SocketErrors::SE_NO_ERROR) || (Error == SocketErrors::SE_EWOULDBLOCK));
 	}
 
-	bool Socket::WaitForPendingConnection(bool& hasPendingConnection, std::chrono::milliseconds t)
+	bool Socket::WaitForPendingConnection(bool& hasPendingConnection, chrono::milliseconds t)
 	{
 		bool hasSucceeded = false;
 		hasPendingConnection = false;
@@ -95,42 +95,42 @@ namespace std::net
 		return false;
 	}
 
-	std::unique_ptr<Socket> Socket::Accept()
+	unique_ptr<Socket> Socket::Accept()
 	{
 		SOCKET newSocket = accept(m_socket, nullptr, nullptr);
 
 		if (newSocket != INVALID_SOCKET)
 		{
-			return std::make_unique<Socket>(newSocket, GetSocketType());
+			return make_unique<Socket>(newSocket, GetSocketType());
 		}
 
 		return nullptr;
 	}
 
-	bool Socket::SendTo(const uint8_t* data, int32_t count, int32_t& sent, const IPAddress& addrDest)
+	bool Socket::SendTo(const byte* data, int32_t count, int32_t& sent, const IPAddress& addrDest)
 	{
 		sockaddr_in addr = addrDest.ToCAddr();
 		sent = sendto(m_socket, (const char*)data, count, 0, (sockaddr*)&addr, sizeof(sockaddr_in));
 
 		bool result = sent >= 0;
 		if (result)
-			m_lastActivityTime = std::chrono::system_clock::now().time_since_epoch().count();
+			m_lastActivityTime = chrono::system_clock::now().time_since_epoch().count();
 
 		return result;
 	}
 
-	bool Socket::Send(const uint8_t* data, int32_t count, int32_t& sent)
+	bool Socket::Send(const byte* data, int32_t count, int32_t& sent)
 	{
 		sent = send(m_socket, (const char*)data, count, 0);
 
 		bool result = sent != SOCKET_ERROR;
 		if (result)
-			m_lastActivityTime = std::chrono::system_clock::now().time_since_epoch().count();
+			m_lastActivityTime = chrono::system_clock::now().time_since_epoch().count();
 
 		return result;
 	}
 
-	bool Socket::RecvFrom(uint8_t* data, int32_t size, int32_t& read, IPAddress& srcAddr, SocketReceiveFlags flags)
+	bool Socket::RecvFrom(byte* data, int32_t size, int32_t& read, IPAddress& srcAddr, SocketReceiveFlags flags)
 	{
 		socklen_t len = sizeof(sockaddr_in);
 		sockaddr_in addr = srcAddr.ToCAddr();
@@ -146,12 +146,12 @@ namespace std::net
 			return false;
 		}
 
-		m_lastActivityTime = std::chrono::system_clock::now().time_since_epoch().count();
+		m_lastActivityTime = chrono::system_clock::now().time_since_epoch().count();
 
 		return true;
 	}
 
-	bool Socket::Recv(uint8_t* data, int32_t size, int32_t& read, SocketReceiveFlags flags)
+	bool Socket::Recv(byte* data, int32_t size, int32_t& read, SocketReceiveFlags flags)
 	{
 		const int translatedFlags = TranslateFlags(flags);
 		read = recv(m_socket, (char*)data, size, translatedFlags);
@@ -164,12 +164,12 @@ namespace std::net
 			return false;
 		}
 
-		m_lastActivityTime = std::chrono::system_clock::now().time_since_epoch().count();
+		m_lastActivityTime = chrono::system_clock::now().time_since_epoch().count();
 
 		return true;
 	}
 
-	bool Socket::Wait(SocketWaitConditions cond, std::chrono::milliseconds t)
+	bool Socket::Wait(SocketWaitConditions cond, chrono::milliseconds t)
 	{
 		if ((cond == SocketWaitConditions::WaitForRead) || (cond == SocketWaitConditions::WaitForReadOrWrite))
 		{
@@ -192,7 +192,7 @@ namespace std::net
 
 		if (HasState(SocketParam::HasError) == SocketReturn::No)
 		{
-			if (std::chrono::system_clock::now().time_since_epoch().count() - m_lastActivityTime > std::chrono::milliseconds(5).count())
+			if (chrono::system_clock::now().time_since_epoch().count() - m_lastActivityTime > chrono::milliseconds(5).count())
 			{
 				SocketReturn writeState = HasState(SocketParam::CanWrite);
 				SocketReturn readState = HasState(SocketParam::CanRead);
@@ -200,7 +200,7 @@ namespace std::net
 				if (writeState == SocketReturn::Yes || readState == SocketReturn::Yes)
 				{
 					currentState = SocketConnectionState::Connected;
-					m_lastActivityTime = std::chrono::system_clock::now().time_since_epoch().count();
+					m_lastActivityTime = chrono::system_clock::now().time_since_epoch().count();
 				}
 				else if (writeState == SocketReturn::No && readState == SocketReturn::No)
 					currentState = SocketConnectionState::NotConnected;
@@ -240,7 +240,7 @@ namespace std::net
 	bool Socket::SetNonBlocking(bool isNonBlocking)
 	{
 #if PLATFORM_HTML5 // if we have more platforms later (html5, android, ios) later we need to do some changes to networking
-		throw std::exception("Can't have blocking sockets on HTML5");
+		throw runtime_error("Can't have blocking sockets on HTML5");
 		return false;
 #else 
 
@@ -311,11 +311,11 @@ namespace std::net
 		sockaddr_in addr;
 		socklen_t size = sizeof(sockaddr_in);
 		if (getsockname(m_socket, (sockaddr*)&addr, &size) != 0)
-			throw std::runtime_error("Invalid port");
+			throw runtime_error("Invalid port");
 		return ntohs(addr.sin_port);
 	}
 
-	SocketReturn Socket::HasState(SocketParam state, std::chrono::milliseconds t)
+	SocketReturn Socket::HasState(SocketParam state, chrono::milliseconds t)
 	{
 		timeval time;
 		time.tv_sec = t.count();

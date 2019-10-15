@@ -1,9 +1,9 @@
-#include "HLAPI/Server.hpp"
+#include "VoidNet_HL/Server.hpp"
 
-#include <HLAPI/Plugin/Plugin.hpp>
+#include <VoidNet_HL/Plugin/Plugin.hpp>
 
-#include "HLAPI/TcpServer.hpp"
-#include "HLAPI/TcpConnectionHandler.hpp"
+#include "VoidNet_HL/TcpServer.hpp"
+#include "VoidNet_HL/TcpConnectionHandler.hpp"
 //#include "UdpServer.hpp
 
 namespace std::net
@@ -11,7 +11,7 @@ namespace std::net
 	Server::Server(uint32_t max_connections, uint16_t port) :
 		Config(ServerConfig())
 	{
-		m_tcpServer = std::make_shared<std::net::TcpServer>(max_connections, port);
+		m_tcpServer = make_shared<TcpServer>(max_connections, port);
 		m_tcpServer->m_connectionHandler->m_config = Config;
 	}
 

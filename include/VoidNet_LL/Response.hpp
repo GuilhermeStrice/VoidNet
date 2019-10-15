@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "VoidNet/Headers.hpp"
-#include "VoidNet/Cookies.hpp"
-#include "VoidNet/Enums.hpp"
+#include "VoidNet_LL/Headers.hpp"
+#include "VoidNet_LL/Cookies.hpp"
+#include "VoidNet_LL/Enums.hpp"
 
 #include <string>
 
@@ -13,7 +13,7 @@ namespace std::net
 	class Response 
 	{
 	public:
-		Response(const std::string& text);
+		Response(const string& text);
 		Response() {};
 
 		HttpStatus GetStatus() const 
@@ -21,22 +21,22 @@ namespace std::net
 			return m_status; 
 		}
 
-		const std::string& GetData() const 
+		const string& GetData() const 
 		{ 
 			return m_data; 
 		}
 
-		const std::string GetHeader(const std::string& name) const;
-		const Cookie GetCookie(const std::string& name) const;
+		const string GetHeader(const string& name) const;
+		const Cookie GetCookie(const string& name) const;
 
 		void SetStatus(HttpStatus status);
-		void SetData(const std::string& data);
-		void SetHeader(const std::string& name, const std::string& value);
+		void SetData(const string& data);
+		void SetHeader(const string& name, const string& value);
 		void SetCookie(const Cookie& cookie);
 
 	private:
 		HttpStatus m_status = HttpStatus::INVALID_CODE;
-		std::string m_data;
+		string m_data;
 		Headers m_headers;
 		Cookies m_cookies;
 	};

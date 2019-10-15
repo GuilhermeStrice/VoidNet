@@ -1,5 +1,5 @@
-#include "HLAPI/NetworkMessage.hpp"
-#include <cassert>
+#include "VoidNet_HL/NetworkMessage.hpp"
+#include <VoidNet_HL\NetworkHeader.hpp>
 
 namespace std::net
 {
@@ -23,22 +23,22 @@ namespace std::net
 		return m_tag;
 	}
 
-	uint8_t *NetworkMessage::SerializeData(uint32_t &size) const
+	byte *NetworkMessage::SerializeData(uint32_t &size) const
 	{
 		int32_t sizeOfNetHeader = sizeof(NetworkHeader);
 
 		NetworkHeader header;
 		header.Size = 13 + sizeOfNetHeader + m_dataSize;
 
-		uint8_t *bytes = new uint8_t[header.Size]();
+		byte *bytes = new byte[header.Size]();
 		memcpy(bytes, &header, sizeOfNetHeader);
 
-		uint8_t *sender = ByteConverter::ToBytes<uint32_t>(m_senderID); // 4
-		uint8_t *destination = ByteConverter::ToBytes<uint32_t>(m_destinationID); // 4
-		uint8_t *tag = ByteConverter::ToBytes<uint32_t>(m_tag); // 4
+		byte *sender = ByteConverter::ToBytes<uint32_t>(m_senderID); // 4
+		byte *destination = ByteConverter::ToBytes<uint32_t>(m_destinationID); // 4
+		byte *tag = ByteConverter::ToBytes<uint32_t>(m_tag); // 4
 
 		memcpy(bytes + sizeOfNetHeader, sender, 4);
-		bytes[sizeOfNetHeader + 4] = (uint8_t)m_distributionMode;
+		bytes[sizeOfNetHeader + 4] = (byte)m_distributionMode;
 		memcpy(bytes + sizeOfNetHeader + 5, destination, 4);
 		memcpy(bytes + sizeOfNetHeader + 9, tag, 4);
 
@@ -48,7 +48,7 @@ namespace std::net
 		return bytes;
 	}
 
-	void NetworkMessage::Deserialize(uint8_t *data, uint32_t size)
+	void NetworkMessage::Deserialize(byte *data, uint32_t size)
 	{
 		NetworkHeader header;
 		memcpy(&(header), data, sizeof(NetworkHeader));
@@ -57,7 +57,7 @@ namespace std::net
 
 		DeserializeWithoutHeader(data, header.Size);
 	}
-	void NetworkMessage::DeserializeWithoutHeader(uint8_t* data, uint32_t size)
+	void NetworkMessage::DeserializeWithoutHeader(byte* data, uint32_t size)
 	{
 		memcpy(&(m_senderID), data, 4);
 		m_distributionMode = (DistributionMode)data[4];

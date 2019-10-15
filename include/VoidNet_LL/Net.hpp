@@ -1,6 +1,7 @@
 #pragma once
 
-#include <stdint.h>
+#include <cstdint>
+#include <cstddef>
 
 #ifdef _MSC_VER
 	#include <winsock2.h>
@@ -11,6 +12,7 @@
 	#undef GetPort
 	#undef max
 	#undef min
+	#undef DELETE
 
 #define poll WSAPoll
 #define ioctl ioctlsocket

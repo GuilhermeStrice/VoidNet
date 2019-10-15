@@ -1,13 +1,13 @@
 // https://github.com/mfichman/http
 
-#include "VoidNet/Cookies.hpp"
-#include "VoidNet/Parse.hpp"
+#include "VoidNet_LL/Cookies.hpp"
+#include "VoidNet_LL/Parse.hpp"
 
 #include <cassert>
 
 namespace std::net
 {
-	ParseResult<std::string> ParseName(const char* str) 
+	ParseResult<string> ParseName(const char* str) 
 	{
 		return ParseUntil(str, [](char ch) 
 		{ 
@@ -15,7 +15,7 @@ namespace std::net
 		});
 	}
 
-	ParseResult<std::string> ParseValue(const char* str) 
+	ParseResult<string> ParseValue(const char* str) 
 	{
 		return ParseUntil(str, [](char ch) 
 		{ 
@@ -23,7 +23,7 @@ namespace std::net
 		});
 	}
 
-	ParseResult<std::string> ParseSeparator(const char* str) 
+	ParseResult<string> ParseSeparator(const char* str) 
 	{
 		if (*str) 
 		{
@@ -32,7 +32,7 @@ namespace std::net
 		}
 		else 
 		{
-			auto result = ParseResult<std::string>{};
+			auto result = ParseResult<string>{};
 			result.ch = str;
 			return result;
 		}
@@ -66,12 +66,12 @@ namespace std::net
 		return cookie;
 	}
 
-	Cookie::Cookie(const std::string& text) 
+	Cookie::Cookie(const string& text) 
 	{
 		*this = ParseCookie(text.c_str());
 	}
 
-	const Cookie Cookies::operator[](const std::string & name) const
+	const Cookie Cookies::operator[](const string & name) const
 	{
 		auto i = m_cookie.find(name);
 		return (i == m_cookie.end()) ? Cookie() : i->second;

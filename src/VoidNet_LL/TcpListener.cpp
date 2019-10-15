@@ -1,21 +1,21 @@
-#include "VoidNet/TcpListener.hpp"
-#include "VoidNet/TcpSocketBuilder.hpp"
-#include "VoidNet/Socket.hpp"
-#include "VoidNet/TcpClient.hpp"
+#include "VoidNet_LL/TcpListener.hpp"
+#include "VoidNet_LL/TcpSocketBuilder.hpp"
+#include "VoidNet_LL/Socket.hpp"
+#include "VoidNet_LL/TcpClient.hpp"
 
 namespace std::net
 {
-	TcpListener::TcpListener(uint16_t port, std::chrono::milliseconds inSleepTime)
+	TcpListener::TcpListener(uint16_t port, chrono::milliseconds inSleepTime)
 		: m_port(port)
 		, m_sleepTime(inSleepTime)
 	{
 		m_socket = TcpSocketBuilder().AsNonBlocking().AsReusable().Bind(IPAddress(0, 0, 0, 0, port)).Listening().Build();
 	}
 
-	TcpListener::TcpListener(Socket *InSocket, std::chrono::milliseconds inSleepTime)
+	TcpListener::TcpListener(Socket *InSocket, chrono::milliseconds inSleepTime)
 		: m_sleepTime(inSleepTime)
 	{
-		m_socket = std::unique_ptr<Socket>(InSocket);
+		m_socket = unique_ptr<Socket>(InSocket);
 	}
 
 	TcpClient *TcpListener::AcceptClient()
@@ -26,9 +26,9 @@ namespace std::net
 		if (m_socket == nullptr)
 			return nullptr;
 
-		std::string remoteAddress;
+		string remoteAddress;
 
-		const bool hasZeroSleepTime = (m_sleepTime == std::chrono::milliseconds(0));
+		const bool hasZeroSleepTime = (m_sleepTime == chrono::milliseconds(0));
 
 		bool pending = false;
 
@@ -36,7 +36,7 @@ namespace std::net
 		{
 			if (pending)
 			{
-				std::unique_ptr<Socket> connectionSocket = m_socket->Accept();
+				unique_ptr<Socket> connectionSocket = m_socket->Accept();
 
 				if (connectionSocket != nullptr)
 				{
@@ -45,7 +45,7 @@ namespace std::net
 			}
 		}
 		else
-			std::this_thread::sleep_for(std::chrono::milliseconds(m_sleepTime));
+			this_thread::sleep_for(chrono::milliseconds(m_sleepTime));
 
 		return nullptr;
 	}

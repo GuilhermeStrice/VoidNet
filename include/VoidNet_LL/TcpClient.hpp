@@ -1,6 +1,6 @@
 #pragma once
 
-#include "VoidNet/Socket.hpp"
+#include "VoidNet_LL/Socket.hpp"
 
 namespace std::net
 {
@@ -11,7 +11,7 @@ namespace std::net
 {
 	class TcpClient
 	{
-		friend class std::net::TcpConnectionHandler;
+		friend class TcpConnectionHandler;
 
 	public:
 		TcpClient(Socket *soc);
@@ -20,14 +20,14 @@ namespace std::net
 		bool Connect(const IPAddress& addrStr);
 		bool Close() const;
 		bool HasPendingData(uint32_t& pendingDataSize) const;
-		bool Send(const uint8_t* data, int32_t count, int32_t& sent) const;
-		bool Recv(uint8_t* data, int32_t size, int32_t& read, SocketReceiveFlags flags = SocketReceiveFlags::None) const;
-		bool Wait(SocketWaitConditions cond, std::chrono::milliseconds t) const;
+		bool Send(const byte* data, int32_t count, int32_t& sent) const;
+		bool Recv(byte* data, int32_t size, int32_t& read, SocketReceiveFlags flags = SocketReceiveFlags::None) const;
+		bool Wait(SocketWaitConditions cond, chrono::milliseconds t) const;
 		SocketConnectionState GetConnectionState() const;
 		void GetAddress(IPAddress& outAddr) const;
 		int32_t GetPort() const;
 
 	private:
-		std::unique_ptr<Socket> m_socket;
+		unique_ptr<Socket> m_socket;
 	};
 }

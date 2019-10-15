@@ -1,11 +1,11 @@
-#include "VoidNet/TcpClient.hpp"
-#include "VoidNet/TcpSocketBuilder.hpp"
+#include "VoidNet_LL/TcpClient.hpp"
+#include "VoidNet_LL/TcpSocketBuilder.hpp"
 
 namespace std::net
 {
 	TcpClient::TcpClient(Socket *soc)
 	{
-		m_socket = std::unique_ptr<Socket>(soc); // will this work
+		m_socket = unique_ptr<Socket>(soc); // will this work
 	}
 
 	TcpClient::TcpClient(SocketProtocol protocol)
@@ -28,17 +28,17 @@ namespace std::net
 		return m_socket->HasPendingData(pendingDataSize); 
 	}
 
-	bool TcpClient::Send(const uint8_t* data, int32_t count, int32_t& sent) const 
+	bool TcpClient::Send(const byte* data, int32_t count, int32_t& sent) const 
 	{ 
 		return m_socket->Send(data, count, sent); 
 	}
 
-	bool TcpClient::Recv(uint8_t* data, int32_t size, int32_t& read, SocketReceiveFlags flags) const 
+	bool TcpClient::Recv(byte* data, int32_t size, int32_t& read, SocketReceiveFlags flags) const 
 	{ 
 		return m_socket->Recv(data, size, read, flags); 
 	}
 
-	bool TcpClient::Wait(SocketWaitConditions cond, std::chrono::milliseconds t) const 
+	bool TcpClient::Wait(SocketWaitConditions cond, chrono::milliseconds t) const 
 	{ 
 		return m_socket->Wait(cond, t); 
 	}

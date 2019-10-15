@@ -2,9 +2,9 @@
 
 #include <functional>
 
-#include "VoidNet/TcpClient.hpp"
+#include "VoidNet_LL/TcpClient.hpp"
 
-#include "HLAPI/NetworkMessage.hpp"
+#include "VoidNet_HL/NetworkMessage.hpp"
 
 namespace std::net
 {
@@ -16,7 +16,7 @@ namespace std::net
 		TcpConnection();
 		TcpConnection(TcpClient *client);
 
-		std::shared_ptr<TcpClient> GetClient();
+		shared_ptr<TcpClient> GetClient();
 		uint32_t GetID();
 
 		bool Connect(IPAddress addr);
@@ -30,15 +30,15 @@ namespace std::net
 
 		void ReceiveData();
 
-		std::function<void(uint32_t, DistributionMode, uint32_t, uint32_t, void*)> DataReceivedEvent;
-		std::function<void(std::string)> DisconnectedEvent;
-		std::function<void(uint32_t, void*)> NewConnectionEvent;
-		std::function<void()> OnConnectionEvent;
+		function<void(uint32_t, DistributionMode, uint32_t, uint32_t, void*)> DataReceivedEvent;
+		function<void(string)> DisconnectedEvent;
+		function<void(uint32_t, void*)> NewConnectionEvent;
+		function<void()> OnConnectionEvent;
 
 	private:
 		bool sendMessage(const NetworkMessage &msg);
 
-		std::shared_ptr<TcpClient> m_client;
+		shared_ptr<TcpClient> m_client;
 		uint32_t m_id;
 	};
 }

@@ -2,19 +2,19 @@
 
 #pragma once
 
-#include "VoidNet/Response.hpp"
-#include "VoidNet/Request.hpp"
+#include "VoidNet_LL/Response.hpp"
+#include "VoidNet_LL/Request.hpp"
 
 namespace std::net
 {
 	class Http
 	{
 	public:
-		static Response Get(std::string const& path, std::string const& data = "");
-		static Response Post(std::string const& path, std::string const& data = "");
+		static Response Get(string const& path, string const& data = "");
+		static Response Post(string const& path, string const& data = "");
 
 	private:
 		static Response Send(Request const& request);
-		static std::string Str(Request const& request);
+		static string Str(Request const& request);
 	};
 }

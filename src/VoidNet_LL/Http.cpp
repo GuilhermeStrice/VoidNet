@@ -1,13 +1,13 @@
 // https://github.com/mfichman/http
 
-#include "VoidNet/Http.hpp"
+#include "VoidNet_LL/Http.hpp"
 
 #include <cassert>
 #include <vector>
 #include <sstream>
 
-#include "VoidNet/Socket.hpp"
-#include "VoidNet/SecureSocket.hpp"
+#include "VoidNet_LL/Socket.hpp"
+#include "VoidNet_LL/SecureSocket.hpp"
 
 #undef DELETE
 
@@ -16,11 +16,11 @@ namespace std::net
 	Response Http::Send(Request const& request) 
 	{
 		// Send an HTTP request.  Auto-fill the content-length headers.
-		std::string string = Str(request);
+		string string = Str(request);
 		
 		uint16_t port = 0;
-		std::unique_ptr<Socket> socket;
-		std::unique_ptr<SecureSocket> secure_socket;
+		unique_ptr<Socket> socket;
+		unique_ptr<SecureSocket> secure_socket;
 		bool secure = false;
 		if (request.GetUri().GetScheme() == "https") 
 		{
@@ -41,15 +41,15 @@ namespace std::net
 
 		secure ? secure_socket->Connect(IPAddress(request.GetUri().GetHost(), port)) : socket->Connect(IPAddress(request.GetUri().GetHost(), port));
 		int32_t sent;
-		secure ? secure_socket->Recv((uint8_t*)string.c_str(), string.size(), sent) : socket->Send((uint8_t*)string.c_str(), string.size(), sent);
+		secure ? secure_socket->Recv((byte*)string.c_str(), string.size(), sent) : socket->Send((byte*)string.c_str(), string.size(), sent);
 
-		std::vector<char> buffer(16384); // 16 KiB
-		std::stringstream ss;
+		vector<char> buffer(16384); // 16 KiB
+		stringstream ss;
 
 		int32_t read;
 		do 
 		{
-			secure ? secure_socket->Recv((uint8_t*)&buffer[0], buffer.size(), read) : socket->Recv((uint8_t*)&buffer[0], buffer.size(), read);
+			secure ? secure_socket->Recv((byte*)&buffer[0], buffer.size(), read) : socket->Recv((byte*)&buffer[0], buffer.size(), read);
 			ss.write(&buffer[0], read);
 		} 
 		while (read > 0);
@@ -58,7 +58,7 @@ namespace std::net
 		return Response(ss.str());
 	}
 
-	Response Http::Get(std::string const& path, std::string const& data) 
+	Response Http::Get(string const& path, string const& data) 
 	{
 		// Shortcut for simple GET requests
 		Request request;
@@ -68,7 +68,7 @@ namespace std::net
 		return Send(request);
 	}
 
-	Response Http::Post(std::string const& path, std::string const& data) 
+	Response Http::Post(string const& path, string const& data) 
 	{
 		// Shortcut for simple POST requests
 		Request request;
@@ -78,7 +78,7 @@ namespace std::net
 		return Send(request);
 	}
 
-	static std::string str_impl(Method method) {
+	static string str_impl(Method method) {
 		switch (method) 
 		{
 			case Method::GET:
@@ -101,10 +101,10 @@ namespace std::net
 		return "";
 	}
 
-	std::string Http::Str(Request const& request) 
+	string Http::Str(Request const& request) 
 	{
 		// Serialize a request to a string
-		std::stringstream ss;
+		stringstream ss;
 		auto path = request.GetPath().empty() ? "/" : request.GetPath();
 		ss << str_impl(request.GetMethod()) << ' ' << path << " HTTP/1.1\n";
 		ss << Headers::HOST << ": " << request.GetUri().GetHost() << "\n";
