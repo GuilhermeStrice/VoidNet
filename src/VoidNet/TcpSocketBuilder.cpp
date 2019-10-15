@@ -1,8 +1,8 @@
-#include "TcpSocketBuilder.hpp"
+#include "VoidNet/TcpSocketBuilder.hpp"
 
-#include "Socket.hpp"
-#include "TcpClient.hpp"
-#include "TcpListener.hpp"
+#include "VoidNet/Socket.hpp"
+#include "VoidNet/TcpClient.hpp"
+#include "VoidNet/TcpListener.hpp"
 
 namespace std::net
 {

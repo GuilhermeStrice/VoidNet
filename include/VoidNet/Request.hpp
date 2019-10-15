@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "Uri.hpp"
-#include "Headers.hpp"
-#include "Enums.hpp"
+#include "VoidNet/Uri.hpp"
+#include "VoidNet/Headers.hpp"
+#include "VoidNet/Enums.hpp"
 
 namespace std::net
 {

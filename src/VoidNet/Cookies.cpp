@@ -1,7 +1,7 @@
 // https://github.com/mfichman/http
 
-#include "Cookies.hpp"
-#include "Parse.hpp"
+#include "VoidNet/Cookies.hpp"
+#include "VoidNet/Parse.hpp"
 
 #include <cassert>
 

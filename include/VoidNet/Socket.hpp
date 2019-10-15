@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ISocket.hpp"
-#include "Enums.hpp"
+#include "VoidNet/ISocket.hpp"
+#include "VoidNet/Enums.hpp"
 
 namespace std::net
 {
@@ -14,7 +14,7 @@ namespace std::net
 			init();
 		}
 
-		inline Socket(SOCKET newSocket, SocketType socketType, SocketProtocol protocol = SocketProtocol::IPv4)
+		inline Socket(SOCKET newSocket, SocketType socketType = SocketType::Streaming, SocketProtocol protocol = SocketProtocol::IPv4)
 			: ISocket(socketType, protocol)
 			, m_socket(newSocket)
 		{

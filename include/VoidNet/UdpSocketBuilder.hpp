@@ -1,7 +1,7 @@
 #pragma once
 
-#include "UdpSocket.hpp"
-#include "IPAddress.hpp"
+#include "VoidNet/UdpSocket.hpp"
+#include "VoidNet/IPAddress.hpp"
 
 #include <vector>
 

@@ -1,9 +1,9 @@
-#include "TcpServer.hpp"
+#include "HLAPI/TcpServer.hpp"
 
-#include "TcpConnection.hpp"
-#include "TcpSocketBuilder.hpp"
-#include "TcpClient.hpp"
-#include "TcpConnectionHandler.hpp"
+#include "HLAPI/TcpConnection.hpp"
+#include "VoidNet/TcpSocketBuilder.hpp"
+#include "VoidNet/TcpClient.hpp"
+#include "HLAPI/TcpConnectionHandler.hpp"
 
 namespace std::net
 {

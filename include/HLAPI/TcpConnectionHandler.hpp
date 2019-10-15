@@ -4,8 +4,9 @@
 #include <atomic>
 #include <queue>
 
-#include <TcpListener.hpp>
-#include <TcpConnection.hpp>
+#include <VoidNet/TcpListener.hpp>
+#include <HLAPI/TcpConnection.hpp>
+#include <HLAPI/Plugin/PluginManager.hpp>
 
 namespace std::net
 {
@@ -30,14 +31,15 @@ namespace std::net
 		void AddClient(std::shared_ptr<TcpConnection> &c);
 		void SetMaxConnections(uint32_t max_connections);
 
+		void HandlePluginMessage(const NetworkMessage& message);
+
 		uint32_t GetAvailableID();
 
 	private:
 		void HandleReceiveMsgAndConns();
-		void HandleSend();
+		void HandleMessage(const NetworkMessage &msg);
 
 		void HandleReceiveMsgAndConnsThreaded();
-		void HandleSendThreaded();
 
 	private:
 		std::vector<std::shared_ptr<TcpConnection>> m_list;
@@ -53,6 +55,8 @@ namespace std::net
 		std::shared_ptr<MessageQueue> m_queue;
 
 		std::shared_ptr<TcpListener> m_listenerPtr;
+
+		std::shared_ptr<PluginManager> m_pluginManager;
 
 		std::vector<pollfd> poll_fds;
 	};

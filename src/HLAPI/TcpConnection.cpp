@@ -1,6 +1,6 @@
-#include "TcpConnection.hpp"
+#include "HLAPI/TcpConnection.hpp"
 
-#include "InternalTags.hpp"
+#include "HLAPI/InternalTags.hpp"
 
 namespace std::net
 {
@@ -24,7 +24,7 @@ namespace std::net
 		m_id = id;
 	}
 
-	bool TcpConnection::sendMessage(NetworkMessage & msg)
+	bool TcpConnection::sendMessage(const NetworkMessage & msg)
 	{
 		uint32_t size;
 		uint8_t *data = msg.SerializeData(size);

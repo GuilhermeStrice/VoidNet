@@ -1,7 +1,7 @@
 #pragma once
 
-#include "NetworkHeader.hpp"
-#include "ByteConverter.hpp"
+#include "HLAPI/NetworkHeader.hpp"
+#include "HLAPI/ByteConverter.hpp"
 
 #include <cstdint>
 #include <cstring>
@@ -14,7 +14,7 @@ namespace std::net
 		Others,
 		OthersAndServer,
 		All,
-		AllAndMe,
+		AllAndServer,
 		Server
 	};
 
@@ -58,14 +58,14 @@ namespace std::net
 		}
 
 		template<typename T>
-		uint8_t * SerializeData(uint32_t &size)
+		uint8_t * SerializeData(uint32_t &size) const
 		{
 			int32_t sizeOfNetHeader = sizeof(NetworkHeader);
 
 			NetworkHeader header;
 			header.Size = 13 + sizeOfNetHeader + sizeof(T);
 
-			uint8_t *bytes = new uint8_t[header.Size];
+			uint8_t *bytes = new uint8_t[header.Size]();
 			memcpy(bytes, &header, sizeOfNetHeader);
 
 			uint8_t *sender = ByteConverter::ToBytes<uint32_t>(m_senderID); // 4
@@ -83,8 +83,9 @@ namespace std::net
 			return bytes;
 		}
 
-		uint8_t *SerializeData(uint32_t &size);
+		uint8_t *SerializeData(uint32_t &size) const;
 		void Deserialize(uint8_t *data, uint32_t size);
+		void DeserializeWithoutHeader(uint8_t* data, uint32_t size);
 
 		template<typename T>
 		T *GetData() const

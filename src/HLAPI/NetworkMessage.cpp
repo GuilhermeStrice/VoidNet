@@ -1,4 +1,5 @@
-#include "NetworkMessage.hpp"
+#include "HLAPI/NetworkMessage.hpp"
+#include <cassert>
 
 namespace std::net
 {
@@ -22,7 +23,7 @@ namespace std::net
 		return m_tag;
 	}
 
-	uint8_t *NetworkMessage::SerializeData(uint32_t &size)
+	uint8_t *NetworkMessage::SerializeData(uint32_t &size) const
 	{
 		int32_t sizeOfNetHeader = sizeof(NetworkHeader);
 
@@ -49,15 +50,24 @@ namespace std::net
 
 	void NetworkMessage::Deserialize(uint8_t *data, uint32_t size)
 	{
-		NetworkHeader buffer;
-		uint32_t sizeOfNetHeader = sizeof(NetworkHeader);
-		memcpy(&(buffer), data, sizeOfNetHeader);
+		NetworkHeader header;
+		memcpy(&(header), data, sizeof(NetworkHeader));
 
-		memcpy(&(m_senderID), data + 4 + sizeOfNetHeader, 4);
-		m_distributionMode = (DistributionMode)data[8 + sizeOfNetHeader];
-		memcpy(&(m_destinationID), data + 5 + sizeOfNetHeader, 4);
-		memcpy(&(m_tag), data + 9 + sizeOfNetHeader, 4);
+		data += sizeof(NetworkHeader);
 
-		m_data = data + 13 + sizeOfNetHeader;
+		DeserializeWithoutHeader(data, header.Size);
+	}
+	void NetworkMessage::DeserializeWithoutHeader(uint8_t* data, uint32_t size)
+	{
+		memcpy(&(m_senderID), data, 4);
+		m_distributionMode = (DistributionMode)data[4];
+		memcpy(&(m_destinationID), data + 5, 4);
+		memcpy(&(m_tag), data + 9, 4);
+
+		if (size - 4 > 13)
+		{
+			m_data = data + 13;
+			m_dataSize = size - 13 - 4;
+		}
 	}
 }

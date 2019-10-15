@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Socket.hpp"
+#include "VoidNet/Socket.hpp"
 
 #include <memory>
 

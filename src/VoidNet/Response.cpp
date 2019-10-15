@@ -1,7 +1,7 @@
 // https://github.com/mfichman/http
 
-#include "Response.hpp"
-#include "Parse.hpp"
+#include "VoidNet/Response.hpp"
+#include "VoidNet/Parse.hpp"
 
 namespace std::net
 {

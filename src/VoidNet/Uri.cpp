@@ -1,7 +1,7 @@
 // https://github.com/mfichman/http
 
-#include "Uri.hpp"
-#include "Parse.hpp"
+#include "VoidNet/Uri.hpp"
+#include "VoidNet/Parse.hpp"
 
 namespace std::net
 {

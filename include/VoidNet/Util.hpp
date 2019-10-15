@@ -3,7 +3,7 @@
 #include <vector>
 #include <sstream>
 
-#include "Net.hpp"
+#include "VoidNet/Net.hpp"
 
 namespace std::net
 {

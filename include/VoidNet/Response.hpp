@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "Headers.hpp"
-#include "Cookies.hpp"
-#include "Enums.hpp"
+#include "VoidNet/Headers.hpp"
+#include "VoidNet/Cookies.hpp"
+#include "VoidNet/Enums.hpp"
 
 #include <string>
 

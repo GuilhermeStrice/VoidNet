@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "Response.hpp"
-#include "Request.hpp"
+#include "VoidNet/Response.hpp"
+#include "VoidNet/Request.hpp"
 
 namespace std::net
 {

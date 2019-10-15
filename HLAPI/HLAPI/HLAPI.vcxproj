@@ -23,10 +23,11 @@
     <ClInclude Include="..\..\include\HLAPI\DataReceivedEvent.hpp" />
     <ClInclude Include="..\..\include\HLAPI\DisconnectedEvent.hpp" />
     <ClInclude Include="..\..\include\HLAPI\InternalTags.hpp" />
-    <ClInclude Include="..\..\include\HLAPI\MessageQueue.hpp" />
     <ClInclude Include="..\..\include\HLAPI\NetworkHeader.hpp" />
     <ClInclude Include="..\..\include\HLAPI\NetworkMessage.hpp" />
     <ClInclude Include="..\..\include\HLAPI\NewConnectionEvent.hpp" />
+    <ClInclude Include="..\..\include\HLAPI\Plugin\Plugin.hpp" />
+    <ClInclude Include="..\..\include\HLAPI\Plugin\PluginManager.hpp" />
     <ClInclude Include="..\..\include\HLAPI\Server.hpp" />
     <ClInclude Include="..\..\include\HLAPI\TcpConnection.hpp" />
     <ClInclude Include="..\..\include\HLAPI\TcpConnectionHandler.hpp" />
@@ -34,8 +35,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\HLAPI\main.cpp" />
-    <ClCompile Include="..\..\src\HLAPI\MessageQueue.cpp" />
     <ClCompile Include="..\..\src\HLAPI\NetworkMessage.cpp" />
+    <ClCompile Include="..\..\src\HLAPI\Plugin\PluginManager.cpp" />
     <ClCompile Include="..\..\src\HLAPI\Server.cpp" />
     <ClCompile Include="..\..\src\HLAPI\TcpConnection.cpp" />
     <ClCompile Include="..\..\src\HLAPI\TcpConnectionHandler.cpp" />
@@ -66,6 +67,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <UseOfMfc>Static</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -99,8 +101,10 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../include/HLAPI;../../include/VoidNet</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

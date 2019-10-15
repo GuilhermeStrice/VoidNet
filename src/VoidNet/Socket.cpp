@@ -1,5 +1,5 @@
-#include "Socket.hpp"
-#include "IPAddress.hpp"
+#include "VoidNet/Socket.hpp"
+#include "VoidNet/IPAddress.hpp"
 
 namespace std::net
 {

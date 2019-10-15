@@ -5,7 +5,7 @@
 #include <ostream>
 #include <string>
 
-#include "Net.hpp"
+#include "VoidNet/Net.hpp"
 
 namespace std::net
 {

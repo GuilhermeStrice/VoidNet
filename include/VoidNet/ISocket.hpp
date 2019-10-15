@@ -4,9 +4,9 @@
 #include <chrono>
 #include <memory>
 
-#include "Net.hpp"
-#include "IPAddress.hpp"
-#include "Enums.hpp"
+#include "VoidNet/Net.hpp"
+#include "VoidNet/IPAddress.hpp"
+#include "VoidNet/Enums.hpp"
 
 namespace std::net
 {

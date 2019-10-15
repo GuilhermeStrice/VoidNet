@@ -1,7 +1,9 @@
-#include "Server.hpp"
+#include "HLAPI/Server.hpp"
 
-#include "MessageQueue.hpp"
-#include "TcpServer.hpp"
+#include <HLAPI/Plugin/Plugin.hpp>
+
+#include "HLAPI/TcpServer.hpp"
+#include "HLAPI/TcpConnectionHandler.hpp"
 //#include "UdpServer.hpp
 
 namespace std::net
@@ -19,5 +21,10 @@ namespace std::net
 	void Server::Stop()
 	{
 		m_tcpServer->Stop();
+	}
+
+	void Server::AddPlugin(Plugin* plugin)
+	{
+		m_tcpServer->m_connectionHandler->m_pluginManager->AddPlugin(plugin);
 	}
 }

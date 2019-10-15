@@ -7,6 +7,8 @@
 	#include <ws2tcpip.h>
 	#undef SendMessage
 	#undef SetPort
+	#undef max
+	#undef min
 
 #define poll WSAPoll
 #define ioctl ioctlsocket

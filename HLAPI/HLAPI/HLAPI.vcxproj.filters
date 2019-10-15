@@ -7,6 +7,12 @@
     <Filter Include="src">
       <UniqueIdentifier>{1c087ed8-3cca-4254-836f-10fb70fda154}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\Plugin">
+      <UniqueIdentifier>{e4fcabf7-6c96-45cb-bb30-917081477267}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Plugin">
+      <UniqueIdentifier>{503a204a-1cb8-46cc-91f5-9f5f583d543d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\HLAPI\DataReceivedEvent.hpp">
@@ -16,9 +22,6 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\HLAPI\InternalTags.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\HLAPI\MessageQueue.hpp">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\HLAPI\NetworkHeader.hpp">
@@ -45,12 +48,15 @@
     <ClInclude Include="..\..\include\HLAPI\ByteConverter.hpp">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\HLAPI\Plugin\Plugin.hpp">
+      <Filter>include\Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\HLAPI\Plugin\PluginManager.hpp">
+      <Filter>include\Plugin</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\HLAPI\main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\HLAPI\MessageQueue.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\HLAPI\NetworkMessage.cpp">
@@ -67,6 +73,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\HLAPI\TcpServer.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\HLAPI\Plugin\PluginManager.cpp">
+      <Filter>src\Plugin</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

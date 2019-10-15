@@ -1,5 +1,5 @@
-#include "TcpClient.hpp"
-#include "TcpSocketBuilder.hpp"
+#include "VoidNet/TcpClient.hpp"
+#include "VoidNet/TcpSocketBuilder.hpp"
 
 namespace std::net
 {

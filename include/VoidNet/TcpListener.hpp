@@ -3,7 +3,7 @@
 #include <thread>
 #include <queue>
 
-#include "Socket.hpp"
+#include "VoidNet/Socket.hpp"
 
 namespace std::net
 {

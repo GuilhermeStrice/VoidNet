@@ -1,6 +1,6 @@
 #pragma once
 
-#include "NetworkMessage.hpp"
+#include "HLAPI/NetworkMessage.hpp"
 
 namespace std::net
 {

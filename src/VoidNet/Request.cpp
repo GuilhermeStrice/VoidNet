@@ -1,6 +1,6 @@
 // https://github.com/mfichman/http
 
-#include "Request.hpp"
+#include "VoidNet/Request.hpp"
 
 namespace std::net
 {

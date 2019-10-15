@@ -1,14 +1,13 @@
 #pragma once
 
-#include <Net.hpp>
+#include <VoidNet/Net.hpp>
 
 #include <memory>
 
 namespace std::net
 {
 	class TcpServer;
-
-	class MessageQueue;
+	class Plugin;
 
 	class Server
 	{
@@ -17,6 +16,8 @@ namespace std::net
 
 		void Start();
 		void Stop();
+
+		void AddPlugin(Plugin* plugin);
 
 	private:
 		std::shared_ptr<std::net::TcpServer> m_tcpServer;

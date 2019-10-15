@@ -1,4 +1,4 @@
-#include "Util.hpp"
+#include "VoidNet/Util.hpp"
 
 std::vector<std::string> std::net::Split(const std::string& str, const std::string& delimiter)
 {

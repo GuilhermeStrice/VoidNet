@@ -2,9 +2,9 @@
 
 #include <functional>
 
-#include "TcpClient.hpp"
+#include "VoidNet/TcpClient.hpp"
 
-#include "NetworkMessage.hpp"
+#include "HLAPI/NetworkMessage.hpp"
 
 namespace std::net
 {
@@ -32,7 +32,7 @@ namespace std::net
 		std::function<void(uint32_t, void*)> NewConnectionEvent;
 
 	private:
-		bool sendMessage(NetworkMessage &msg);
+		bool sendMessage(const NetworkMessage &msg);
 
 		std::shared_ptr<TcpClient> m_client;
 		uint32_t m_id;

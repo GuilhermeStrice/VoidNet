@@ -1,13 +1,13 @@
 // https://github.com/mfichman/http
 
-#include "Http.hpp"
+#include "VoidNet/Http.hpp"
 
 #include <cassert>
 #include <vector>
 #include <sstream>
 
-#include "Socket.hpp"
-#include "SecureSocket.hpp"
+#include "VoidNet/Socket.hpp"
+#include "VoidNet/SecureSocket.hpp"
 
 #undef DELETE
 

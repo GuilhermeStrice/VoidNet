@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Enums.hpp"
-#include "IPAddress.hpp"
+#include "VoidNet/Enums.hpp"
+#include "VoidNet/IPAddress.hpp"
 
 namespace std::net
 {
