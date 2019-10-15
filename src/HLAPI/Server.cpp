@@ -8,9 +8,11 @@
 
 namespace std::net
 {
-	Server::Server(uint32_t max_connections, uint16_t port)
+	Server::Server(uint32_t max_connections, uint16_t port) :
+		Config(ServerConfig())
 	{
 		m_tcpServer = std::make_shared<std::net::TcpServer>(max_connections, port);
+		m_tcpServer->m_connectionHandler->m_config = Config;
 	}
 
 	void Server::Start()

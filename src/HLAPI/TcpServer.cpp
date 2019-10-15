@@ -12,7 +12,7 @@ namespace std::net
 		, m_port(port)
 		, m_run(false)
 	{
-		if (max_connections == 0 || port == 0)
+		if (port == 0)
 			throw std::invalid_argument("TcpServer::TcpServer()");
 
 		listener = std::shared_ptr<TcpListener>(TcpSocketBuilder().AsReusable().Bind(IPAddress(0, 0, 0, 0, port)).Listening().BuildListener().release());

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <VoidNet/Net.hpp>
+#include "HLAPI/ServerConfig.hpp"
 
 #include <memory>
 
@@ -18,6 +19,9 @@ namespace std::net
 		void Stop();
 
 		void AddPlugin(Plugin* plugin);
+
+	public:
+		ServerConfig Config;
 
 	private:
 		std::shared_ptr<std::net::TcpServer> m_tcpServer;

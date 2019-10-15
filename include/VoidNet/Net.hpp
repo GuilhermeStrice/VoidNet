@@ -6,7 +6,9 @@
 	#include <winsock2.h>
 	#include <ws2tcpip.h>
 	#undef SendMessage
+	#undef GetMessage
 	#undef SetPort
+	#undef GetPort
 	#undef max
 	#undef min
 

@@ -13,26 +13,23 @@
     <Filter Include="src\Plugin">
       <UniqueIdentifier>{503a204a-1cb8-46cc-91f5-9f5f583d543d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\Messages">
+      <UniqueIdentifier>{b431ca1a-333d-4242-93a0-c09caa38ff83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Events">
+      <UniqueIdentifier>{b03232e9-9ada-4c4a-91a2-8363c1a40714}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Messages">
+      <UniqueIdentifier>{a0afa482-e925-4c73-8ea7-476fc9f9ec01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Config">
+      <UniqueIdentifier>{d97e32c8-5abd-4c76-81b6-7e71a96728ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Config">
+      <UniqueIdentifier>{26f7a155-a0ad-4bb4-9cee-da6c56fd73c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\HLAPI\DataReceivedEvent.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\HLAPI\DisconnectedEvent.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\HLAPI\InternalTags.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\HLAPI\NetworkHeader.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\HLAPI\NetworkMessage.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\HLAPI\NewConnectionEvent.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\HLAPI\Server.hpp">
       <Filter>include</Filter>
     </ClInclude>
@@ -45,21 +42,30 @@
     <ClInclude Include="..\..\include\HLAPI\TcpServer.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\HLAPI\ByteConverter.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\HLAPI\Plugin\Plugin.hpp">
       <Filter>include\Plugin</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\HLAPI\Plugin\PluginManager.hpp">
       <Filter>include\Plugin</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\HLAPI\NetworkHeader.hpp">
+      <Filter>include\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\HLAPI\NetworkMessage.hpp">
+      <Filter>include\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\HLAPI\ByteConverter.hpp">
+      <Filter>include\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\HLAPI\InternalTags.hpp">
+      <Filter>include\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\HLAPI\ServerConfig.hpp">
+      <Filter>include\Config</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\HLAPI\main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\HLAPI\NetworkMessage.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\HLAPI\Server.cpp">
@@ -76,6 +82,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\HLAPI\Plugin\PluginManager.cpp">
       <Filter>src\Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\HLAPI\NetworkMessage.cpp">
+      <Filter>src\Messages</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

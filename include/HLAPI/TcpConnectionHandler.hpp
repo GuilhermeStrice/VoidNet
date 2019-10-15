@@ -7,6 +7,7 @@
 #include <VoidNet/TcpListener.hpp>
 #include <HLAPI/TcpConnection.hpp>
 #include <HLAPI/Plugin/PluginManager.hpp>
+#include <HLAPI/ServerConfig.hpp>
 
 namespace std::net
 {
@@ -58,6 +59,8 @@ namespace std::net
 
 		std::shared_ptr<PluginManager> m_pluginManager;
 
-		std::vector<pollfd> poll_fds;
+		std::vector<pollfd> m_pollFds;
+
+		ServerConfig m_config;
 	};
 }

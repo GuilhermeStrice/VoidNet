@@ -2,9 +2,40 @@
 
 #include "HLAPI/InternalTags.hpp"
 
+#include <iostream>
+
 namespace std::net
 {
-	TcpConnection::TcpConnection(TcpClient * client) 
+	void received(uint32_t, DistributionMode, uint32_t, uint32_t, void*)
+	{
+		std::cout << "received" << std::endl;
+	}
+
+	void disconnected(std::string s)
+	{
+		std::cout << s << std::endl;
+	}
+
+	void new_connection(uint32_t, void*)
+	{
+		std::cout << "new client connection" << std::endl;
+	}
+
+	void on_connect()
+	{
+		std::cout << "i connected" << std::endl;
+	}
+
+	TcpConnection::TcpConnection() :
+		m_client(new TcpClient())
+	{
+		DataReceivedEvent = received;
+		DisconnectedEvent = disconnected;
+		NewConnectionEvent = new_connection;
+		OnConnectionEvent = on_connect;
+	}
+
+	TcpConnection::TcpConnection(TcpClient * client)
 		: m_client(client)
 	{
 	}
@@ -19,9 +50,9 @@ namespace std::net
 		return m_id;
 	}
 
-	void TcpConnection::SetID(uint32_t id)
+	bool TcpConnection::Connect(IPAddress addr)
 	{
-		m_id = id;
+		return m_client->Connect(addr);
 	}
 
 	bool TcpConnection::sendMessage(const NetworkMessage & msg)
@@ -34,39 +65,40 @@ namespace std::net
 
 	void TcpConnection::ReceiveData()
 	{
-		std::unique_ptr<uint8_t> header(new uint8_t[sizeof(NetworkHeader*)]());
-
-		int32_t read;
-		if (!m_client->Recv(header.get(), sizeof(NetworkHeader*), read))
-			return;
-
-		if (read == sizeof(NetworkHeader*))
+		uint32_t data_size;
+		while (m_client->HasPendingData(data_size))
 		{
-			std::unique_ptr<NetworkHeader> net_header((NetworkHeader*)header.get());
+			std::net::NetworkMessage message;
 
-			std::unique_ptr<uint8_t> buffer(new uint8_t[net_header->Size]());
+			uint8_t* bytes = new uint8_t[data_size]();
+
 			int32_t read;
-			if (!m_client->Recv(buffer.get(), net_header->Size, read))
+			m_client->Recv(bytes, data_size, read);
+
+			message.Deserialize(bytes, data_size);
+
+			if (message.GetTag() == (uint32_t)InternalTags::Disconnect)
 			{
-				if (read != net_header->Size)
-					return; // wrong message?
-
-				NetworkMessage msg;
-				msg.Deserialize(buffer.get(), net_header->Size);
-
-				if (msg.GetTag() == (uint32_t)InternalTags::Disconnect)
-				{
-					//DisconnectedEvent(msg.m_senderID, );
-				}
-				else if (msg.GetTag() == (uint32_t)InternalTags::Connect)
-					NewConnectionEvent(msg.GetSenderID(), msg.GetData<void>());
-				else
-					DataReceivedEvent(msg.GetSenderID(), msg.GetDistributionMode(), msg.GetDestinationID(), msg.GetTag(), msg.GetData<void>());
+				if (DisconnectedEvent)
+					DisconnectedEvent(*(message.GetData<std::string>()));
 			}
-		}
-		else // wrong message
-		{
-			return;
+			else if (message.GetTag() == (uint32_t)InternalTags::Connect)
+			{
+				if (NewConnectionEvent)
+					NewConnectionEvent(message.GetSenderID(), message.GetData<void>());
+			}
+			else if (message.GetTag() == (uint32_t)InternalTags::AssignID)
+			{
+				m_id = *(message.GetData<uint32_t>());
+
+				if (OnConnectionEvent)
+					OnConnectionEvent();
+			}
+			else
+			{
+				if (DataReceivedEvent)
+					DataReceivedEvent(message.GetSenderID(), message.GetDistributionMode(), message.GetDestinationID(), message.GetTag(), message.GetData<void>());
+			}
 		}
 	}
 }

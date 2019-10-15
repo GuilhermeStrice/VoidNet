@@ -1,7 +1,5 @@
 #include "HLAPI/TcpConnectionHandler.hpp"
 
-#include "HLAPI/DisconnectedEvent.hpp"
-#include "HLAPI/NewConnectionEvent.hpp"
 #include "HLAPI/InternalTags.hpp"
 
 #include "HLAPI/NetworkMessage.hpp"
@@ -31,7 +29,7 @@ namespace std::net
 		pollfd master_fd;
 		master_fd.fd = m_listenerPtr->m_socket->GetNativeSocket();
 		master_fd.events = POLLRDNORM;
-		poll_fds.emplace_back(master_fd);
+		m_pollFds.emplace_back(master_fd);
 
 		std::thread receive_thread(&TcpConnectionHandler::HandleReceiveMsgAndConnsThreaded, this);
 		m_receiveThread.swap(receive_thread);
@@ -47,22 +45,20 @@ namespace std::net
 		uint32_t id = GetAvailableID();
 		if (id == -1)
 		{
-			// this can be handled just by the server
-			// what if the server owner wants to know if a user wanted to join but couldnt
-			DisconnectedEvent disconnected_event(id, "Server Full", -1);
 			std::shared_ptr<TcpClient> client = c->GetClient();
-			/*int32_t size = 0;
-			uint8_t *buffer = disconnected_event.Serialize(size);
-			int32_t sent = 0;
-			client->Send(buffer, size, sent);*/
+			std::string reason("Server is full");
+			NetworkMessage msg(0, DistributionMode::ID, 0, (uint32_t)InternalTags::Disconnect, &reason, sizeof(reason));
+			uint32_t size;
+			uint8_t* msgArr = msg.SerializeData(size);
+			int32_t sent;
+			client->Send(msgArr, size, sent);
 			client->Close();
+			return;
 		}
 
-		c->SetID(id);
+		c->m_id = id;
 
-		uint32_t *id_ptr = &id;
-
-		NetworkMessage msg(-1, DistributionMode::ID, id, (uint32_t)InternalTags::AssignID, id_ptr, sizeof(id_ptr));
+		NetworkMessage msg(0, DistributionMode::ID, id, (uint32_t)InternalTags::AssignID, &id, sizeof(uint32_t));
 
 		if (!c->sendMessage(msg))
 		{
@@ -77,7 +73,7 @@ namespace std::net
 		pollfd client_fd;
 		client_fd.fd = c->m_client->m_socket->GetNativeSocket();
 		client_fd.events = POLLRDNORM;
-		poll_fds.emplace_back(client_fd);
+		m_pollFds.emplace_back(client_fd);
 	}
 
 	uint32_t TcpConnectionHandler::GetAvailableID()
@@ -113,7 +109,7 @@ namespace std::net
 
 	void TcpConnectionHandler::HandleReceiveMsgAndConns()
 	{
-		int res = poll(poll_fds.data(), poll_fds.size(), -1);
+		int res = poll(m_pollFds.data(), m_pollFds.size(), -1);
 
 		if (res < 0)
 		{
@@ -126,12 +122,12 @@ namespace std::net
 			//timeout
 		//}
 
-		for (int i = 0; i < poll_fds.size(); i++)
+		for (int i = 0; i < m_pollFds.size(); i++)
 		{
-			if (poll_fds.at(i).revents == 0 || poll_fds[i].revents != POLLRDNORM)
+			if (m_pollFds.at(i).revents == 0 || m_pollFds[i].revents != POLLRDNORM)
 				continue;
 
-			if (poll_fds.at(i).fd == m_listenerPtr->m_socket->GetNativeSocket())
+			if (m_pollFds.at(i).fd == m_listenerPtr->m_socket->GetNativeSocket())
 			{
 				TcpClient *c = m_listenerPtr->AcceptClient();
 				if (c)
@@ -143,7 +139,7 @@ namespace std::net
 			}
 			else // not the listening socket
 			{
-				SOCKET c = poll_fds.at(i).fd;
+				SOCKET c = m_pollFds.at(i).fd;
 
 				uint8_t* header = new uint8_t[sizeof(NetworkHeader)]();
 
@@ -162,8 +158,9 @@ namespace std::net
 
 					if (msg.GetTag() == (uint32_t)InternalTags::Disconnect)
 						// i? or i+1
-						poll_fds.erase(poll_fds.begin() + i);
+						m_pollFds.erase(m_pollFds.begin() + i);
 
+					// put this in a separate thread
 					HandleMessage(msg);
 				}
 			}
@@ -172,6 +169,12 @@ namespace std::net
 
 	void TcpConnectionHandler::HandleMessage(const NetworkMessage &msg)
 	{
+		if (msg.GetTag() == (uint32_t)InternalTags::Connect)
+		{
+			if (m_config.BroadcastConnectionEvents)
+				return;
+		}
+
 		if (msg.GetDistributionMode() == DistributionMode::Others)
 		{
 			m_listMutex.lock();
