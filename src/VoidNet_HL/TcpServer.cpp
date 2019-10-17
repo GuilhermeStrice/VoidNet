@@ -29,5 +29,6 @@ namespace std::net
 	void TcpServer::Stop()
 	{
 		m_run = false;
+		m_connectionHandler->Stop();
 	}
 }
