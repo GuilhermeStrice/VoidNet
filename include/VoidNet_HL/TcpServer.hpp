@@ -24,7 +24,7 @@ namespace std::net
 		uint32_t m_maxConnections;
 		uint16_t m_port;
 
-		atomic_bool m_run;
+		bool m_run;
 
 		shared_ptr<TcpConnectionHandler> m_connectionHandler;
 	};
