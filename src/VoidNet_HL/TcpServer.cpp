@@ -28,6 +28,6 @@ namespace std::net
 
 	void TcpServer::Stop()
 	{
-		m_run.exchange(false);
+		m_run = false;
 	}
 }
