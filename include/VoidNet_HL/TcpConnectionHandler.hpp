@@ -35,10 +35,10 @@ namespace std::net
 		uint32_t GetAvailableID();
 
 	private:
-		void HandleReceiveMsgAndConns();
+		void HandleConnections();
 		void HandleMessage(const NetworkMessage &msg);
 
-		void HandleReceiveMsgAndConnsThreaded();
+		void HandleConnectionsThreaded();
 
 	private:
 		vector<shared_ptr<TcpConnection>> m_list;

@@ -19,20 +19,22 @@ namespace std::net
 
 	TcpConnectionHandler::~TcpConnectionHandler()
 	{
-		m_run.exchange(false);
+		Stop();
 	}
 
 	void TcpConnectionHandler::Start()
 	{
 		m_run.exchange(true);
 
+		m_pollFds.reserve(m_maxConnections);
+
 		pollfd master_fd;
 		master_fd.fd = m_listenerPtr->m_socket->GetNativeSocket();
 		master_fd.events = POLLRDNORM;
 		m_pollFds.emplace_back(master_fd);
 
-		thread receive_thread(&TcpConnectionHandler::HandleReceiveMsgAndConnsThreaded, this);
-		m_receiveThread.swap(receive_thread);
+		thread handleCons(&TcpConnectionHandler::HandleConnectionsThreaded, this);
+		m_receiveThread.swap(handleCons);
 	}
 
 	void TcpConnectionHandler::Stop()
@@ -100,6 +102,7 @@ namespace std::net
 	void TcpConnectionHandler::SetMaxConnections(uint32_t max_connections)
 	{
 		m_maxConnections = max_connections;
+		m_pollFds.reserve(m_maxConnections);
 	}
 
 	void TcpConnectionHandler::HandlePluginMessage(const NetworkMessage& message)
@@ -107,7 +110,7 @@ namespace std::net
 		m_pluginManager->HandleMessage(message);
 	}
 
-	void TcpConnectionHandler::HandleReceiveMsgAndConns()
+	void TcpConnectionHandler::HandleConnections()
 	{
 		int res = poll(m_pollFds.data(), m_pollFds.size(), -1);
 
@@ -259,9 +262,9 @@ namespace std::net
 			HandlePluginMessage(msg);
 	}
 
-	void TcpConnectionHandler::HandleReceiveMsgAndConnsThreaded()
+	void TcpConnectionHandler::HandleConnectionsThreaded()
 	{
 		while (m_run.load())
-			HandleReceiveMsgAndConns();
+			HandleConnections();
 	}
 }

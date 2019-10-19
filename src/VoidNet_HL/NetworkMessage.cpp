@@ -28,7 +28,7 @@ namespace std::net
 		int32_t sizeOfNetHeader = sizeof(NetworkHeader);
 
 		NetworkHeader header;
-		header.Size = 13 + sizeOfNetHeader + m_dataSize;
+		header.Size = 13 + sizeOfNetHeader + (m_data ? m_dataSize : 0);
 
 		byte *bytes = new byte[header.Size]();
 		memcpy(bytes, &header, sizeOfNetHeader);
@@ -42,7 +42,8 @@ namespace std::net
 		memcpy(bytes + sizeOfNetHeader + 5, destination, 4);
 		memcpy(bytes + sizeOfNetHeader + 9, tag, 4);
 
-		memcpy(bytes + 13 + sizeOfNetHeader, m_data, m_dataSize);
+		if (m_data)
+			memcpy(bytes + 13 + sizeOfNetHeader, m_data, m_dataSize);
 
 		size = header.Size;
 		return bytes;

@@ -28,6 +28,12 @@ namespace std::net
 			sendMessage(msg);
 		}
 
+		void SendMessage(DistributionMode mode, uint32_t destinationId, uint32_t tag)
+		{
+			NetworkMessage msg(m_id, mode, destinationId, tag, nullptr, 0);
+			sendMessage(msg);
+		}
+
 		void ReceiveData();
 
 		function<void(uint32_t, DistributionMode, uint32_t, uint32_t, void*)> DataReceivedEvent;

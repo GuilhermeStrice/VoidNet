@@ -43,9 +43,11 @@ namespace std::net
 		int32_t sent;
 		secure ? secure_socket->Recv((byte*)string.c_str(), string.size(), sent) : socket->Send((byte*)string.c_str(), string.size(), sent);
 
-		vector<char> buffer(16384); // 16 KiB
-		stringstream ss;
+		// redo
 
+		byte* buffer[16384]; // 16 KiB
+		stringstream ss;
+		/*
 		int32_t read;
 		do 
 		{
@@ -54,7 +56,7 @@ namespace std::net
 		} 
 		while (read > 0);
 		secure ? secure_socket->Close() : socket->Close();
-
+		*/
 		return Response(ss.str());
 	}
 

@@ -13,7 +13,7 @@ class Plugin : public std::net::Plugin
 {
 	virtual void HandleMessage(const std::net::NetworkMessage& message) override
 	{
-		
+		std::cout << "asd" << std::endl;
 	}
 };
 
@@ -26,9 +26,16 @@ int main()
 	
 	std::net::TcpConnection con;
 	con.Connect(std::net::IPAddress("127.0.0.1"));
-	
-	while (true)
+
+	bool sent = false;
+
+	while (con) // 8% of my cpu
 	{
 		con.ReceiveData();
+		if (!sent)
+		{
+			sent = true;
+			con.SendMessage(std::net::DistributionMode::Server, 0, 1);
+		}
 	}
 }
