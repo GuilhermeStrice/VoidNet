@@ -3,6 +3,8 @@
 #include "VoidNet_LL/Response.hpp"
 #include "VoidNet_LL/Parse.hpp"
 
+#include <stdexcept>
+
 namespace std::net
 {
 	static ParseResult<HttpStatus> ParseStatus(const char* str)

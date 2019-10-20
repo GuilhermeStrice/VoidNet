@@ -10,5 +10,9 @@ namespace std::net
 
 	PluginManager::~PluginManager()
 	{
+		for (size_t i = 0; i < m_plugins.size(); i++)
+		{
+			delete m_plugins[i];
+		}
 	}
 }

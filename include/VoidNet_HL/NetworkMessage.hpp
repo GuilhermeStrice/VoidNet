@@ -89,7 +89,9 @@ namespace std::net
 		template<typename T>
 		T *GetData() const
 		{
-			return (T*)m_data;
+			if (m_data)
+				return (T*)m_data;
+			else return nullptr;
 		}
 	};
 }

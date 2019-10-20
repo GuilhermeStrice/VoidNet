@@ -7,6 +7,7 @@
 #include "VoidNet_LL/TcpListener.hpp"
 
 #include <chrono>
+#include <iostream>
 
 namespace std::net
 {
@@ -112,62 +113,76 @@ namespace std::net
 
 	void TcpConnectionHandler::HandleConnections()
 	{
-		int res = poll(m_pollFds.data(), m_pollFds.size(), -1);
-
-		if (res < 0)
+		try
 		{
-			//poll error
-		}
+			int res = poll(m_pollFds.data(), m_pollFds.size(), 5);
 
-		//should never timeout because its infinite (negative)
-		//if (res == 0)
-		//{
-			//timeout
-		//}
-
-		for (int i = 0; i < m_pollFds.size(); i++)
-		{
-			if (m_pollFds.at(i).revents == 0 || m_pollFds[i].revents != POLLRDNORM)
-				continue;
-
-			if (m_pollFds.at(i).fd == m_listenerPtr->m_socket->GetNativeSocket())
+			if (res < 0)
 			{
-				TcpClient *c = m_listenerPtr->AcceptClient();
-				if (c)
-				{
-					shared_ptr<TcpConnection> connection = make_shared<TcpConnection>(c);
-					AddClient(connection);
-					break;
-				}
+				//poll error
 			}
-			else // not the listening socket
+
+			//should never timeout because its infinite (negative)
+			//if (res == 0)
+			//{
+				//timeout
+			//}
+
+			for (int i = 0; i < m_pollFds.size(); i++)
 			{
-				SOCKET c = m_pollFds.at(i).fd;
-
-				byte* header = new byte[sizeof(NetworkHeader)]();
-
-				int32_t read;
-				if ((read = recv(c, (char*)header, sizeof(NetworkHeader), 0)) != sizeof(NetworkHeader))
+				if (m_pollFds.at(i).revents == 0 || m_pollFds[i].revents != POLLRDNORM)
 					continue;
 
-				NetworkHeader net_header(*(NetworkHeader*)(header));
-				byte *buffer = new byte[net_header.Size]();
-
-				read = recv(c, (char*)buffer, net_header.Size - 4, 0);
-				if ((read) == net_header.Size - 4)
+				if (m_pollFds.at(i).fd == m_listenerPtr->m_socket->GetNativeSocket())
 				{
-					NetworkMessage msg;
-					msg.DeserializeWithoutHeader(buffer, net_header.Size);
+					TcpClient* c = m_listenerPtr->AcceptClient();
+					if (c)
+					{
+						shared_ptr<TcpConnection> connection = make_shared<TcpConnection>(c);
+						AddClient(connection);
+						break;
+					}
+				}
+				else // not the listening socket
+				{
+					SOCKET c = m_pollFds.at(i).fd;
 
-					if (msg.GetTag() == (uint32_t)InternalTags::Disconnect)
-						// i? or i+1
-						m_pollFds.erase(m_pollFds.begin() + i);
+					byte* header = new byte[sizeof(NetworkHeader)]();
 
-					// put this in a separate thread
-					HandleMessage(msg);
+					int32_t read;
+					if ((read = recv(c, (char*)header, sizeof(NetworkHeader), 0)) != sizeof(NetworkHeader))
+						continue;
+
+					NetworkHeader net_header(*(NetworkHeader*)(header));
+					byte* buffer = new byte[net_header.Size]();
+
+					read = recv(c, (char*)buffer, net_header.Size - 4, 0);
+					if ((read) == net_header.Size - 4)
+					{
+						NetworkMessage msg;
+						msg.DeserializeWithoutHeader(buffer, net_header.Size);
+
+						// put this in a separate thread
+						HandleMessage(msg);
+
+						if (msg.GetTag() == (uint32_t)InternalTags::Disconnect)
+						{
+							for (size_t k = 0; k < m_list.size(); i++)
+							{
+								if (m_list[k]->m_id == msg.GetSenderID())
+								{
+									std::shared_ptr<TcpConnection> c = m_list[k];
+									c->m_client->Close();
+									m_list.erase(m_list.begin() + k);
+								}
+							}
+							m_pollFds.erase(m_pollFds.begin() + i);
+						}
+					}
 				}
 			}
 		}
+		catch (void*) {}
 	}
 
 	void TcpConnectionHandler::HandleMessage(const NetworkMessage &msg)

@@ -1,10 +1,13 @@
 #include "VoidNet_LL/Socket.hpp"
 #include "VoidNet_LL/IPAddress.hpp"
+#include <VoidNet_LL\Init.hpp>
 
 namespace std::net
 {
 	void Socket::init()
 	{
+		Initialize();
+
 		if (GetSocketType() == SocketType::Unknown)
 			throw invalid_argument("Unknown socket type");
 
@@ -55,11 +58,11 @@ namespace std::net
 	bool Socket::Connect(const IPAddress& addr)
 	{
 		sockaddr_in addr_in = addr.ToCAddr();
-		int32_t Return = connect(m_socket, (sockaddr*)&addr_in, sizeof(sockaddr_in));
-		SocketErrors Error = TranslateErrorCode(Return);
+		int32_t retValue = connect(m_socket, (sockaddr*)&addr_in, sizeof(sockaddr_in));
+		SocketErrors error = TranslateErrorCode(retValue);
 
 		// "would block" is not an error
-		return ((Error == SocketErrors::SE_NO_ERROR) || (Error == SocketErrors::SE_EWOULDBLOCK));
+		return ((error == SocketErrors::SE_NO_ERROR) || (error == SocketErrors::SE_EWOULDBLOCK));
 	}
 
 	bool Socket::WaitForPendingConnection(bool& hasPendingConnection, chrono::milliseconds t)
@@ -421,6 +424,7 @@ namespace std::net
 
 		return SocketErrors::SE_EINVAL;
 #else
+		code = WSAGetLastError();
 		// handle the generic -1 error
 		if (code == SOCKET_ERROR)
 		{

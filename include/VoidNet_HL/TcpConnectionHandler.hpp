@@ -47,7 +47,6 @@ namespace std::net
 		uint32_t m_maxConnections = 0;
 
 		thread m_receiveThread;
-		thread m_sendThread;
 
 		atomic_bool m_run;
 

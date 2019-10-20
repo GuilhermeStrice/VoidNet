@@ -81,8 +81,8 @@ namespace std::net
 	enum class SocketType
 	{
 		Unknown = -1,
-		Datagram = 2,
-		Streaming = 1,
+		Datagram = 2, //SOCK_DGRAM
+		Streaming = 1, //SOCK_STREAM
 	};
 
 	enum class SocketProtocol

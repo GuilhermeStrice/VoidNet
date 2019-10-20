@@ -6,33 +6,9 @@
 
 namespace std::net
 {
-	void received(uint32_t, DistributionMode, uint32_t, uint32_t, void*)
-	{
-		std::cout << "received" << std::endl;
-	}
-
-	void disconnected(std::string s)
-	{
-		std::cout << s << std::endl;
-	}
-
-	void new_connection(uint32_t, void*)
-	{
-		std::cout << "new client connection" << std::endl;
-	}
-
-	void on_connect()
-	{
-		std::cout << "i connected" << std::endl;
-	}
-
 	TcpConnection::TcpConnection() :
 		m_client(new TcpClient())
 	{
-		DataReceivedEvent = received;
-		DisconnectedEvent = disconnected;
-		NewConnectionEvent = new_connection;
-		OnConnectionEvent = on_connect;
 	}
 
 	TcpConnection::TcpConnection(TcpClient * client)
@@ -52,7 +28,12 @@ namespace std::net
 
 	bool TcpConnection::Connect(IPAddress addr)
 	{
-		return m_client->Connect(addr);
+		return IsConnected = m_client->Connect(addr);
+	}
+
+	bool TcpConnection::Disconnect()
+	{
+		return SendMessage(DistributionMode::AllAndServer, 0, (uint32_t)InternalTags::Disconnect);
 	}
 
 	bool TcpConnection::sendMessage(const NetworkMessage & msg)
@@ -79,25 +60,39 @@ namespace std::net
 
 			if (message.GetTag() == (uint32_t)InternalTags::Disconnect)
 			{
-				if (DisconnectedEvent)
-					DisconnectedEvent(*(message.GetData<string>()));
+				for (size_t i = 0; i < m_onDisconnect.size(); i++)
+				{
+					//string* msgStr = message.GetData<string>();
+					m_onDisconnect[i]("");
+				}
+
+				IsConnected = false;
+				m_client->Close();
 			}
 			else if (message.GetTag() == (uint32_t)InternalTags::Connect)
 			{
-				if (NewConnectionEvent)
-					NewConnectionEvent(message.GetSenderID(), message.GetData<void>());
+				for (size_t i = 0; i < m_onNewConnection.size(); i++)
+				{
+					m_onNewConnection[i](message.GetSenderID(), message.GetData<void>());
+				}
 			}
 			else if (message.GetTag() == (uint32_t)InternalTags::AssignID)
 			{
 				m_id = *(message.GetData<uint32_t>());
 
-				if (OnConnectionEvent)
-					OnConnectionEvent();
+				for (size_t i = 0; i < m_onConnection.size(); i++)
+				{
+					m_onConnection[i]();
+				}
+
+				IsConnected = true;
 			}
 			else
 			{
-				if (DataReceivedEvent)
-					DataReceivedEvent(message.GetSenderID(), message.GetDistributionMode(), message.GetDestinationID(), message.GetTag(), message.GetData<void>());
+				for (size_t i = 0; i < m_onDataReceived.size(); i++)
+				{
+					m_onDataReceived[i](message.GetSenderID(), message.GetDistributionMode(), message.GetDestinationID(), message.GetTag(), message.GetData<void>());
+				}
 			}
 		}
 	}

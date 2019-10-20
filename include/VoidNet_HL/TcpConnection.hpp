@@ -21,30 +21,55 @@ namespace std::net
 
 		bool Connect(IPAddress addr);
 
+		bool Disconnect();
+
 		template<typename T>
-		void SendMessage(DistributionMode mode, uint32_t destinationId, uint32_t tag, void *data)
+		bool SendMessage(DistributionMode mode, uint32_t destinationId, uint32_t tag, void *data)
 		{
 			NetworkMessage msg(m_id, mode, destinationId, tag, data, sizeof(T));
-			sendMessage(msg);
+			return sendMessage(msg);
 		}
 
-		void SendMessage(DistributionMode mode, uint32_t destinationId, uint32_t tag)
+		bool SendMessage(DistributionMode mode, uint32_t destinationId, uint32_t tag)
 		{
 			NetworkMessage msg(m_id, mode, destinationId, tag, nullptr, 0);
-			sendMessage(msg);
+			return sendMessage(msg);
 		}
 
 		void ReceiveData();
 
-		function<void(uint32_t, DistributionMode, uint32_t, uint32_t, void*)> DataReceivedEvent;
-		function<void(string)> DisconnectedEvent;
-		function<void(uint32_t, void*)> NewConnectionEvent;
-		function<void()> OnConnectionEvent;
+		bool IsConnected;
 
 	private:
 		bool sendMessage(const NetworkMessage &msg);
 
 		shared_ptr<TcpClient> m_client;
 		uint32_t m_id;
+
+		vector<function<void(uint32_t, DistributionMode, uint32_t, uint32_t, void*)>> m_onDataReceived;
+		vector<function<void(string)>> m_onDisconnect;
+		vector<function<void(uint32_t, void*)>> m_onNewConnection;
+		vector<function<void()>> m_onConnection;
+
+	public:
+		void operator+=(const function<void(uint32_t, DistributionMode, uint32_t, uint32_t, void*)> &rhs)
+		{
+			m_onDataReceived.push_back(rhs);
+		}
+
+		void operator+=(const function<void(string)>& rhs)
+		{
+			m_onDisconnect.push_back(rhs);
+		}
+
+		void operator+=(const function<void(uint32_t, void*)> & rhs)
+		{
+			m_onNewConnection.push_back(rhs);
+		}
+
+		void operator+=(const function<void()>& rhs)
+		{
+			m_onConnection.push_back(rhs);
+		}
 	};
 }

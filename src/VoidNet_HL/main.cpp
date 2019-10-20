@@ -11,31 +11,65 @@
 
 class Plugin : public std::net::Plugin
 {
-	virtual void HandleMessage(const std::net::NetworkMessage& message) override
-	{
-		std::cout << "asd" << std::endl;
-	}
+
 };
+
+void dsfg(uint32_t, std::net::DistributionMode, uint32_t, uint32_t, void*)
+{
+
+}
+
+std::net::TcpConnection *con = new std::net::TcpConnection();
+
+void onData(uint32_t, std::net::DistributionMode, uint32_t, uint32_t, void*)
+{
+	std::cout << "ondata" << std::endl;
+}
+
+void onDisconnect(std::string)
+{
+	std::cout << "ondisconnect" << std::endl;
+}
+
+void onconnect()
+{
+	std::cout << "onconnect" << std::endl;
+	con->Disconnect();
+}
 
 int main()
 {
-	std::net::Initialize();
-	std::net::Server server(1);
-	server.AddPlugin(new Plugin());
-	server.Start();
-	
-	std::net::TcpConnection con;
-	con.Connect(std::net::IPAddress("127.0.0.1"));
+	std::net::Server *server = new std::net::Server(1);
+	//server.AddPlugin(new Plugin());
+	server->Start();
 
-	bool sent = false;
+	//con->Connect(std::net::IPAddress("127.0.0.1"));
 
-	while (con) // 8% of my cpu
+	//bool sent = false;
+
+	//con += onData;
+	//con += onDisconnect;
+	//con += onconnect;
+
+	/*while (con.IsConnected) // 8% of my cpu
 	{
 		con.ReceiveData();
 		if (!sent)
 		{
 			sent = true;
-			con.SendMessage(std::net::DistributionMode::Server, 0, 1);
+			//con.SendMessage(std::net::DistributionMode::AllAndServer, 0, 1);
 		}
+	}*/
+
+	try
+
+	{
+		server->Stop();
+		delete server;
 	}
+	catch (void* e)
+	{
+		std::cout << "asd" << std::endl;
+	}
+	getchar();
 }

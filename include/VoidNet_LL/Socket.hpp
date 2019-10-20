@@ -21,7 +21,7 @@ namespace std::net
 			init();
 		}
 
-		virtual ~Socket() { Close(); }
+		virtual ~Socket() {  }
 
 	public:
 
