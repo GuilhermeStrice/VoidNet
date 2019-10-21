@@ -10,7 +10,7 @@ namespace std::net
 	{
 	public:
 		UdpSocket(Socket *soc);
-		UdpSocket(SocketProtocol protocol = SocketProtocol::IPv4);
+		UdpSocket(AddressFamily af = AddressFamily::IPv4);
 
 		bool Bind(const IPAddress &addr);
 		bool SendTo(const byte* data, int32_t count, int32_t& sent, const IPAddress& addrDest);

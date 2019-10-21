@@ -81,14 +81,23 @@ namespace std::net
 	enum class SocketType
 	{
 		Unknown = -1,
+		Raw = 3, // SOCK_RAW
 		Datagram = 2, //SOCK_DGRAM
 		Streaming = 1, //SOCK_STREAM
 	};
 
-	enum class SocketProtocol
+	enum class AddressFamily
 	{
 		IPv4 = 2, // AF_INET
 		IPv6 = 23 // AF_INET6
+	};
+
+	enum class SocketProtocol
+	{
+		ICMP = 1,
+		ICMPIpv6 = 58,
+		Tcp = 6,
+		Udp = 17,
 	};
 
 	enum class SocketReceiveFlags

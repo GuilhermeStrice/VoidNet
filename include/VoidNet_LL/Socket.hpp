@@ -8,14 +8,14 @@ namespace std::net
 	class Socket : public ISocket
 	{
 	public:
-		inline Socket(SocketType socketType, SocketProtocol protocol = SocketProtocol::IPv4)
-			: ISocket(socketType, protocol)
+		inline Socket(SocketType socketType, AddressFamily af = AddressFamily::IPv4, SocketProtocol proto = SocketProtocol::Tcp)
+			: ISocket(socketType, af)
 		{
 			init();
 		}
 
-		inline Socket(SOCKET newSocket, SocketType socketType = SocketType::Streaming, SocketProtocol protocol = SocketProtocol::IPv4)
-			: ISocket(socketType, protocol)
+		inline Socket(SOCKET newSocket, SocketType socketType = SocketType::Streaming, AddressFamily af = AddressFamily::IPv4, SocketProtocol proto = SocketProtocol::Tcp)
+			: ISocket(socketType, af)
 			, m_socket(newSocket)
 		{
 			init();

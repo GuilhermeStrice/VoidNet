@@ -15,7 +15,7 @@ namespace std::net
 
 	public:
 		TcpClient(Socket *soc);
-		TcpClient(SocketProtocol protocol = SocketProtocol::IPv4);
+		TcpClient(AddressFamily af = AddressFamily::IPv4);
 
 		bool Connect(const IPAddress& addrStr);
 		bool Close() const;

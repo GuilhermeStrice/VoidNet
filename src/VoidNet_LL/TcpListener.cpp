@@ -1,5 +1,5 @@
 #include "VoidNet_LL/TcpListener.hpp"
-#include "VoidNet_LL/TcpSocketBuilder.hpp"
+#include "VoidNet_LL/SocketBuilder.hpp"
 #include "VoidNet_LL/Socket.hpp"
 #include "VoidNet_LL/TcpClient.hpp"
 
@@ -9,7 +9,7 @@ namespace std::net
 		: m_port(port)
 		, m_sleepTime(inSleepTime)
 	{
-		m_socket = TcpSocketBuilder().AsNonBlocking().AsReusable().Bind(IPAddress(0, 0, 0, 0, port)).Listening().Build();
+		m_socket = SocketBuilder().Blocking(false).Reusable(true).Bind(IPAddress(0, 0, 0, 0, port)).Listening().Build();
 	}
 
 	TcpListener::TcpListener(Socket *InSocket, chrono::milliseconds inSleepTime)
@@ -21,7 +21,7 @@ namespace std::net
 	TcpClient *TcpListener::AcceptClient()
 	{
 		if (m_socket == nullptr)
-			m_socket = TcpSocketBuilder().AsReusable().Bind(IPAddress(0, 0, 0, 0, m_port)).Listening().Build();
+			m_socket = SocketBuilder().Reusable(true).Bind(IPAddress(0, 0, 0, 0, m_port)).Listening().Build();
 
 		if (m_socket == nullptr)
 			return nullptr;

@@ -1,7 +1,7 @@
 #include "VoidNet_HL/TcpServer.hpp"
 
 #include "VoidNet_HL/TcpConnection.hpp"
-#include "VoidNet_LL/TcpSocketBuilder.hpp"
+#include "VoidNet_LL/SocketBuilder.hpp"
 #include "VoidNet_LL/TcpClient.hpp"
 #include "VoidNet_HL/TcpConnectionHandler.hpp"
 
@@ -15,7 +15,7 @@ namespace std::net
 		if (port == 0)
 			throw invalid_argument("TcpServer::TcpServer()");
 
-		listener = shared_ptr<TcpListener>(TcpSocketBuilder().AsReusable().Bind(IPAddress(0, 0, 0, 0, port)).Listening().BuildListener().release());
+		listener = shared_ptr<TcpListener>(SocketBuilder().Reusable(true).Bind(IPAddress(0, 0, 0, 0, port)).Listening().BuildListener().release());
 		m_connectionHandler = make_shared<TcpConnectionHandler>(listener);
 		m_connectionHandler->SetMaxConnections(max_connections);
 	}

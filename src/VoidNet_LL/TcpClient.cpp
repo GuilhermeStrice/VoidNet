@@ -1,5 +1,5 @@
 #include "VoidNet_LL/TcpClient.hpp"
-#include "VoidNet_LL/TcpSocketBuilder.hpp"
+#include "VoidNet_LL/SocketBuilder.hpp"
 
 namespace std::net
 {
@@ -8,9 +8,9 @@ namespace std::net
 		m_socket = unique_ptr<Socket>(soc); // will this work
 	}
 
-	TcpClient::TcpClient(SocketProtocol protocol)
+	TcpClient::TcpClient(AddressFamily af)
 	{
-		m_socket = TcpSocketBuilder().AsNonBlocking().AsReusable().Protocol(protocol).Build();
+		m_socket = SocketBuilder().Blocking(true).Reusable(true).AddressFamily(af).Build();
 	}
 
 	bool TcpClient::Connect(const IPAddress& addrStr) 

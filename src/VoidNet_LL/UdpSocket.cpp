@@ -7,9 +7,9 @@ namespace std::net
 		m_socket = unique_ptr<Socket>(soc); // will this work
 	}
 
-	UdpSocket::UdpSocket(SocketProtocol protocol)
+	UdpSocket::UdpSocket(AddressFamily af)
 	{
-		m_socket = make_unique<Socket>(SocketType::Datagram, protocol);
+		m_socket = make_unique<Socket>(SocketType::Datagram, af);
 	}
 
 	bool UdpSocket::Bind(const IPAddress & addr)

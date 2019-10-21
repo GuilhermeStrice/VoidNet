@@ -17,13 +17,15 @@ namespace std::net
 	public:
 		inline ISocket()
 			: m_socketType(SocketType::Unknown)
-			, m_protocol(SocketProtocol::IPv4)
+			, m_addressFamily(AddressFamily::IPv4)
+			, m_socketProtocol(SocketProtocol::Tcp)
 		{
 		}
 
-		inline ISocket(SocketType InSocketType, SocketProtocol protocol = SocketProtocol::IPv4)
+		inline ISocket(SocketType InSocketType = SocketType::Streaming, AddressFamily af = AddressFamily::IPv4, SocketProtocol proto = SocketProtocol::Tcp)
 			: m_socketType(InSocketType)
-			, m_protocol(protocol)
+			, m_addressFamily(af)
+			, m_socketProtocol(proto)
 		{
 		}
 
@@ -62,13 +64,19 @@ namespace std::net
 			return m_socketType;
 		}
 
+		inline AddressFamily GetSocketAddressFamily() const
+		{
+			return m_addressFamily;
+		}
+
 		inline SocketProtocol GetSocketProtocol() const
 		{
-			return m_protocol;
+			return m_socketProtocol;
 		}
 
 	private:
 		const SocketType m_socketType;
-		const SocketProtocol m_protocol;
+		const AddressFamily m_addressFamily;
+		const SocketProtocol m_socketProtocol;
 	};
 }
